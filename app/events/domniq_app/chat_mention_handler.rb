@@ -15,8 +15,8 @@ module DomniqApp
       sender = message.user
       chat_channel = message.chat_channel
 
-      user_subscription = ExpoSubscription.find_by(user_id: notification.user_id)
-      return unless user_subscription
+      expo_pn_subscriptions = ExpoSubscription.where(user_id: notification.user_id)
+      return if expo_pn_subscriptions.empty?
 
       post_url = "/c/#{channel_id}#{message.thread_id ? "/#{message.thread_id}" : ""}/#{message.id}"
 

@@ -11,15 +11,15 @@ module Jobs
 
         push_notification = DomniqApp::PushNotification.create!(
           user_id: args[:user_id],
-          username: payload[:username],
-          topic_title: payload[:topic_title],
-          excerpt: payload[:excerpt],
-          notification_type: payload[:notification_type],
-          post_url: payload[:post_url],
-          is_pm: payload[:is_pm],
-          is_chat: payload[:is_chat],
-          is_thread: payload[:is_thread],
-          channel_name: payload[:channel_name],
+          username: payload["username"],
+          topic_title: payload["topic_title"],
+          excerpt: payload["excerpt"],
+          notification_type: payload["notification_type"],
+          post_url: payload["post_url"],
+          is_pm: payload["is_pm"],
+          is_chat: payload["is_chat"],
+          is_thread: payload["is_thread"],
+          channel_name: payload["channel_name"],
         )
 
         DomniqApp::PushNotificationManager.send_notification(
