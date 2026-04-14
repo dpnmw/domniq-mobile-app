@@ -8,7 +8,7 @@ module DomniqApp
     skip_before_action :verify_authenticity_token
 
     def index
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
 
       locales = LocaleFile.where(brand_key: brand_key).select(:id, :locale, :label, :version, :updated_at)
 
@@ -20,7 +20,7 @@ module DomniqApp
     end
 
     def show
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
       locale = params[:locale].sub(/\.po\z/, "")
 
       locale_file = LocaleFile.find_by(brand_key: brand_key, locale: locale)

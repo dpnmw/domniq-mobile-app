@@ -5,7 +5,7 @@ module DomniqApp
     requires_plugin "domniq-mobile-app"
 
     def index
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
       items = AppConfig.where(brand_key: brand_key, config_type: "drawer").order(:position)
 
       render json: {
@@ -42,7 +42,7 @@ module DomniqApp
         AppConfig.where(id: item[:id]).update_all(position: item[:position])
       end
 
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
       bump_config_version(brand_key)
 
       render json: success_json

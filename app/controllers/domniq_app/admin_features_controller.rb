@@ -5,7 +5,7 @@ module DomniqApp
     requires_plugin "domniq-mobile-app"
 
     def index
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
       flags = AppConfig.where(brand_key: brand_key, config_type: "feature_flags").order(:config_key)
 
       render json: {
@@ -23,7 +23,7 @@ module DomniqApp
     end
 
     def update
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
 
       if params[:flags].present?
         params[:flags].each do |flag|

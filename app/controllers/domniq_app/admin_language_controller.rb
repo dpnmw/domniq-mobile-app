@@ -5,7 +5,7 @@ module DomniqApp
     requires_plugin "domniq-mobile-app"
 
     def index
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
       locales = LocaleFile.where(brand_key: brand_key).order(:locale)
 
       render json: {
@@ -22,7 +22,7 @@ module DomniqApp
     end
 
     def upload
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
       locale = params.require(:locale)
       label = params.require(:label)
       po_data = params.require(:po_file).read

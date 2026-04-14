@@ -8,7 +8,7 @@ module DomniqApp
     skip_before_action :verify_authenticity_token
 
     def show
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
 
       config = DomniqApp::ConfigBuilder.build(brand_key)
       version = PluginStore.get("domniq_app", "config_version:#{brand_key}") || 0

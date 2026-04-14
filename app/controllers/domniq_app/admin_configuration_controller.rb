@@ -5,7 +5,7 @@ module DomniqApp
     requires_plugin "domniq-mobile-app"
 
     def index
-      brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
+      brand_key = params[:brand] || "domniq"
       configs = AppConfig.where(brand_key: brand_key)
 
       if params[:config_type].present?
