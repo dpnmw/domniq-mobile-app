@@ -9,7 +9,6 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
     branding = [
       { config_key: "app_name", config_value: "DOMNiQ" },
       { config_key: "app_tagline", config_value: "Creative HQ" },
-      { config_key: "app_scheme", config_value: "domniq" },
       { config_key: "color_default_style", config_value: "Royal" },
     ]
 

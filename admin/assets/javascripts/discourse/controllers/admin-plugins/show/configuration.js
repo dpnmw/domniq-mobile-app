@@ -13,25 +13,6 @@ export default class ConfigurationController extends Controller {
     return this.configs ?? this.model?.configs ?? [];
   }
 
-  get brandingConfigs() {
-    return this.computedConfigs.filter(
-      (c) =>
-        c.config_type === "branding" && !c.config_key.startsWith("developer_")
-    );
-  }
-
-  get legalConfigs() {
-    return this.computedConfigs.filter((c) => c.config_type === "legal");
-  }
-
-  get onboardingConfigs() {
-    return this.computedConfigs.filter((c) => c.config_type === "onboarding");
-  }
-
-  get useSiteBranding() {
-    return this.siteSettings.domniq_app_use_site_branding;
-  }
-
   @action
   updateValue(config, event) {
     config.config_value = event.target.value;
@@ -40,9 +21,10 @@ export default class ConfigurationController extends Controller {
   }
 
   @action
-  toggleSiteBranding() {
-    const current = this.siteSettings.domniq_app_use_site_branding;
-    this.siteSettings.set("domniq_app_use_site_branding", !current);
+  toggleConfigValue(config) {
+    config.config_value = config.config_value === "true" ? "false" : "true";
+    this.configs = [...this.computedConfigs];
+    this.saved = false;
   }
 
   @action

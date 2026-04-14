@@ -3,10 +3,6 @@ en:
     domniq_app_enabled: "Enable the Domniq Mobile App plugin."
     domniq_app_push_notifications_enabled: "Enable push notifications via Expo for the Domniq mobile app."
     domniq_app_video_thumbnails_enabled: "Automatically set video poster thumbnails as topic images for mobile app uploads."
-    domniq_app_remote_config_enabled: "Enable remote app configuration API for drawer, features, and branding."
-    domniq_app_default_brand: "Default brand key for white-label configuration."
-    domniq_app_deep_link_scheme: "Deep link app scheme (e.g. domniq) for opening links in the mobile app."
-    domniq_app_use_site_branding: "Use Discourse site name, description, and logo on the app's About screen instead of custom branding."
   domniq_app:
     errors:
       not_enabled: "The Domniq Mobile App plugin is not enabled."

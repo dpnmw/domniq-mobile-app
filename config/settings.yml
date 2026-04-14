@@ -7,16 +7,3 @@ plugins:
     client: true
   domniq_app_video_thumbnails_enabled:
     default: true
-  domniq_app_remote_config_enabled:
-    default: true
-    client: true
-  domniq_app_default_brand:
-    default: "domniq"
-    type: text
-  domniq_app_deep_link_scheme:
-    default: ""
-    type: text
-    client: true
-  domniq_app_use_site_branding:
-    default: false
-    client: true
