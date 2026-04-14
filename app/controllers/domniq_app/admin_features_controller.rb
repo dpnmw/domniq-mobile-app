@@ -4,7 +4,7 @@ module DomniqApp
   class AdminFeaturesController < ::Admin::AdminController
     requires_plugin "domniq-mobile-app"
 
-    before_action :ensure_licensed!
+    before_action :ensure_licensed!, only: %i[update]
 
     def index
       brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
