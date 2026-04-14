@@ -3,6 +3,8 @@ en:
     domniq_app:
       admin:
         title: "Domniq Mobile App"
+        overview:
+          title: "Overview"
         configuration:
           title: "Configuration"
           description: "Manage app branding, welcome screen, and legal links."

@@ -14,6 +14,10 @@ export default {
     withPluginApi((api) => {
       api.addAdminPluginConfigurationNav(PLUGIN_ID, [
         {
+          label: "domniq_app.admin.overview.title",
+          route: "adminPlugins.show.overview",
+        },
+        {
           label: "domniq_app.admin.configuration.title",
           route: "adminPlugins.show.configuration",
         },
