@@ -16,6 +16,7 @@ Discourse::Application.routes.draw do
       get "/configuration" => "domniq_app/admin#index"
       get "/drawer" => "domniq_app/admin#index"
       get "/features" => "domniq_app/admin#index"
+      get "/notifications" => "domniq_app/admin#index"
       get "/language" => "domniq_app/admin#index"
       get "/licensing" => "domniq_app/admin#index"
     end
