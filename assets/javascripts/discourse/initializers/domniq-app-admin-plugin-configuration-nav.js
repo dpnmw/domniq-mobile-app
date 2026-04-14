@@ -1,6 +1,6 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
-const PLUGIN_ID = "domniq-mobile-app";
+const PLUGIN_ID = "domniq";
 
 export default {
   name: "domniq-app-admin-plugin-configuration-nav",
@@ -15,27 +15,27 @@ export default {
       api.addAdminPluginConfigurationNav(PLUGIN_ID, [
         {
           label: "domniq_app.admin.configuration.title",
-          route: "adminPlugins.show.configuration",
+          route: "adminPlugins.show.domniq-configuration",
         },
         {
           label: "domniq_app.admin.drawer.title",
-          route: "adminPlugins.show.drawer",
+          route: "adminPlugins.show.domniq-drawer",
         },
         {
           label: "domniq_app.admin.features.title",
-          route: "adminPlugins.show.features",
+          route: "adminPlugins.show.domniq-features",
         },
         {
           label: "domniq_app.admin.notifications.title",
-          route: "adminPlugins.show.notifications",
+          route: "adminPlugins.show.domniq-notifications",
         },
         {
           label: "domniq_app.admin.language.title",
-          route: "adminPlugins.show.language",
+          route: "adminPlugins.show.domniq-language",
         },
         {
           label: "domniq_app.admin.licensing.title",
-          route: "adminPlugins.show.licensing",
+          route: "adminPlugins.show.domniq-licensing",
         },
       ]);
     });

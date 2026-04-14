@@ -4,11 +4,12 @@ export default {
   path: "/plugins",
 
   map() {
-    this.route("configuration");
-    this.route("drawer");
-    this.route("features");
-    this.route("notifications");
-    this.route("language");
-    this.route("licensing");
+    this.route("domniq-overview");
+    this.route("domniq-configuration");
+    this.route("domniq-drawer");
+    this.route("domniq-features");
+    this.route("domniq-notifications");
+    this.route("domniq-language");
+    this.route("domniq-licensing");
   },
 };
