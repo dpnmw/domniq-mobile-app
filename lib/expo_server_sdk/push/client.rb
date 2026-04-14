@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "connection_pool"
-require "http"
+require "faraday"
+require "faraday/net_http"
 
 require_relative "./chunk"
 require_relative "./notification"
@@ -137,38 +137,30 @@ module Expo
         self.access_token = access_token
         self.concurrency = concurrency
         self.logger = logger
-        self.instrumentation =
-          if instrumentation == true
-            { instrumentation: ActiveSupport::Notifications.instrumenter }
-          else
-            instrumentation
-          end
+        self.instrumentation = instrumentation
       end
 
       def send(notifications)
-        connect unless pool?
+        conn = build_connection
 
         threads =
           Chunk.for(notifications).map do |chunk|
             expected_count = chunk.count
             tokens = chunk.all_recipients
             Thread.new do
-              pool.with do |http|
-                response = http.post(PUSH_API_URL, json: chunk.as_json)
-                parsed_response = response.parse
+              response = conn.post(PUSH_API_URL, chunk.as_json)
+              parsed = response.body
 
-                data = parsed_response["data"]
-                errors = parsed_response["errors"]
+              data = parsed["data"]
+              errors = parsed["errors"]
 
-                if errors&.length&.positive?
-                  TicketsWithErrors.new(data: data, errors: errors)
-                elsif !data.is_a?(Array) || data.length != expected_count
-                  TicketsExpectationFailed.new(expected_count: expected_count, data: data)
-                else
-                  data.map do |ticket|
-                    current_ticket_token = tokens.shift(1)[0]
-                    Ticket.new(ticket, current_ticket_token)
-                  end
+              if errors&.length&.positive?
+                TicketsWithErrors.new(data: data, errors: errors)
+              elsif !data.is_a?(Array) || data.length != expected_count
+                TicketsExpectationFailed.new(expected_count: expected_count, data: data)
+              else
+                data.map do |ticket|
+                  Ticket.new(ticket, tokens.shift(1)[0])
                 end
               end
             end
@@ -184,58 +176,21 @@ module Expo
       end
 
       def receipts(receipt_ids)
-        connect unless pool?
+        conn = build_connection
+        response = conn.post(RECEIPTS_API_URL, { ids: Array(receipt_ids) })
+        parsed = response.body
 
-        pool.with do |http|
-          response = http.post(RECEIPTS_API_URL, json: { ids: Array(receipt_ids) })
-          parsed_response = response.parse
+        raise ServerError, "Expected hash with receipt id => receipt, but got some other data structure" unless parsed.is_a?(Hash)
 
-          if !parsed_response || parsed_response.is_a?(Array) || !parsed_response.is_a?(Hash)
-            raise ServerError, "Expected hash with receipt id => receipt, but got some other data structure"
-          end
+        errors = parsed["errors"]
+        data = parsed["data"]
 
-          errors = parsed_response["errors"]
-          data = parsed_response["data"]
-
-          if errors&.length&.positive?
-            ReceiptsWithErrors.new(data: parsed_response, errors: errors)
-          else
-            results =
-              data.map do |receipt_id, receipt_value|
-                Receipt.new(data: receipt_value, receipt_id: receipt_id)
-              end
-
-            Receipts.new(results: results, requested_ids: receipt_ids)
-          end
+        if errors&.length&.positive?
+          ReceiptsWithErrors.new(data: parsed, errors: errors)
+        else
+          results = data.map { |receipt_id, receipt_value| Receipt.new(data: receipt_value, receipt_id: receipt_id) }
+          Receipts.new(results: results, requested_ids: receipt_ids)
         end
-      end
-
-      def connect
-        shutdown
-
-        self.pool =
-          ConnectionPool.new(size: concurrency, timeout: 5) do
-            http =
-              HTTP.headers(
-                Accept: "application/json",
-                "Accept-Encoding": "gzip",
-                "User-Agent":
-                  format("expo-server-sdk-ruby/%<version>s", version: VERSION),
-              )
-
-            http = http.headers("Authorization", "Bearer #{access_token}") if access_token
-            http = http.use(:auto_inflate)
-            http = http.use(logging: { logger: logger }) if logger
-            http = http.use(instrumentation: instrumentation) if instrumentation
-
-            http.persistent(BASE_URL)
-          end
-      end
-
-      def shutdown
-        return unless pool?
-
-        pool.shutdown { |conn| conn&.close }
       end
 
       def notification
@@ -244,10 +199,17 @@ module Expo
 
       private
 
-      attr_accessor :access_token, :concurrency, :pool, :logger, :instrumentation
+      attr_accessor :access_token, :concurrency, :logger, :instrumentation
 
-      def pool?
-        !!pool
+      def build_connection
+        Faraday.new(url: BASE_URL) do |f|
+          f.request :json
+          f.response :json
+          f.headers["Accept"] = "application/json"
+          f.headers["User-Agent"] = format("expo-server-sdk-ruby/%<version>s", version: VERSION)
+          f.headers["Authorization"] = "Bearer #{access_token}" if access_token
+          f.adapter :net_http
+        end
       end
     end
   end
