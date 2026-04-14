@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-export default class DomniqLicensingController extends Controller {
+export default class LicensingController extends Controller {
   @tracked licenseKey = "";
   @tracked licensed = null;
 
@@ -16,7 +16,7 @@ export default class DomniqLicensingController extends Controller {
   async activateLicense() {
     try {
       const result = await ajax(
-        `/admin/plugins/domniq/licensing/activate.json`,
+        `/admin/plugins/domniq-mobile-app/licensing/activate.json`,
         { type: "POST", data: { license_key: this.licenseKey } }
       );
       this.licensed = result.licensed;
@@ -29,7 +29,7 @@ export default class DomniqLicensingController extends Controller {
   async checkLicense() {
     try {
       const result = await ajax(
-        `/admin/plugins/domniq/licensing/check.json`,
+        `/admin/plugins/domniq-mobile-app/licensing/check.json`,
         { type: "POST" }
       );
       this.licensed = result.licensed;

@@ -10,16 +10,16 @@ DomniqApp::Engine.routes.draw do
 end
 
 Discourse::Application.routes.draw do
-  scope "/admin/plugins/domniq", constraints: AdminConstraint.new do
+  scope "/admin/plugins/domniq-mobile-app", constraints: AdminConstraint.new do
     # Admin page shells + file downloads (format: false)
     scope format: false do
-      get "/domniq-overview" => "domniq_app/admin#index"
-      get "/domniq-configuration" => "domniq_app/admin#index"
-      get "/domniq-drawer" => "domniq_app/admin#index"
-      get "/domniq-features" => "domniq_app/admin#index"
-      get "/domniq-notifications" => "domniq_app/admin#index"
-      get "/domniq-language" => "domniq_app/admin#index"
-      get "/domniq-licensing" => "domniq_app/admin#index"
+      get "/overview" => "domniq_app/admin#index"
+      get "/configuration" => "domniq_app/admin#index"
+      get "/drawer" => "domniq_app/admin#index"
+      get "/features" => "domniq_app/admin#index"
+      get "/notifications" => "domniq_app/admin#index"
+      get "/language" => "domniq_app/admin#index"
+      get "/licensing" => "domniq_app/admin#index"
       get "/language/export" => "domniq_app/admin_language#export_defaults"
     end
 

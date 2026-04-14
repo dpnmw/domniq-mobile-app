@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-export default class DomniqFeaturesController extends Controller {
+export default class FeaturesController extends Controller {
   @tracked flags = null;
   @tracked saving = false;
   @tracked saved = false;
@@ -31,7 +31,7 @@ export default class DomniqFeaturesController extends Controller {
     const current = flag.config_value;
     const newValue = current === "true" ? "false" : "true";
     try {
-      await ajax(`/admin/plugins/domniq/features/flags.json`, {
+      await ajax(`/admin/plugins/domniq-mobile-app/features/flags.json`, {
         type: "PUT",
         data: {
           flags: [
@@ -57,7 +57,7 @@ export default class DomniqFeaturesController extends Controller {
         config_key: f.config_key,
         config_value: f.config_value,
       }));
-      await ajax(`/admin/plugins/domniq/features/flags.json`, {
+      await ajax(`/admin/plugins/domniq-mobile-app/features/flags.json`, {
         type: "PUT",
         data: { flags: flagData },
       });

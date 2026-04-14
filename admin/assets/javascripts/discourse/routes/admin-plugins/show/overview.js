@@ -1,6 +1,6 @@
 import DiscourseRoute from "discourse/routes/discourse";
 
-export default class DomniqOverviewRoute extends DiscourseRoute {
+export default class OverviewRoute extends DiscourseRoute {
   model() {
     return {};
   }

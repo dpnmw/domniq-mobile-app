@@ -18,7 +18,7 @@ export default class DomniqLanguage extends Component {
         <DButton
           @label="domniq_app.admin.language.export_defaults"
           @icon="download"
-          @href="/admin/plugins/domniq/language/export"
+          @href="/admin/plugins/domniq-mobile-app/language/export"
           class="btn-default"
         />
       </div>

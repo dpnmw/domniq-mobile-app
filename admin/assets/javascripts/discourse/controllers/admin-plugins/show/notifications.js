@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-export default class DomniqNotificationsController extends Controller {
+export default class NotificationsController extends Controller {
   @tracked subscriptions = null;
 
   get computedSubscriptions() {
@@ -15,7 +15,7 @@ export default class DomniqNotificationsController extends Controller {
   async removeSubscription(subscription) {
     try {
       await ajax(
-        `/admin/plugins/domniq/notifications/subscriptions/${subscription.id}.json`,
+        `/admin/plugins/domniq-mobile-app/notifications/subscriptions/${subscription.id}.json`,
         { type: "DELETE" }
       );
       this.subscriptions = this.computedSubscriptions.filter(
@@ -30,7 +30,7 @@ export default class DomniqNotificationsController extends Controller {
   async sendTestPush(subscription) {
     try {
       await ajax(
-        `/admin/plugins/domniq/notifications/test.json`,
+        `/admin/plugins/domniq-mobile-app/notifications/test.json`,
         { type: "POST", data: { subscription_id: subscription.id } }
       );
     } catch (e) {

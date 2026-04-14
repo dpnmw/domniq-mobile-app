@@ -1,3 +1,3 @@
 import Controller from "@ember/controller";
 
-export default class DomniqOverviewController extends Controller {}
+export default class OverviewController extends Controller {}

@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-export default class DomniqDrawerController extends Controller {
+export default class DrawerController extends Controller {
   @tracked items = null;
   @tracked saving = false;
   @tracked saved = false;
@@ -37,7 +37,7 @@ export default class DomniqDrawerController extends Controller {
     try {
       const newEnabled = !item.enabled;
       await ajax(
-        `/admin/plugins/domniq/drawer/items/${item.id}.json`,
+        `/admin/plugins/domniq-mobile-app/drawer/items/${item.id}.json`,
         {
           type: "PUT",
           data: { item: { enabled: newEnabled } },

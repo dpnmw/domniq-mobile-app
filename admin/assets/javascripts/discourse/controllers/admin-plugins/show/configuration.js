@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-export default class DomniqConfigurationController extends Controller {
+export default class ConfigurationController extends Controller {
   @tracked configs = null;
   @tracked saving = false;
   @tracked saved = false;
@@ -35,7 +35,7 @@ export default class DomniqConfigurationController extends Controller {
       const allConfigs = this.computedConfigs;
       for (const config of allConfigs) {
         await ajax(
-          `/admin/plugins/domniq/configs/${config.id}.json`,
+          `/admin/plugins/domniq-mobile-app/configs/${config.id}.json`,
           {
             type: "PUT",
             data: {
