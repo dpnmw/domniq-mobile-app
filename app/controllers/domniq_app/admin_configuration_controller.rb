@@ -4,8 +4,6 @@ module DomniqApp
   class AdminConfigurationController < ::Admin::AdminController
     requires_plugin "domniq-mobile-app"
 
-    before_action :ensure_licensed!, only: %i[create update destroy]
-
     def index
       brand_key = params[:brand] || SiteSetting.domniq_app_default_brand
       configs = AppConfig.where(brand_key: brand_key)
@@ -76,10 +74,5 @@ module DomniqApp
       PluginStore.set("domniq_app", "config_version:#{brand_key}", current + 1)
     end
 
-    def ensure_licensed!
-      unless DomniqApp::LicenseChecker.licensed?
-        raise Discourse::InvalidAccess.new(I18n.t("domniq_app.errors.not_licensed"))
-      end
-    end
   end
 end
