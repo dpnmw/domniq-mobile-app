@@ -22,7 +22,6 @@ const BRANDING_LABELS = {
     ],
   },
   deep_link_scheme: { label: "Deep Link Scheme", desc: "URL scheme used to open links directly in the app (e.g. domniq)." },
-  default_brand: { label: "Default Brand", desc: "Brand key used for white-label configuration. Determines which config set the app loads." },
 };
 
 const ABOUT_LABELS = {

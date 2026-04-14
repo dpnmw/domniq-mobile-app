@@ -30,7 +30,6 @@ class EnsureOnboardingData < ActiveRecord::Migration[7.0]
     settings = [
       ["use_site_branding", "false", 10],
       ["deep_link_scheme", "domniq", 11],
-      ["default_brand", "domniq", 12],
     ]
 
     settings.each do |key, value, pos|

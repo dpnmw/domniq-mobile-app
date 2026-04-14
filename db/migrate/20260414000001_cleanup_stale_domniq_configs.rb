@@ -10,7 +10,8 @@ class CleanupStaleDomniqConfigs < ActiveRecord::Migration[7.0]
         'color_primary', 'color_secondary', 'color_tertiary',
         'app_scheme',
         'developer_name', 'developer_slogan', 'developer_sub_slogan',
-        'developer_website', 'developer_email', 'developer_facebook'
+        'developer_website', 'developer_email', 'developer_facebook',
+        'default_brand'
       )
     SQL
   end
