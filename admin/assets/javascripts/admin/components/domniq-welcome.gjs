@@ -1,4 +1,6 @@
 import Component from "@glimmer/component";
+import DPageSubheader from "discourse/components/d-page-subheader";
+import { i18n } from "discourse-i18n";
 
 const APP_VERSION = "1.0.0";
 const API_BASE = "https://api.dpnmediaworks.com";
@@ -24,8 +26,10 @@ export default class DomniqWelcome extends Component {
               <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h586.66q27 0 46.84 19.83Q840-800.33 840-773.33v586.66q0 27-19.83 46.84Q800.33-120 773.33-120H186.67Zm0-66.67h586.66v-586.66H186.67v586.66Zm0-586.66v586.66-586.66ZM480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm-160 0q17 0 28.5-11.5T360-320q0-17-11.5-28.5T320-360q-17 0-28.5 11.5T280-320q0 17 11.5 28.5T320-280Zm320 0q17 0 28.5-11.5T680-320q0-17-11.5-28.5T640-360q-17 0-28.5 11.5T600-320q0 17 11.5 28.5T640-280Z" />
             </svg>
           </div>
-          <h1 class="dma-welcome__title">Domniq Mobile App</h1>
-          <p class="dma-welcome__subtitle">Native iOS &amp; Android companion for your Discourse community</p>
+          <DPageSubheader
+            @titleLabel={{i18n "domniq_app.admin.title"}}
+            @descriptionLabel={{i18n "domniq_app.admin.overview.description"}}
+          />
           <div class="dma-welcome__version">
             <span class="dma-welcome__version-badge">v{{APP_VERSION}}</span>
           </div>

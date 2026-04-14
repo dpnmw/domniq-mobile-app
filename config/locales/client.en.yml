@@ -5,6 +5,7 @@ en:
         title: "Domniq Mobile App"
         overview:
           title: "Overview"
+          description: "Native iOS & Android companion for your Discourse community"
         configuration:
           title: "Configuration"
           description: "Manage app branding, welcome screen, and legal links."
