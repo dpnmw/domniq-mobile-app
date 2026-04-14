@@ -46,10 +46,14 @@ module DomniqApp
       brand_key = params[:brand] || "domniq"
 
       if params[:configs].present?
-        params[:configs].each do |cfg|
-          record = AppConfig.find_by(id: cfg[:id])
+        configs_data = params[:configs]
+        configs_data = configs_data.values if configs_data.is_a?(ActionController::Parameters)
+
+        configs_data.each do |cfg|
+          cfg = cfg.to_unsafe_h if cfg.respond_to?(:to_unsafe_h)
+          record = AppConfig.find_by(id: cfg["id"])
           next unless record
-          record.update!(config_value: cfg[:config_value])
+          record.update!(config_value: cfg["config_value"])
         end
       end
 

@@ -26,19 +26,24 @@ module DomniqApp
       brand_key = params[:brand] || "domniq"
 
       if params[:flags].present?
-        params[:flags].each do |flag|
+        flags_data = params[:flags]
+        flags_data = flags_data.values if flags_data.is_a?(ActionController::Parameters)
+
+        flags_data.each do |flag|
+          flag = flag.to_unsafe_h if flag.respond_to?(:to_unsafe_h)
           record = AppConfig.find_or_initialize_by(
             brand_key: brand_key,
             config_type: "feature_flags",
-            config_key: flag[:config_key],
+            config_key: flag["config_key"],
           )
-          enabled = flag.key?(:enabled) ? flag[:enabled] : true
-          record.update!(config_value: flag[:config_value], enabled: enabled)
+          enabled = flag.key?("enabled") ? flag["enabled"] : true
+          record.update!(config_value: flag["config_value"], enabled: enabled)
         end
       end
 
       if params.key?(:video_thumbnails_enabled)
-        SiteSetting.domniq_app_video_thumbnails_enabled = params[:video_thumbnails_enabled]
+        SiteSetting.domniq_app_video_thumbnails_enabled =
+          ActiveModel::Type::Boolean.new.cast(params[:video_thumbnails_enabled])
       end
 
       bump_config_version(brand_key)
