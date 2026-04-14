@@ -42,6 +42,10 @@ Discourse::Application.routes.draw do
       get "/features/flags" => "domniq_app/admin_features#index"
       put "/features/flags" => "domniq_app/admin_features#update"
 
+      # Notifications
+      get "/notifications/settings" => "domniq_app/admin_notifications#settings"
+      put "/notifications/settings" => "domniq_app/admin_notifications#update_settings"
+
       # Language
       get "/language/locales" => "domniq_app/admin_language#index"
       post "/language/locales" => "domniq_app/admin_language#upload"

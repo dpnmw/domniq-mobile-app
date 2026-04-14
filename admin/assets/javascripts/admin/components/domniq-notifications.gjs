@@ -17,6 +17,32 @@ export default class DomniqNotifications extends Component {
       </:icon>
       <:content>
 
+      <div class="dma-card dma-card--features">
+        <div class="dma-card__body">
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M160-200v-66.67h80v-296q0-83.66 49.67-149.5Q339.33-778 420-796v-24q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v24q31 7 57.5 21.83 26.5 14.84 48.17 35.5l-48.34 49q-23-21-53.33-33.66Q513.67-736 480-736q-72 0-122.67 50.67-50.66 50.66-50.66 122.66v296H800V-200H160Z"/></svg></span>Push Notifications</h3>
+          <p class="dma-card__description">Enable or disable push notifications for the mobile app via Expo.</p>
+
+          <div class="dma-fields">
+            <div class="dma-row">
+              <div class="dma-row__label">
+                <span class="dma-row__title">Push Notifications Enabled</span>
+                <span class="dma-row__desc">When enabled, the app can send push notifications to registered devices.</span>
+              </div>
+              <div class="dma-row__control">
+                <label class="dma-toggle">
+                  <input
+                    type="checkbox"
+                    checked={{@controller.pushNotificationsEnabled}}
+                    {{on "change" @controller.togglePushNotifications}}
+                  />
+                  <span class="dma-toggle__track"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="dma-card dma-card--community">
         <div class="dma-card__body">
           <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M160-200v-66.67h80v-296q0-83.66 49.67-149.5Q339.33-778 420-796v-24q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v24q31 7 57.5 21.83 26.5 14.84 48.17 35.5l-48.34 49q-23-21-53.33-33.66Q513.67-736 480-736q-72 0-122.67 50.67-50.66 50.66-50.66 122.66v296H800V-200H160Z"/></svg></span>Registered Devices</h3>

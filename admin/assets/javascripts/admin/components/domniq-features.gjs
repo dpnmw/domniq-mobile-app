@@ -113,15 +113,22 @@ export default class DomniqFeatures extends Component {
           <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h480q33 0 56.5 23.5T720-720v180l160-160v440L720-420v180q0 33-23.5 56.5T640-160H160Z"/></svg></span>Video Thumbnails</h3>
           <p class="dma-card__description">Automatically set video poster thumbnails as topic images for mobile app video uploads.</p>
 
-          <div class="dma-flag-row">
-            <div class="dma-flag-row__info">
-              <span class="dma-flag-row__key">Video Thumbnails Enabled</span>
-              <span class="dma-flag-row__desc">Managed via Site Settings (domniq_app_video_thumbnails_enabled)</span>
-            </div>
-            <div class="dma-flag-row__control">
-              <span class="dma-drawer-item__badge {{if @controller.videoThumbnailsEnabled 'dma-drawer-item__badge--gated' 'dma-drawer-item__badge--coming-soon'}}">
-                {{if @controller.videoThumbnailsEnabled "Enabled" "Disabled"}}
-              </span>
+          <div class="dma-fields">
+            <div class="dma-row">
+              <div class="dma-row__label">
+                <span class="dma-row__title">Video Thumbnails Enabled</span>
+                <span class="dma-row__desc">When enabled, video poster frames are extracted and set as topic thumbnail images.</span>
+              </div>
+              <div class="dma-row__control">
+                <label class="dma-toggle">
+                  <input
+                    type="checkbox"
+                    checked={{@controller.videoThumbnailsEnabled}}
+                    {{on "change" @controller.toggleVideoThumbnails}}
+                  />
+                  <span class="dma-toggle__track"></span>
+                </label>
+              </div>
             </div>
           </div>
         </div>

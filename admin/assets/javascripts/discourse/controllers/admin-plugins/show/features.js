@@ -13,8 +13,24 @@ export default class FeaturesController extends Controller {
     return this.flags ?? this.model?.flags ?? [];
   }
 
+  @tracked _videoThumbnails = null;
+
   get videoThumbnailsEnabled() {
-    return this.model?.video_thumbnails_enabled ?? true;
+    return this._videoThumbnails ?? this.model?.video_thumbnails_enabled ?? true;
+  }
+
+  @action
+  async toggleVideoThumbnails() {
+    const newValue = !this.videoThumbnailsEnabled;
+    try {
+      await ajax(`/admin/plugins/domniq-mobile-app/features/flags.json`, {
+        type: "PUT",
+        data: { video_thumbnails_enabled: newValue },
+      });
+      this._videoThumbnails = newValue;
+    } catch (e) {
+      popupAjaxError(e);
+    }
   }
 
   @action
