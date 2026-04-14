@@ -5,20 +5,32 @@ import DPageSubheader from "discourse/components/d-page-subheader";
 import { i18n } from "discourse-i18n";
 import ICONS from "./domniq-icons";
 
-const CATEGORY_COLORS = {
-  Playground: "#A358DF",
-  Community: "#4ECDC4",
-  Settings: "#F5A623",
-  Support: "#74b9ff",
-  "Admin Dashboard": "#EF5350",
-};
-
-const CATEGORY_CARD_CLASS = {
-  Playground: "dma-card--playground",
-  Community: "dma-card--community",
-  Settings: "dma-card--settings",
-  Support: "dma-card--support",
-  "Admin Dashboard": "dma-card--admin",
+const CATEGORY_META = {
+  Playground: {
+    color: "#A358DF",
+    cardClass: "dma-card--playground",
+    desc: "Featured content and upcoming experiences shown at the top of the app drawer.",
+  },
+  Community: {
+    color: "#4ECDC4",
+    cardClass: "dma-card--community",
+    desc: "Social features, leaderboards, and community information.",
+  },
+  Settings: {
+    color: "#F5A623",
+    cardClass: "dma-card--settings",
+    desc: "User preferences for appearance, notifications, and device permissions.",
+  },
+  Support: {
+    color: "#74b9ff",
+    cardClass: "dma-card--support",
+    desc: "Help resources, developer info, and contact options.",
+  },
+  "Admin Dashboard": {
+    color: "#EF5350",
+    cardClass: "dma-card--admin",
+    desc: "Staff-only tools for site analytics, user management, and moderation.",
+  },
 };
 
 const CATEGORY_ORDER = ["Playground", "Community", "Settings", "Support", "Admin Dashboard"];
@@ -27,8 +39,9 @@ function sortedCategories(groupedItems) {
   return CATEGORY_ORDER.filter((cat) => groupedItems[cat]).map((cat) => ({
     name: cat,
     items: groupedItems[cat],
-    color: CATEGORY_COLORS[cat] || "#999",
-    cardClass: CATEGORY_CARD_CLASS[cat] || "",
+    color: CATEGORY_META[cat]?.color || "#999",
+    cardClass: CATEGORY_META[cat]?.cardClass || "",
+    desc: CATEGORY_META[cat]?.desc || "",
   }));
 }
 
@@ -68,23 +81,20 @@ export default class DomniqDrawerEditor extends Component {
       {{#each (sortedCategories @controller.groupedItems) as |group|}}
         <div class="dma-card {{group.cardClass}}">
           <div class="dma-card__body">
-            <div class="dma-card__header-row">
-              <div>
-                <h3 class="dma-card__heading">{{group.name}}</h3>
-                <p class="dma-card__description">{{group.items.length}} items</p>
-              </div>
-            </div>
+            <h3 class="dma-card__heading">{{group.name}}</h3>
+            <p class="dma-card__description">{{group.desc}}</p>
 
             <div class="dma-tile-grid">
               {{#each group.items as |item|}}
                 <div class="dma-tile {{unless item.enabled 'dma-tile--disabled'}}">
-                  <div class="dma-tile__top">
+
+                  <div class="dma-tile__header">
                     {{#if (hasIcon item.parsed.icon)}}
                       <div class="dma-tile__icon" style="background-color: {{item.parsed.color}};">
                         <svg
                           viewBox={{getIconViewBox item.parsed.icon}}
-                          width="16"
-                          height="16"
+                          width="14"
+                          height="14"
                           fill="white"
                         >
                           {{#each (getIconPaths item.parsed.icon) as |pathData|}}
@@ -103,6 +113,8 @@ export default class DomniqDrawerEditor extends Component {
                       </div>
                     {{/if}}
 
+                    <span class="dma-tile__title">{{item.parsed.title}}</span>
+
                     <label class="dma-toggle dma-toggle--sm">
                       <input
                         type="checkbox"
@@ -113,10 +125,7 @@ export default class DomniqDrawerEditor extends Component {
                     </label>
                   </div>
 
-                  <div class="dma-tile__body">
-                    <span class="dma-tile__title">{{item.parsed.title}}</span>
-                    <span class="dma-tile__desc">{{item.parsed.description}}</span>
-                  </div>
+                  <span class="dma-tile__desc">{{item.parsed.description}}</span>
 
                   {{#if item.parsed.comingSoon}}
                     <span class="dma-tile__badge dma-tile__badge--coming-soon">Soon</span>
