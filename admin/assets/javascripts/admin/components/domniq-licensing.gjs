@@ -71,6 +71,32 @@ export default class DomniqLicensing extends Component {
           </div>
         </div>
       </div>
+
+      <div class="dma-card dma-card--branding">
+        <div class="dma-card__body">
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></span>Install Telemetry</h3>
+          <p class="dma-card__description">Anonymous usage data sent weekly to DPN Media Works for license verification and support.</p>
+
+          <div class="dma-fields">
+            <div class="dma-row">
+              <div class="dma-row__label">
+                <span class="dma-row__title">Send Anonymous Install Data</span>
+                <span class="dma-row__desc">Shares your site URL, plugin version, and enabled features with DPN Media Works. No user data is collected.</span>
+              </div>
+              <div class="dma-row__control">
+                <label class="dma-toggle">
+                  <input
+                    type="checkbox"
+                    checked={{@controller.telemetryEnabled}}
+                    {{on "change" @controller.toggleTelemetry}}
+                  />
+                  <span class="dma-toggle__track"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       </:content>
     </DmaPageLayout>
   </template>

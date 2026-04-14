@@ -79,4 +79,6 @@ en:
           check: "Check License"
           activate: "Activate License"
           license_key: "License Key"
+          activated: "License activated successfully."
+          telemetry_saved: "Telemetry preference updated."
           locked_message: "This feature requires a valid license. Contact DPN Media Works for licensing."

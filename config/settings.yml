@@ -9,3 +9,6 @@ plugins:
   domniq_app_video_thumbnails_enabled:
     default: true
     hidden: true
+  domniq_app_telemetry_enabled:
+    default: true
+    hidden: true

@@ -56,6 +56,7 @@ Discourse::Application.routes.draw do
       get "/licensing/status" => "domniq_app/admin_licensing#status"
       post "/licensing/activate" => "domniq_app/admin_licensing#activate"
       post "/licensing/check" => "domniq_app/admin_licensing#check"
+      put "/licensing/telemetry" => "domniq_app/admin_licensing#update_telemetry"
     end
   end
 end

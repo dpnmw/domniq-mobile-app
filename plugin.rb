@@ -21,4 +21,7 @@ after_initialize do
   if SiteSetting.domniq_app_video_thumbnails_enabled
     require_relative "lib/domniq_app/video_thumbnail_patch"
   end
+
+  # --- Telemetry Heartbeat ---
+  require_relative "app/jobs/scheduled/domniq_heartbeat"
 end
