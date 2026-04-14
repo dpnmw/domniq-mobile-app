@@ -2,8 +2,8 @@ import Component from "@glimmer/component";
 import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
 import DButton from "discourse/components/d-button";
-import DPageSubheader from "discourse/components/d-page-subheader";
 import { i18n } from "discourse-i18n";
+import DmaPageLayout from "./dma-page-layout";
 
 const BRANDING_LABELS = {
   app_name: { label: "App Name", desc: "The display name shown across the mobile app and app stores." },
@@ -121,11 +121,12 @@ function filterOnboarding(configs) {
 
 export default class DomniqConfiguration extends Component {
   <template>
-    <section class="domniq-admin">
-      <DPageSubheader
-        @titleLabel={{i18n "domniq_app.admin.configuration.title"}}
-        @descriptionLabel={{i18n "domniq_app.admin.configuration.description"}}
-      />
+    <DmaPageLayout @title="Configuration" @subtitle="Set app branding, color palette, onboarding slides, about screen behavior, and legal links.">
+      <:icon>
+        <svg viewBox="0 -960 960 960" width="24" height="24" fill="white">
+          <path d="M479.99-689.33q15.01 0 25.18-10.16 10.16-10.15 10.16-25.17 0-15.01-10.15-25.17Q495.02-760 480.01-760q-15.01 0-25.18 10.15-10.16 10.16-10.16 25.17 0 15.01 10.15 25.18 10.16 10.17 25.17 10.17Zm-33.32 324.66h66.66V-612h-66.66v247.33ZM80-80v-733.33q0-27 19.83-46.84Q119.67-880 146.67-880h666.66q27 0 46.84 19.83Q880-840.33 880-813.33v506.66q0 27-19.83 46.84Q840.33-240 813.33-240H240L80-80Z" />
+        </svg>
+      </:icon>
 
       {{! ── App Branding ── }}
       <div class="dma-card dma-card--branding">
@@ -252,6 +253,6 @@ export default class DomniqConfiguration extends Component {
           <span class="dma-saved-text">{{i18n "domniq_app.admin.configuration.saved"}}</span>
         {{/if}}
       </div>
-    </section>
+    </DmaPageLayout>
   </template>
 }

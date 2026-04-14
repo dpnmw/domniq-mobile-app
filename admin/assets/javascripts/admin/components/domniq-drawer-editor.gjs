@@ -1,9 +1,8 @@
 import Component from "@glimmer/component";
 import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
-import DPageSubheader from "discourse/components/d-page-subheader";
-import { i18n } from "discourse-i18n";
 import ICONS from "./domniq-icons";
+import DmaPageLayout from "./dma-page-layout";
 
 const CATEGORY_META = {
   Playground: {
@@ -72,11 +71,12 @@ function getIconPaths(iconName) {
 
 export default class DomniqDrawerEditor extends Component {
   <template>
-    <section class="domniq-admin">
-      <DPageSubheader
-        @titleLabel={{i18n "domniq_app.admin.drawer.title"}}
-        @descriptionLabel={{i18n "domniq_app.admin.drawer.description"}}
-      />
+    <DmaPageLayout @title="App Drawer" @subtitle="Control which menu items appear in the app's sidebar. Toggle visibility, reorder, and manage feature gates.">
+      <:icon>
+        <svg viewBox="0 -960 960 960" width="24" height="24" fill="white">
+          <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h586.66q27 0 46.84 19.83Q840-800.33 840-773.33v586.66q0 27-19.83 46.84Q800.33-120 773.33-120H186.67Zm0-66.67h586.66v-586.66H186.67v586.66ZM480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm-160 0q17 0 28.5-11.5T360-320q0-17-11.5-28.5T320-360q-17 0-28.5 11.5T280-320q0 17 11.5 28.5T320-280Zm320 0q17 0 28.5-11.5T680-320q0-17-11.5-28.5T640-360q-17 0-28.5 11.5T600-320q0 17 11.5 28.5T640-280Z" />
+        </svg>
+      </:icon>
 
       {{#each (sortedCategories @controller.groupedItems) as |group|}}
         <div class="dma-card {{group.cardClass}}">
@@ -140,6 +140,6 @@ export default class DomniqDrawerEditor extends Component {
           </div>
         </div>
       {{/each}}
-    </section>
+    </DmaPageLayout>
   </template>
 }

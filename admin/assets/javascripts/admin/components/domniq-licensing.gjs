@@ -1,16 +1,17 @@
 import Component from "@glimmer/component";
 import { on } from "@ember/modifier";
 import DButton from "discourse/components/d-button";
-import DPageSubheader from "discourse/components/d-page-subheader";
 import { i18n } from "discourse-i18n";
+import DmaPageLayout from "./dma-page-layout";
 
 export default class DomniqLicensing extends Component {
   <template>
-    <section class="domniq-admin">
-      <DPageSubheader
-        @titleLabel={{i18n "domniq_app.admin.licensing.title"}}
-        @descriptionLabel={{i18n "domniq_app.admin.licensing.description"}}
-      />
+    <DmaPageLayout @title="Licensing" @subtitle="Activate your license for advanced configuration controls. Managed through DPN Media Works.">
+      <:icon>
+        <svg viewBox="0 -960 960 960" width="24" height="24" fill="white">
+          <path d="M480-80.67q-139.67-35-229.83-161.5Q160-368.67 160-520.67v-240l320-120 320 120v240q0 152-90.17 278.5Q619.67-115.67 480-80.67Zm0-69.33q111.33-36.33 182.33-139.67 71-103.33 71-231v-193.66L480-809.67l-253.33 95.34v193.66q0 127.67 71 231Q368.67-186.33 480-150Z" />
+        </svg>
+      </:icon>
 
       <div class="domniq-admin__section">
         <div class="domniq-admin__form">
@@ -54,6 +55,6 @@ export default class DomniqLicensing extends Component {
           />
         </div>
       </div>
-    </section>
+    </DmaPageLayout>
   </template>
 }

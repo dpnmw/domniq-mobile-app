@@ -2,8 +2,8 @@ import Component from "@glimmer/component";
 import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
 import DButton from "discourse/components/d-button";
-import DPageSubheader from "discourse/components/d-page-subheader";
 import { i18n } from "discourse-i18n";
+import DmaPageLayout from "./dma-page-layout";
 
 const FLAG_META = {
   showPostParticipants: {
@@ -52,11 +52,12 @@ function isBoolTrue(flag) {
 
 export default class DomniqFeatures extends Component {
   <template>
-    <section class="domniq-admin">
-      <DPageSubheader
-        @titleLabel={{i18n "domniq_app.admin.features.title"}}
-        @descriptionLabel={{i18n "domniq_app.admin.features.description"}}
-      />
+    <DmaPageLayout @title="Features" @subtitle="Toggle feature flags like post participants, story layout, reply mode, and video thumbnails.">
+      <:icon>
+        <svg viewBox="0 -960 960 960" width="24" height="24" fill="white">
+          <path d="M446.67-120v-280L249.33-202.33l-47-47L400-446.67H120v-66.66h280.67l-198.34-198 47-47 197.34 197.66V-840h66.66v280l198-198.33 47 47-198.33 198h280v66.66H560.67l197.66 197.34-47 47-198-198.34V-120h-66.66Z" />
+        </svg>
+      </:icon>
 
       {{! ── Feature Flags Card ── }}
       <div class="dma-card dma-card--features">
@@ -138,7 +139,7 @@ export default class DomniqFeatures extends Component {
           <span class="dma-saved-text">{{i18n "domniq_app.admin.features.saved"}}</span>
         {{/if}}
       </div>
-    </section>
+    </DmaPageLayout>
   </template>
 }
 
