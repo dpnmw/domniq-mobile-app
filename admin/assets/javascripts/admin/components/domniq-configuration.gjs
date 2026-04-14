@@ -256,9 +256,6 @@ export default class DomniqConfiguration extends Component {
           {{on "click" @controller.save}}
           class="btn-primary"
         />
-        {{#if @controller.saved}}
-          <span class="dma-saved-text">{{i18n "domniq_app.admin.configuration.saved"}}</span>
-        {{/if}}
       </div>
       </:content>
     </DmaPageLayout>

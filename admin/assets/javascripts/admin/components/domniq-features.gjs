@@ -1,8 +1,6 @@
 import Component from "@glimmer/component";
 import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
-import DButton from "discourse/components/d-button";
-import { i18n } from "discourse-i18n";
 import DmaPageLayout from "./dma-page-layout";
 
 const FLAG_META = {
@@ -134,25 +132,6 @@ export default class DomniqFeatures extends Component {
         </div>
       </div>
 
-      {{! ── Save ── }}
-      <div class="dma-save-row">
-        <DButton
-          @label="domniq_app.admin.features.discard"
-          @icon="arrow-rotate-left"
-          {{on "click" @controller.discard}}
-          class="btn-default"
-        />
-        <DButton
-          @label="domniq_app.admin.features.save"
-          @icon="check"
-          @disabled={{@controller.saving}}
-          {{on "click" @controller.save}}
-          class="btn-primary"
-        />
-        {{#if @controller.saved}}
-          <span class="dma-saved-text">{{i18n "domniq_app.admin.features.saved"}}</span>
-        {{/if}}
-      </div>
       </:content>
     </DmaPageLayout>
   </template>

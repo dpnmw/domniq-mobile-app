@@ -1,10 +1,13 @@
 import { tracked } from "@glimmer/tracking";
 import Controller from "@ember/controller";
 import { action } from "@ember/object";
+import { service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
+import { i18n } from "discourse-i18n";
 
 export default class NotificationsController extends Controller {
+  @service toasts;
   @tracked subscriptions = null;
   @tracked _pushEnabled = null;
 
@@ -25,6 +28,10 @@ export default class NotificationsController extends Controller {
         { type: "PUT", data: { push_notifications_enabled: newValue } }
       );
       this._pushEnabled = newValue;
+      this.toasts.success({
+        data: { message: i18n("domniq_app.admin.notifications.setting_saved") },
+        duration: 2000,
+      });
     } catch (e) {
       popupAjaxError(e);
     }
@@ -52,6 +59,10 @@ export default class NotificationsController extends Controller {
         `/admin/plugins/domniq-mobile-app/notifications/test.json`,
         { type: "POST", data: { subscription_id: subscription.id } }
       );
+      this.toasts.success({
+        data: { message: i18n("domniq_app.admin.notifications.test_sent") },
+        duration: 2000,
+      });
     } catch (e) {
       popupAjaxError(e);
     }

@@ -32,7 +32,8 @@ module DomniqApp
             config_type: "feature_flags",
             config_key: flag[:config_key],
           )
-          record.update!(config_value: flag[:config_value], enabled: flag.fetch(:enabled, true))
+          enabled = flag.key?(:enabled) ? flag[:enabled] : true
+          record.update!(config_value: flag[:config_value], enabled: enabled)
         end
       end
 

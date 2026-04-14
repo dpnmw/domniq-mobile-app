@@ -42,6 +42,21 @@ module DomniqApp
       render json: { config: serialize_config(config) }
     end
 
+    def bulk_update
+      brand_key = params[:brand] || "domniq"
+
+      if params[:configs].present?
+        params[:configs].each do |cfg|
+          record = AppConfig.find_by(id: cfg[:id])
+          next unless record
+          record.update!(config_value: cfg[:config_value])
+        end
+      end
+
+      bump_config_version(brand_key)
+      render json: success_json
+    end
+
     def destroy
       config = AppConfig.find(params[:id])
       brand_key = config.brand_key

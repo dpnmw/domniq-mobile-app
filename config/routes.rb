@@ -28,6 +28,7 @@ Discourse::Application.routes.draw do
       # Configuration (branding, welcome, legal)
       get "/configs" => "domniq_app/admin_configuration#index"
       post "/configs" => "domniq_app/admin_configuration#create"
+      put "/configs/bulk" => "domniq_app/admin_configuration#bulk_update"
       put "/configs/:id" => "domniq_app/admin_configuration#update"
       delete "/configs/:id" => "domniq_app/admin_configuration#destroy"
 

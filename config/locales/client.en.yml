@@ -55,6 +55,7 @@ en:
           remove: "Remove"
           test_push: "Send Test"
           test_sent: "Test notification sent."
+          setting_saved: "Notification settings updated."
         language:
           title: "Language"
           description: "Manage app translations. Export English defaults as PO, import translated PO files."
