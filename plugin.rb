@@ -10,7 +10,7 @@ enabled_site_setting :domniq_app_enabled
 
 register_asset "stylesheets/common/domniq-admin.scss", :admin
 
-add_admin_route "domniq_app.admin.title", "domniq-mobile-app", use_new_show_route: true
+add_admin_route "domniq_app.admin.title", "domniq", use_new_show_route: true
 
 require_relative "lib/domniq_app"
 

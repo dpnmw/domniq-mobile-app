@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-export default class LanguageController extends Controller {
+export default class DomniqLanguageController extends Controller {
   @tracked locales = null;
 
   get computedLocales() {
@@ -15,7 +15,7 @@ export default class LanguageController extends Controller {
   async deleteLocale(locale) {
     try {
       await ajax(
-        `/admin/plugins/domniq-mobile-app/language/locales/${locale.id}.json`,
+        `/admin/plugins/domniq/language/locales/${locale.id}.json`,
         { type: "DELETE" }
       );
       this.locales = this.computedLocales.filter((l) => l.id !== locale.id);
