@@ -3,6 +3,7 @@ import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
 import DPageSubheader from "discourse/components/d-page-subheader";
 import { i18n } from "discourse-i18n";
+import ICONS from "./domniq-icons";
 
 const CATEGORY_COLORS = {
   Playground: "#A358DF",
@@ -29,6 +30,21 @@ function sortedCategories(groupedItems) {
   }));
 }
 
+function getIconData(iconName) {
+  return ICONS[iconName] || null;
+}
+
+function hasIcon(iconName) {
+  return !!ICONS[iconName];
+}
+
+function getInitial(iconName) {
+  if (!iconName) {
+    return "?";
+  }
+  return iconName.charAt(0).toUpperCase();
+}
+
 export default class DomniqDrawerEditor extends Component {
   <template>
     <section class="domniq-admin">
@@ -46,12 +62,30 @@ export default class DomniqDrawerEditor extends Component {
             <div class="dma-drawer-grid">
               {{#each group.items as |item|}}
                 <div class="dma-drawer-item {{unless item.enabled 'dma-drawer-item--disabled'}}">
-                  <div
-                    class="dma-drawer-item__icon"
-                    style="background-color: {{item.parsed.color}};"
-                  >
-                    {{getInitial item.parsed.icon}}
-                  </div>
+
+                  {{#if (hasIcon item.parsed.icon)}}
+                    <div class="dma-drawer-item__icon" style="background-color: {{item.parsed.color}};">
+                      <svg
+                        viewBox={{getIconViewBox item.parsed.icon}}
+                        width="18"
+                        height="18"
+                        fill="white"
+                      >
+                        {{#each (getIconPaths item.parsed.icon) as |pathData|}}
+                          <path
+                            d={{pathData.d}}
+                            fill={{if pathData.fill pathData.fill "white"}}
+                            stroke={{if pathData.stroke pathData.stroke ""}}
+                            stroke-width={{if pathData.strokeWidth pathData.strokeWidth ""}}
+                          />
+                        {{/each}}
+                      </svg>
+                    </div>
+                  {{else}}
+                    <div class="dma-drawer-item__icon" style="background-color: {{item.parsed.color}};">
+                      {{getInitial item.parsed.icon}}
+                    </div>
+                  {{/if}}
 
                   <div class="dma-drawer-item__info">
                     <div class="dma-drawer-item__title">
@@ -89,7 +123,12 @@ export default class DomniqDrawerEditor extends Component {
   </template>
 }
 
-function getInitial(iconName) {
-  if (!iconName) return "?";
-  return iconName.charAt(0).toUpperCase();
+function getIconViewBox(iconName) {
+  const icon = getIconData(iconName);
+  return icon ? icon.viewBox : "0 0 24 24";
+}
+
+function getIconPaths(iconName) {
+  const icon = getIconData(iconName);
+  return icon ? icon.paths : [];
 }

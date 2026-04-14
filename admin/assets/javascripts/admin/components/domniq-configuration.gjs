@@ -9,16 +9,19 @@ const BRANDING_LABELS = {
   app_name: { label: "App Name", desc: "The display name of the mobile app" },
   app_tagline: { label: "App Tagline", desc: "Shown below the app name" },
   app_scheme: { label: "Deep Link Scheme", desc: "URL scheme for opening links in the app (e.g. domniq)" },
-  developer_name: { label: "Developer Name", desc: "Company or developer display name" },
-  developer_slogan: { label: "Developer Slogan", desc: "Primary tagline for the developer" },
-  developer_sub_slogan: { label: "Developer Sub-Slogan", desc: "Secondary tagline" },
-  developer_website: { label: "Website", desc: "Developer website URL" },
-  developer_email: { label: "Email", desc: "Developer contact email" },
-  developer_facebook: { label: "Facebook", desc: "Facebook page URL" },
-  color_primary: { label: "Primary Color", desc: "Main app accent color", color: true },
-  color_secondary: { label: "Secondary Color", desc: "Secondary accent color", color: true },
-  color_tertiary: { label: "Tertiary Color", desc: "Tertiary accent color", color: true },
-  color_default_style: { label: "Default Color Style", desc: "Default theme palette name" },
+  color_default_style: {
+    label: "Default Color Style",
+    desc: "The default color palette used across the app",
+    type: "select",
+    options: [
+      { value: "Royal", label: "Island Royal — Classic deep blue", color: "#2B6AFF" },
+      { value: "Clover", label: "Emerald Estate — Fresh nature green", color: "#4DAC5C" },
+      { value: "Violet", label: "Twilight Purple — Sophisticated and calm", color: "#8A6FD5" },
+      { value: "Lily", label: "Tropical Bloom — Vibrant and modern", color: "#F48FB1" },
+      { value: "Marigold", label: "Sunset Gold — Warm and vibrant", color: "#CC9619" },
+      { value: "Rose", label: "Legacy Red — Bold and powerful", color: "#B03030" },
+    ],
+  },
 };
 
 const LEGAL_LABELS = {
@@ -31,9 +34,18 @@ function getFieldMeta(config) {
   return BRANDING_LABELS[config.config_key] || LEGAL_LABELS[config.config_key] || { label: config.config_key, desc: "" };
 }
 
-function isColorField(config) {
+function isSelectField(config) {
   const meta = getFieldMeta(config);
-  return meta.color === true;
+  return meta.type === "select";
+}
+
+function getSelectOptions(config) {
+  const meta = getFieldMeta(config);
+  return meta.options || [];
+}
+
+function isSelected(configValue, optionValue) {
+  return configValue === optionValue;
 }
 
 export default class DomniqConfiguration extends Component {
@@ -48,27 +60,24 @@ export default class DomniqConfiguration extends Component {
       <div class="dma-card dma-card--branding">
         <div class="dma-card__body">
           <h3 class="dma-card__heading">Branding</h3>
-          <p class="dma-card__description">App identity, developer info, and color scheme. These values are used across the mobile app.</p>
+          <p class="dma-card__description">App identity and color scheme. These values are used across the mobile app.</p>
 
           <div class="dma-fields">
             {{#each @controller.brandingConfigs as |config|}}
               <div class="dma-field">
                 <span class="dma-field__label">{{getFieldLabel config}}</span>
-                {{#if (isColorField config)}}
-                  <div class="dma-field__color-row">
-                    <input
-                      type="color"
-                      value={{config.config_value}}
-                      class="dma-field__color-picker"
-                      {{on "input" (fn @controller.updateValue config)}}
-                    />
-                    <input
-                      type="text"
-                      value={{config.config_value}}
-                      class="dma-field__color-text"
-                      {{on "input" (fn @controller.updateValue config)}}
-                    />
-                  </div>
+                {{#if (isSelectField config)}}
+                  <select
+                    class="dma-field__select"
+                    {{on "change" (fn @controller.updateValue config)}}
+                  >
+                    {{#each (getSelectOptions config) as |opt|}}
+                      <option
+                        value={{opt.value}}
+                        selected={{isSelected config.config_value opt.value}}
+                      >{{opt.label}}</option>
+                    {{/each}}
+                  </select>
                 {{else}}
                   <input
                     type="text"

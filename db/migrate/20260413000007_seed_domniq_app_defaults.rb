@@ -10,15 +10,6 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
       { config_key: "app_name", config_value: "DOMNiQ" },
       { config_key: "app_tagline", config_value: "Creative HQ" },
       { config_key: "app_scheme", config_value: "domniq" },
-      { config_key: "developer_name", config_value: "DPN MEDIA WORKS" },
-      { config_key: "developer_slogan", config_value: "We Design, We Produce, We Network" },
-      { config_key: "developer_sub_slogan", config_value: "Empowering Clients With Services That Works" },
-      { config_key: "developer_website", config_value: "https://dpnmediaworks.com" },
-      { config_key: "developer_email", config_value: "contact@dpnmediaworks.com" },
-      { config_key: "developer_facebook", config_value: "https://fb.com/dpnmediaworks" },
-      { config_key: "color_primary", config_value: "#2B6AFF" },
-      { config_key: "color_secondary", config_value: "#5588FF" },
-      { config_key: "color_tertiary", config_value: "#0040C0" },
       { config_key: "color_default_style", config_value: "Royal" },
     ]
 

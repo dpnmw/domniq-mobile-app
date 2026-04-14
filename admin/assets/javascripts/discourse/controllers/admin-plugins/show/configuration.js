@@ -14,7 +14,10 @@ export default class ConfigurationController extends Controller {
   }
 
   get brandingConfigs() {
-    return this.computedConfigs.filter((c) => c.config_type === "branding");
+    return this.computedConfigs.filter(
+      (c) =>
+        c.config_type === "branding" && !c.config_key.startsWith("developer_")
+    );
   }
 
   get legalConfigs() {
