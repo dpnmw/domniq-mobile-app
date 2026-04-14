@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CleanupStaleDomNiqConfigs < ActiveRecord::Migration[7.0]
+class CleanupStaleDomniqConfigs < ActiveRecord::Migration[7.0]
   def up
     # Remove color_primary, color_secondary, color_tertiary, app_scheme
     # and developer_* entries that were seeded in earlier versions
