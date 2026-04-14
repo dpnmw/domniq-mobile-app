@@ -13,6 +13,7 @@ Discourse::Application.routes.draw do
   scope "/admin/plugins/domniq-mobile-app", constraints: AdminConstraint.new do
     # Admin page shells + file downloads (format: false)
     scope format: false do
+      get "/welcome" => "domniq_app/admin#index"
       get "/configuration" => "domniq_app/admin#index"
       get "/drawer" => "domniq_app/admin#index"
       get "/features" => "domniq_app/admin#index"
