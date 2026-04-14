@@ -132,7 +132,7 @@ export default class DomniqConfiguration extends Component {
       {{! ── App Branding ── }}
       <div class="dma-card dma-card--branding">
         <div class="dma-card__body">
-          <h3 class="dma-card__heading">App Branding</h3>
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"/></svg></span>App Branding</h3>
           <p class="dma-card__description">Identity, appearance, and behavior of the mobile app.</p>
           <div class="dma-fields">
             {{#each (filterBranding @controller.computedConfigs) as |config|}}
@@ -170,7 +170,7 @@ export default class DomniqConfiguration extends Component {
       {{! ── About Screen ── }}
       <div class="dma-card dma-card--community">
         <div class="dma-card__body">
-          <h3 class="dma-card__heading">About Screen</h3>
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></span>About Screen</h3>
           <p class="dma-card__description">Controls what appears on the app's About page.</p>
           <div class="dma-fields">
             {{#each (filterAbout @controller.computedConfigs) as |config|}}
@@ -198,7 +198,7 @@ export default class DomniqConfiguration extends Component {
       {{! ── Onboarding ── }}
       <div class="dma-card dma-card--playground">
         <div class="dma-card__body">
-          <h3 class="dma-card__heading">Onboarding Slides</h3>
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Z"/></svg></span>Onboarding Slides</h3>
           <p class="dma-card__description">Welcome screen carousel shown to new users before they sign in.</p>
           <div class="dma-fields">
             {{#each (filterOnboarding @controller.computedConfigs) as |config|}}
@@ -223,7 +223,7 @@ export default class DomniqConfiguration extends Component {
       {{! ── Legal Links ── }}
       <div class="dma-card dma-card--legal">
         <div class="dma-card__body">
-          <h3 class="dma-card__heading">Legal Links</h3>
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M480-80q-139.67-35-229.83-161.5Q160-368.67 160-520.67v-240l320-120 320 120v240q0 152-90.17 278.5Q619.67-115.67 480-80.67Z"/></svg></span>Legal Links</h3>
           <p class="dma-card__description">Discourse topic IDs shown in the app's Policies section and onboarding disclaimer.</p>
           <div class="dma-fields">
             {{#each (filterLegal @controller.computedConfigs) as |config|}}
@@ -243,6 +243,12 @@ export default class DomniqConfiguration extends Component {
 
       {{! ── Save ── }}
       <div class="dma-save-row">
+        <DButton
+          @label="domniq_app.admin.configuration.discard"
+          @icon="arrow-rotate-left"
+          {{on "click" @controller.discard}}
+          class="btn-default"
+        />
         <DButton
           @label="domniq_app.admin.configuration.save"
           @icon="check"

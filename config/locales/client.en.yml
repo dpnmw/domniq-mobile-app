@@ -15,8 +15,9 @@ en:
           tos_topic_id: "Terms of Service Topic ID"
           privacy_topic_id: "Privacy Policy Topic ID"
           faq_topic_id: "FAQ Topic ID"
-          save: "Save"
-          saved: "Configuration saved."
+          save: "Save Configuration"
+          saved: "All changes saved successfully."
+          discard: "Discard Changes"
         drawer:
           title: "Drawer"
           description: "Manage the app drawer menu items, ordering, and visibility."
@@ -38,8 +39,9 @@ en:
           value: "Value"
           video_thumbnails: "Video Thumbnails"
           video_thumbnails_description: "Automatically set video poster thumbnails as topic images."
-          save: "Save"
-          saved: "Feature settings saved."
+          save: "Save Features"
+          saved: "Feature settings saved successfully."
+          discard: "Discard Changes"
         notifications:
           title: "Notifications"
           description: "Manage push notification settings and view registered devices."

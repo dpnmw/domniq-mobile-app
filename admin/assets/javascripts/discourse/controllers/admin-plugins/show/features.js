@@ -49,6 +49,12 @@ export default class FeaturesController extends Controller {
   }
 
   @action
+  discard() {
+    this.flags = null;
+    this.saved = false;
+  }
+
+  @action
   async save() {
     this.saving = true;
     this.saved = false;

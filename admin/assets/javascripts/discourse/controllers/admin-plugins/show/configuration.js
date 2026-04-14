@@ -28,6 +28,12 @@ export default class ConfigurationController extends Controller {
   }
 
   @action
+  discard() {
+    this.configs = null;
+    this.saved = false;
+  }
+
+  @action
   async save() {
     this.saving = true;
     this.saved = false;

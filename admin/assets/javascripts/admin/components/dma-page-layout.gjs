@@ -1,5 +1,6 @@
 import Component from "@glimmer/component";
 import DPageSubheader from "discourse/components/d-page-subheader";
+import { i18n } from "discourse-i18n";
 
 const APP_VERSION = "1.0.0";
 const API_BASE = "https://api.dpnmediaworks.com";
@@ -24,8 +25,8 @@ export default class DmaPageLayout extends Component {
             {{yield to="icon"}}
           </div>
           <DPageSubheader
-            @titleLabel={{@titleLabel}}
-            @descriptionLabel={{@descriptionLabel}}
+            @titleLabel={{i18n @titleLabel}}
+            @descriptionLabel={{i18n @descriptionLabel}}
           />
           <div class="dma-page__version">
             <span class="dma-page__version-badge">v{{APP_VERSION}}</span>

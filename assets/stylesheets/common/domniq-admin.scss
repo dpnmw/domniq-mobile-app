@@ -858,15 +858,47 @@
 
 // ── Cards ──
 
+// Light mode card variables
+:root {
+  --dma-card-bg: #ffffff;
+  --dma-card-border: rgba(0, 0, 0, 0.08);
+  --dma-card-heading: #1a1a2e;
+  --dma-card-desc: #64748b;
+  --dma-card-text: #334155;
+  --dma-card-text-muted: #94a3b8;
+  --dma-card-row-border: rgba(0, 0, 0, 0.05);
+  --dma-card-input-bg: #f8fafc;
+  --dma-card-input-border: #e2e8f0;
+  --dma-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+// Dark mode card variables
+.dark-scheme,
+html[data-color-scheme="dark"],
+body.dark-scheme {
+  --dma-card-bg: #1a1a1a;
+  --dma-card-border: rgba(255, 255, 255, 0.08);
+  --dma-card-heading: #f1f5f9;
+  --dma-card-desc: #94a3b8;
+  --dma-card-text: #cbd5e1;
+  --dma-card-text-muted: #64748b;
+  --dma-card-row-border: rgba(255, 255, 255, 0.06);
+  --dma-card-input-bg: #0f172a;
+  --dma-card-input-border: rgba(255, 255, 255, 0.1);
+  --dma-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .dma-card {
   border-radius: 12px;
-  border: 1px solid var(--primary-low);
-  background: var(--secondary);
+  border: 1px solid var(--dma-card-border);
+  background: var(--dma-card-bg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   margin-bottom: 1.25rem;
   position: relative;
+  box-shadow: var(--dma-card-shadow);
+  transition: box-shadow 0.2s, border-color 0.2s;
 
   &::before {
     content: "";
@@ -877,41 +909,15 @@
     height: 3px;
   }
 
-  &--branding::before {
-    background: linear-gradient(90deg, #2b6aff, #5588ff);
-  }
-
-  &--legal::before {
-    background: linear-gradient(90deg, #22c55e, #16a34a);
-  }
-
-  &--drawer::before {
-    background: linear-gradient(90deg, #a358df, #8b5cf6);
-  }
-
-  &--features::before {
-    background: linear-gradient(90deg, #f5a623, #e8590c);
-  }
-
-  &--community::before {
-    background: linear-gradient(90deg, #4ecdc4, #06b6d4);
-  }
-
-  &--settings::before {
-    background: linear-gradient(90deg, #f5a623, #d97706);
-  }
-
-  &--support::before {
-    background: linear-gradient(90deg, #74b9ff, #3b82f6);
-  }
-
-  &--playground::before {
-    background: linear-gradient(90deg, #a358df, #8b5cf6);
-  }
-
-  &--admin::before {
-    background: linear-gradient(90deg, #ef5350, #c62828);
-  }
+  &--branding::before { background: linear-gradient(90deg, #2b6aff, #5588ff); }
+  &--legal::before { background: linear-gradient(90deg, #22c55e, #16a34a); }
+  &--drawer::before { background: linear-gradient(90deg, #a358df, #8b5cf6); }
+  &--features::before { background: linear-gradient(90deg, #f5a623, #e8590c); }
+  &--community::before { background: linear-gradient(90deg, #4ecdc4, #06b6d4); }
+  &--settings::before { background: linear-gradient(90deg, #f5a623, #d97706); }
+  &--support::before { background: linear-gradient(90deg, #74b9ff, #3b82f6); }
+  &--playground::before { background: linear-gradient(90deg, #a358df, #8b5cf6); }
+  &--admin::before { background: linear-gradient(90deg, #ef5350, #c62828); }
 }
 
 .dma-card__body {
@@ -925,22 +931,50 @@
   font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: -0.01em;
+  color: var(--dma-card-heading);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
+// Card heading icons
+.dma-card__heading-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: #fff;
+  }
+
+  .dma-card--branding & { background: linear-gradient(135deg, #2b6aff, #5588ff); }
+  .dma-card--legal & { background: linear-gradient(135deg, #22c55e, #16a34a); }
+  .dma-card--drawer & { background: linear-gradient(135deg, #a358df, #8b5cf6); }
+  .dma-card--features & { background: linear-gradient(135deg, #f5a623, #e8590c); }
+  .dma-card--community & { background: linear-gradient(135deg, #4ecdc4, #06b6d4); }
+  .dma-card--settings & { background: linear-gradient(135deg, #f5a623, #d97706); }
+  .dma-card--support & { background: linear-gradient(135deg, #74b9ff, #3b82f6); }
+  .dma-card--playground & { background: linear-gradient(135deg, #a358df, #8b5cf6); }
+  .dma-card--admin & { background: linear-gradient(135deg, #ef5350, #c62828); }
+}
+
 .dma-card__description {
   margin: 0 0 0.75rem;
   font-size: 0.82rem;
-  color: var(--primary-medium);
+  color: var(--dma-card-desc);
   line-height: 1.4;
 }
 
 .dma-card__hint {
   margin: 0.5rem 0 0;
   font-size: 0.75rem;
-  color: var(--primary-low-mid);
+  color: var(--dma-card-text-muted);
   line-height: 1.4;
   font-style: italic;
 }
@@ -960,7 +994,7 @@
   align-items: flex-start;
   gap: 1.5rem;
   padding: 0.65rem 0;
-  border-bottom: 1px solid var(--primary-very-low);
+  border-bottom: 1px solid var(--dma-card-row-border);
 
   &:last-child {
     border-bottom: none;
@@ -983,19 +1017,41 @@
 }
 
 .dma-row__title {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--primary);
+  color: var(--dma-card-heading);
   line-height: 1.3;
+
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--primary-low-mid);
+
+    .dma-card--branding & { background: #2b6aff; }
+    .dma-card--legal & { background: #22c55e; }
+    .dma-card--drawer & { background: #a358df; }
+    .dma-card--features & { background: #f5a623; }
+    .dma-card--community & { background: #4ecdc4; }
+    .dma-card--settings & { background: #f5a623; }
+    .dma-card--support & { background: #74b9ff; }
+    .dma-card--playground & { background: #a358df; }
+    .dma-card--admin & { background: #ef5350; }
+  }
 }
 
 .dma-row__desc {
   display: block;
   font-size: 0.75rem;
-  color: var(--primary-medium);
+  color: var(--dma-card-desc);
   line-height: 1.4;
   margin-top: 0.15rem;
+  padding-left: 0.95rem; // align with text after dot
 }
 
 .dma-row__control {
@@ -1050,10 +1106,10 @@
   &__input {
     width: 100%;
     padding: 0.5em;
-    border: 1px solid var(--primary-low);
+    border: 1px solid var(--dma-card-input-border);
     border-radius: var(--d-border-radius);
-    background: var(--secondary);
-    color: var(--primary);
+    background: var(--dma-card-input-bg);
+    color: var(--dma-card-text);
     font-size: var(--font-0);
 
     &:focus {
@@ -1103,10 +1159,10 @@
   &__select {
     width: 100%;
     padding: 0.5em;
-    border: 1px solid var(--primary-low);
+    border: 1px solid var(--dma-card-input-border);
     border-radius: var(--d-border-radius);
-    background: var(--secondary);
-    color: var(--primary);
+    background: var(--dma-card-input-bg);
+    color: var(--dma-card-text);
     font-size: var(--font-0);
   }
 }
@@ -1157,12 +1213,25 @@
 .dma-save-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 1.25rem 0;
+  flex-wrap: wrap;
+
+  .btn {
+    min-width: 180px;
+    padding: 0.65rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+  }
 }
 
 .dma-saved-text {
-  font-size: var(--font-down-1);
+  width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
   color: var(--success);
   font-weight: 600;
 }
@@ -1185,9 +1254,9 @@
 
 .dma-tile {
   position: relative;
-  border: 1px solid var(--primary-low);
+  border: 1px solid var(--dma-card-row-border);
   border-radius: 10px;
-  background: var(--secondary);
+  background: var(--dma-card-input-bg);
   padding: 0.65rem 0.75rem;
   display: flex;
   flex-direction: column;
@@ -1195,8 +1264,8 @@
   transition: all 0.15s;
 
   &:hover {
-    border-color: var(--primary-low-mid);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border-color: var(--dma-card-border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
 
   &--disabled {
@@ -1232,11 +1301,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--dma-card-heading);
 }
 
 .dma-tile__desc {
   font-size: 0.68rem;
-  color: var(--primary-medium);
+  color: var(--dma-card-desc);
   line-height: 1.3;
   padding-left: 2.15rem;
 }
@@ -1355,9 +1425,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border: 1px solid var(--primary-low);
+  border: 1px solid var(--dma-card-row-border);
   border-radius: 10px;
-  background: var(--secondary);
+  background: var(--dma-card-input-bg);
 
   & + & {
     margin-top: 0.5rem;
@@ -1374,11 +1444,12 @@
   font-weight: 600;
   font-size: 0.9rem;
   font-family: monospace;
+  color: var(--dma-card-heading);
 }
 
 .dma-flag-row__desc {
   font-size: 0.78rem;
-  color: var(--primary-medium);
+  color: var(--dma-card-desc);
 }
 
 .dma-flag-row__control {

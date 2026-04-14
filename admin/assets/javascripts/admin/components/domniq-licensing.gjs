@@ -14,46 +14,61 @@ export default class DomniqLicensing extends Component {
       </:icon>
       <:content>
 
-      <div class="domniq-admin__section">
-        <div class="domniq-admin__form">
-          <div class="form-row">
-            <label>{{i18n "domniq_app.admin.licensing.status"}}</label>
-            <span>
-              {{#if @controller.isLicensed}}
-                <span class="badge badge-notification">{{i18n
-                    "domniq_app.admin.licensing.active"
-                  }}</span>
-              {{else}}
-                <span>{{i18n "domniq_app.admin.licensing.inactive"}}</span>
-              {{/if}}
-            </span>
-          </div>
+      <div class="dma-card dma-card--legal">
+        <div class="dma-card__body">
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M480-80.67q-139.67-35-229.83-161.5Q160-368.67 160-520.67v-240l320-120 320 120v240q0 152-90.17 278.5Q619.67-115.67 480-80.67Z"/></svg></span>License Status</h3>
+          <p class="dma-card__description">Your current Domniq Mobile App license status and activation.</p>
 
-          {{#unless @controller.isLicensed}}
-            <div class="form-row">
-              <label>{{i18n "domniq_app.admin.licensing.license_key"}}</label>
-              <input
-                type="text"
-                value={{@controller.licenseKey}}
-                {{on "input" @controller.updateLicenseKey}}
-                placeholder="XXXX-XXXX-XXXX-XXXX"
-              />
+          <div class="dma-fields">
+            <div class="dma-row">
+              <div class="dma-row__label">
+                <span class="dma-row__title">Status</span>
+                <span class="dma-row__desc">Whether your license is currently active.</span>
+              </div>
+              <div class="dma-row__control">
+                {{#if @controller.isLicensed}}
+                  <span class="dma-tile__badge dma-tile__badge--gated">{{i18n "domniq_app.admin.licensing.active"}}</span>
+                {{else}}
+                  <span class="dma-tile__badge dma-tile__badge--coming-soon">{{i18n "domniq_app.admin.licensing.inactive"}}</span>
+                {{/if}}
+              </div>
             </div>
 
-            <DButton
-              @label="domniq_app.admin.licensing.activate"
-              @icon="key"
-              {{on "click" @controller.activateLicense}}
-              class="btn-primary"
-            />
-          {{/unless}}
+            {{#unless @controller.isLicensed}}
+              <div class="dma-row">
+                <div class="dma-row__label">
+                  <span class="dma-row__title">License Key</span>
+                  <span class="dma-row__desc">Enter your license key from DPN Media Works.</span>
+                </div>
+                <div class="dma-row__control">
+                  <input
+                    type="text"
+                    value={{@controller.licenseKey}}
+                    {{on "input" @controller.updateLicenseKey}}
+                    placeholder="XXXX-XXXX-XXXX-XXXX"
+                    class="dma-field__input"
+                  />
+                </div>
+              </div>
+            {{/unless}}
+          </div>
 
-          <DButton
-            @label="domniq_app.admin.licensing.check"
-            @icon="rotate"
-            {{on "click" @controller.checkLicense}}
-            class="btn-default"
-          />
+          <div class="dma-save-row">
+            {{#unless @controller.isLicensed}}
+              <DButton
+                @label="domniq_app.admin.licensing.activate"
+                @icon="key"
+                {{on "click" @controller.activateLicense}}
+                class="btn-primary"
+              />
+            {{/unless}}
+            <DButton
+              @label="domniq_app.admin.licensing.check"
+              @icon="rotate"
+              {{on "click" @controller.checkLicense}}
+              class="btn-default"
+            />
+          </div>
         </div>
       </div>
       </:content>
