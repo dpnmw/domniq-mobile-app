@@ -2,7 +2,7 @@
 
 module DomniqApp
   class AppConfig < ActiveRecord::Base
-    self.table_name = "#{DomniqApp.table_name_prefix}app_configs"
+    self.table_name = "domniq_app_configs"
 
     validates :brand_key, presence: true
     validates :config_type, presence: true
