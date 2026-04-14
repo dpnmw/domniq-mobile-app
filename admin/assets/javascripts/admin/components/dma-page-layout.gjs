@@ -1,4 +1,5 @@
 import Component from "@glimmer/component";
+import DPageSubheader from "discourse/components/d-page-subheader";
 
 const APP_VERSION = "1.0.0";
 const API_BASE = "https://api.dpnmediaworks.com";
@@ -22,8 +23,10 @@ export default class DmaPageLayout extends Component {
           <div class="dma-page__icon">
             {{yield to="icon"}}
           </div>
-          <h1 class="dma-page__title">{{@title}}</h1>
-          <p class="dma-page__subtitle">{{@subtitle}}</p>
+          <DPageSubheader
+            @titleLabel={{@titleLabel}}
+            @descriptionLabel={{@descriptionLabel}}
+          />
           <div class="dma-page__version">
             <span class="dma-page__version-badge">v{{APP_VERSION}}</span>
           </div>
@@ -32,7 +35,7 @@ export default class DmaPageLayout extends Component {
 
       {{! ── Content ── }}
       <div class="dma-page__content">
-        {{yield}}
+        {{yield to="content"}}
       </div>
 
       {{! ── Licensing + Footer ── }}

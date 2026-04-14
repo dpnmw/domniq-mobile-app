@@ -9,12 +9,13 @@ import DmaPageLayout from "./dma-page-layout";
 
 export default class DomniqNotifications extends Component {
   <template>
-    <DmaPageLayout @title="Notifications" @subtitle="Push notifications via Expo. View registered devices, send test notifications, and manage delivery.">
+    <DmaPageLayout @titleLabel="domniq_app.admin.notifications.title" @descriptionLabel="domniq_app.admin.notifications.description">
       <:icon>
         <svg viewBox="0 -960 960 960" width="24" height="24" fill="white">
           <path d="M518.33-501.33ZM480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM160-200v-66.67h80v-296q0-83.66 49.67-149.5Q339.33-778 420-796v-24q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v24q31 7 57.5 21.83 26.5 14.84 48.17 35.5l-48.34 49q-23-21-53.33-33.66Q513.67-736 480-736q-72 0-122.67 50.67-50.66 50.66-50.66 122.66v296H800V-200H160Z" />
         </svg>
       </:icon>
+      <:content>
 
       {{#if @controller.computedSubscriptions.length}}
         <table class="d-admin-table domniq-admin__table">
@@ -65,6 +66,7 @@ export default class DomniqNotifications extends Component {
             "domniq_app.admin.notifications.no_devices"
           }}</p>
       {{/if}}
+      </:content>
     </DmaPageLayout>
   </template>
 }

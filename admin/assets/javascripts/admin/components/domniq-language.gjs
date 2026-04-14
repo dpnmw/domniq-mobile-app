@@ -8,12 +8,13 @@ import DmaPageLayout from "./dma-page-layout";
 
 export default class DomniqLanguage extends Component {
   <template>
-    <DmaPageLayout @title="Language" @subtitle="Export English defaults as PO files, import translations, and let users switch languages in the app.">
+    <DmaPageLayout @titleLabel="domniq_app.admin.language.title" @descriptionLabel="domniq_app.admin.language.description">
       <:icon>
         <svg viewBox="0 -960 960 960" width="24" height="24" fill="white">
           <path d="M240-289.33 49.33-480 240-670.67 286.67-624l-143 144 143 144L240-289.33Zm174 132.66-64-20 196.67-626.66L610-784 414-156.67Zm306-132.66L673.33-336l143-144-143-144L720-670.67 910.67-480 720-289.33Z" />
         </svg>
       </:icon>
+      <:content>
 
       <div class="domniq-admin__section">
         <DButton
@@ -63,6 +64,7 @@ export default class DomniqLanguage extends Component {
             }}</p>
         {{/if}}
       </div>
+      </:content>
     </DmaPageLayout>
   </template>
 }
