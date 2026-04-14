@@ -1,0 +1,57 @@
+.domniq-admin {
+  &__section {
+    margin-bottom: 1.5em;
+  }
+
+  &__table {
+    width: 100%;
+  }
+
+  &__empty {
+    color: var(--primary-medium);
+    padding: 1em 0;
+  }
+
+  &__form {
+    max-width: 600px;
+
+    .form-row {
+      margin-bottom: 1em;
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 0.25em;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      textarea,
+      select {
+        width: 100%;
+      }
+
+      textarea {
+        min-height: 100px;
+      }
+    }
+  }
+
+  &__locked {
+    text-align: center;
+    padding: 3em 1em;
+    color: var(--primary-medium);
+
+    .locked-icon {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+  }
+
+  &__locale-upload {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-bottom: 1em;
+  }
+}

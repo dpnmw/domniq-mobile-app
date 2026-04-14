@@ -1,0 +1,17 @@
+en:
+  site_settings:
+    domniq_app_enabled: "Enable the Domniq Mobile App plugin."
+    domniq_app_push_notifications_enabled: "Enable push notifications via Expo for the Domniq mobile app."
+    domniq_app_video_thumbnails_enabled: "Automatically set video poster thumbnails as topic images for mobile app uploads."
+    domniq_app_remote_config_enabled: "Enable remote app configuration API for drawer, features, and branding."
+    domniq_app_default_brand: "Default brand key for white-label configuration."
+    domniq_app_deep_link_scheme: "Deep link app scheme (e.g. domniq) for opening links in the mobile app."
+  domniq_app:
+    errors:
+      not_enabled: "The Domniq Mobile App plugin is not enabled."
+      not_authorized: "You are not authorized to perform this action."
+      not_licensed: "This feature requires a valid license."
+      invalid_platform: "Platform must be ios or android."
+      invalid_locale: "Invalid locale identifier."
+      locale_not_found: "Locale not found."
+      config_not_found: "Configuration entry not found."
