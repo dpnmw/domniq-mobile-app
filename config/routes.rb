@@ -11,7 +11,7 @@ end
 
 Discourse::Application.routes.draw do
   scope "/admin/plugins/domniq-mobile-app", constraints: AdminConstraint.new do
-    # Admin page shells (format: false for HTML responses)
+    # Admin page shells + file downloads (format: false)
     scope format: false do
       get "/configuration" => "domniq_app/admin#index"
       get "/drawer" => "domniq_app/admin#index"
@@ -19,6 +19,7 @@ Discourse::Application.routes.draw do
       get "/notifications" => "domniq_app/admin#index"
       get "/language" => "domniq_app/admin#index"
       get "/licensing" => "domniq_app/admin#index"
+      get "/language/export" => "domniq_app/admin_language#export_defaults"
     end
 
     # Admin JSON API
@@ -44,7 +45,6 @@ Discourse::Application.routes.draw do
       get "/language/locales" => "domniq_app/admin_language#index"
       post "/language/locales" => "domniq_app/admin_language#upload"
       delete "/language/locales/:id" => "domniq_app/admin_language#destroy"
-      get "/language/export" => "domniq_app/admin_language#export_defaults"
 
       # Licensing
       get "/licensing/status" => "domniq_app/admin_licensing#status"

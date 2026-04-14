@@ -51,6 +51,24 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
       SQL
     end
 
+    # --- Onboarding Slides ---
+    onboarding = [
+      { config_key: "slide_1_title", config_value: "Connect" },
+      { config_key: "slide_1_description", config_value: "Join a vibrant community blended with people who share your interests." },
+      { config_key: "slide_2_title", config_value: "Discover" },
+      { config_key: "slide_2_description", config_value: "Find answers, interesting discussions, and topics that matter to you." },
+      { config_key: "slide_3_title", config_value: "Engage" },
+      { config_key: "slide_3_description", config_value: "Participate in discussions, share your knowledge, and help others." },
+    ]
+
+    onboarding.each_with_index do |item, i|
+      execute <<~SQL
+        INSERT INTO domniq_app_configs (brand_key, config_type, config_key, config_value, position, enabled, created_at, updated_at)
+        VALUES ('#{brand}', 'onboarding', '#{item[:config_key]}', '#{item[:config_value].gsub("'", "''")}', #{i}, true, '#{now}', '#{now}')
+        ON CONFLICT DO NOTHING
+      SQL
+    end
+
     # --- Drawer: Playground ---
     drawer_items = [
       # Playground
@@ -76,6 +94,11 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
       { config_key: "app_guide", position: 13, config_value: '{"title":"App Guide","description":"Learn how the app works","icon":"Highlights","color":"#4ECDC4","route":"AppGuide","category":"Support"}' },
       { config_key: "app_developer", position: 14, config_value: '{"title":"App Developer","description":"DPN MEDIA WORKS","icon":"Developer","color":"#74b9ff","route":"DeveloperInfo","category":"Support"}' },
       { config_key: "message_us", position: 15, config_value: '{"title":"Message Us","description":"Get in Touch","icon":"Mail","color":"#F5A623","route":"ContactUs","category":"Support"}' },
+
+      # Admin Dashboard (staff only)
+      { config_key: "admin_stats", position: 16, config_value: '{"title":"Site Stats","description":"Analytics & metrics","icon":"Admin","color":"#EF5350","route":"AdminStats","category":"Admin Dashboard","requiresStaff":true}' },
+      { config_key: "admin_users", position: 17, config_value: '{"title":"Users","description":"Manage members","icon":"Groups","color":"#74b9ff","route":"AdminUsers","category":"Admin Dashboard","requiresStaff":true}' },
+      { config_key: "admin_moderation", position: 18, config_value: '{"title":"Moderation","description":"Flags & review queue","icon":"SecurityShield","color":"#FF6B6B","route":"AdminReviewQueue","category":"Admin Dashboard","requiresStaff":true}' },
     ]
 
     drawer_items.each do |item|

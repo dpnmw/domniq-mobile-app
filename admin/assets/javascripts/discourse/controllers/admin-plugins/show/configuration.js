@@ -24,11 +24,25 @@ export default class ConfigurationController extends Controller {
     return this.computedConfigs.filter((c) => c.config_type === "legal");
   }
 
+  get onboardingConfigs() {
+    return this.computedConfigs.filter((c) => c.config_type === "onboarding");
+  }
+
+  get useSiteBranding() {
+    return this.siteSettings.domniq_app_use_site_branding;
+  }
+
   @action
   updateValue(config, event) {
     config.config_value = event.target.value;
     this.configs = [...this.computedConfigs];
     this.saved = false;
+  }
+
+  @action
+  toggleSiteBranding() {
+    const current = this.siteSettings.domniq_app_use_site_branding;
+    this.siteSettings.set("domniq_app_use_site_branding", !current);
   }
 
   @action

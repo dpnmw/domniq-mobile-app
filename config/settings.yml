@@ -17,3 +17,6 @@ plugins:
     default: ""
     type: text
     client: true
+  domniq_app_use_site_branding:
+    default: false
+    client: true
