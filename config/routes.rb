@@ -7,10 +7,6 @@ DomniqApp::Engine.routes.draw do
   # Locales API
   get "locales" => "locales#index"
   get "locales/:locale" => "locales#show"
-
-  # Push notification endpoints (authenticated)
-  post "push/subscribe" => "push#subscribe"
-  post "push/unsubscribe" => "push#unsubscribe"
 end
 
 Discourse::Application.routes.draw do
@@ -20,7 +16,6 @@ Discourse::Application.routes.draw do
       get "/configuration" => "domniq_app/admin#index"
       get "/drawer" => "domniq_app/admin#index"
       get "/features" => "domniq_app/admin#index"
-      get "/notifications" => "domniq_app/admin#index"
       get "/language" => "domniq_app/admin#index"
       get "/licensing" => "domniq_app/admin#index"
     end
@@ -43,11 +38,6 @@ Discourse::Application.routes.draw do
       # Features
       get "/features/flags" => "domniq_app/admin_features#index"
       put "/features/flags" => "domniq_app/admin_features#update"
-
-      # Notifications
-      get "/notifications/subscriptions" => "domniq_app/admin_notifications#index"
-      delete "/notifications/subscriptions/:id" => "domniq_app/admin_notifications#destroy"
-      post "/notifications/test" => "domniq_app/admin_notifications#test_push"
 
       # Language
       get "/language/locales" => "domniq_app/admin_language#index"
