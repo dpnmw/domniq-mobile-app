@@ -61,7 +61,7 @@ module DomniqApp
       begin
         response = Excon.post(
           REMOTE_URL,
-          body: { license_key: license_key, domain: domain }.to_json,
+          body: { license_key: license_key, domain: domain, product: "domniq-mobile-app" }.to_json,
           headers: { "Content-Type" => "application/json" },
           connect_timeout: 5,
           read_timeout: 5,
