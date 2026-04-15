@@ -13,13 +13,13 @@ Discourse::Application.routes.draw do
   scope "/admin/plugins/domniq-mobile-app", constraints: AdminConstraint.new do
     # Admin page shells + file downloads (format: false)
     scope format: false do
-      get "/overview" => "domniq_app/admin#index"
-      get "/configuration" => "domniq_app/admin#index"
-      get "/drawer" => "domniq_app/admin#index"
-      get "/features" => "domniq_app/admin#index"
-      get "/notifications" => "domniq_app/admin#index"
-      get "/language" => "domniq_app/admin#index"
-      get "/premium" => "domniq_app/admin#index"
+      get "/dma-overview" => "domniq_app/admin#index"
+      get "/dma-configuration" => "domniq_app/admin#index"
+      get "/dma-drawer" => "domniq_app/admin#index"
+      get "/dma-features" => "domniq_app/admin#index"
+      get "/dma-notifications" => "domniq_app/admin#index"
+      get "/dma-language" => "domniq_app/admin#index"
+      get "/dma-premium" => "domniq_app/admin#index"
       get "/language/export" => "domniq_app/admin_language#export_defaults"
     end
 

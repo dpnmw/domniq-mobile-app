@@ -6,7 +6,7 @@ import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { i18n } from "discourse-i18n";
 
-export default class NotificationsController extends Controller {
+export default class DmaNotificationsController extends Controller {
   @service toasts;
   @tracked subscriptions = null;
   @tracked _pushEnabled = null;

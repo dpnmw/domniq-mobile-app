@@ -4,12 +4,12 @@ export default {
   path: "/plugins",
 
   map() {
-    this.route("overview");
-    this.route("configuration");
-    this.route("drawer");
-    this.route("features");
-    this.route("notifications");
-    this.route("language");
-    this.route("premium");
+    this.route("dma-overview");
+    this.route("dma-configuration");
+    this.route("dma-drawer");
+    this.route("dma-features");
+    this.route("dma-notifications");
+    this.route("dma-language");
+    this.route("dma-premium");
   },
 };

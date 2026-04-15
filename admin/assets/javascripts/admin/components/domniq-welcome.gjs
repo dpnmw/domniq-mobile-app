@@ -3,15 +3,9 @@ import DPageSubheader from "discourse/components/d-page-subheader";
 import { i18n } from "discourse-i18n";
 
 const APP_VERSION = "1.0.0";
-const API_BASE = "https://api.dpnmediaworks.com";
-
 export default class DomniqWelcome extends Component {
   get currentYear() {
     return new Date().getFullYear();
-  }
-
-  get buyUrl() {
-    return `${API_BASE}/pay/discourse/domniq-mobile-app`;
   }
 
   <template>
@@ -104,67 +98,10 @@ export default class DomniqWelcome extends Component {
               <path d="M480-80.67q-139.67-35-229.83-161.5Q160-368.67 160-520.67v-240l320-120 320 120v240q0 152-90.17 278.5Q619.67-115.67 480-80.67Zm0-69.33q111.33-36.33 182.33-139.67 71-103.33 71-231v-193.66L480-809.67l-253.33 95.34v193.66q0 127.67 71 231Q368.67-186.33 480-150Z" />
             </svg>
           </div>
-          <h3 class="dma-welcome__feature-title">Licensing</h3>
-          <p class="dma-welcome__feature-desc">Activate your license for advanced configuration controls. Managed through DPN Media Works.</p>
+          <h3 class="dma-welcome__feature-title">Premium</h3>
+          <p class="dma-welcome__feature-desc">Activate your licence for advanced configuration controls. Managed through DPN Media Works.</p>
         </div>
 
-      </div>
-
-      {{! ── White Label Pricing ── }}
-      <div class="dma-welcome__pricing">
-        <div class="dma-welcome__pricing-glow"></div>
-        <div class="dma-welcome__pricing-content">
-          <div class="dma-welcome__pricing-header">
-            <span class="dma-welcome__pricing-badge">Early Adopter Pricing</span>
-            <h2 class="dma-welcome__pricing-title">Your Brand. Your App.</h2>
-            <p class="dma-welcome__pricing-subtitle">Get a fully white-labeled native mobile app for your Discourse community — published under your name on both the App Store and Google Play.</p>
-          </div>
-
-          <div class="dma-welcome__pricing-cards">
-            <div class="dma-welcome__pricing-card">
-              <div class="dma-welcome__pricing-card-icon dma-welcome__pricing-card-icon--ios">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-              </div>
-              <span class="dma-welcome__pricing-card-label">iOS App</span>
-              <span class="dma-welcome__pricing-card-detail">App Store</span>
-            </div>
-            <div class="dma-welcome__pricing-card-plus">+</div>
-            <div class="dma-welcome__pricing-card">
-              <div class="dma-welcome__pricing-card-icon dma-welcome__pricing-card-icon--android">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M17.6 11.48l1.74-3c.17-.3.07-.68-.22-.85-.3-.17-.68-.07-.85.22l-1.76 3.06c-1.33-.6-2.81-.95-4.41-.95s-3.09.35-4.42.95L5.87 7.85c-.17-.29-.55-.39-.85-.22-.29.17-.39.55-.22.85l1.74 3C3.69 13.21 1.72 16 1.5 19.5h21c-.22-3.5-2.19-6.29-4.9-8.02zM7 17.25c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm10 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
-              </div>
-              <span class="dma-welcome__pricing-card-label">Android App</span>
-              <span class="dma-welcome__pricing-card-detail">Google Play</span>
-            </div>
-          </div>
-
-          <div class="dma-welcome__pricing-price">
-            <span class="dma-welcome__pricing-original">$299</span>
-            <div class="dma-welcome__pricing-sale">
-              <span class="dma-welcome__pricing-currency">$</span>
-              <span class="dma-welcome__pricing-amount">199</span>
-              <span class="dma-welcome__pricing-cents">.99</span>
-              <span class="dma-welcome__pricing-period">/year</span>
-            </div>
-            <span class="dma-welcome__pricing-save">Save $100</span>
-          </div>
-
-          <ul class="dma-welcome__pricing-features">
-            <li>Custom app name, icon &amp; branding</li>
-            <li>Published on App Store &amp; Google Play under your name</li>
-            <li>No DOMNiQ branding anywhere in the app</li>
-            <li>Full admin panel control (drawer, config, features)</li>
-            <li>Push notifications for your community</li>
-            <li>Multi-language support via PO translations</li>
-            <li>Ongoing updates &amp; Discourse compatibility</li>
-            <li>Priority support from DPN Media Works</li>
-          </ul>
-
-          <a href="{{this.buyUrl}}" target="_blank" rel="noopener noreferrer" class="dma-welcome__pricing-cta">
-            Get Your White-Label App
-          </a>
-          <p class="dma-welcome__pricing-note">Annual subscription. Billed yearly via PayPal. Cancel anytime.</p>
-        </div>
       </div>
 
       {{! ── Footer ── }}

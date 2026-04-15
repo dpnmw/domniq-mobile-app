@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-export default class LanguageController extends Controller {
+export default class DmaLanguageController extends Controller {
   @tracked locales = null;
 
   get computedLocales() {

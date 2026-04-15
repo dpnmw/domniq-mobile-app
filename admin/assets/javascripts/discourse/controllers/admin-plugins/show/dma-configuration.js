@@ -6,7 +6,7 @@ import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { i18n } from "discourse-i18n";
 
-export default class ConfigurationController extends Controller {
+export default class DmaConfigurationController extends Controller {
   @service toasts;
   @tracked configs = null;
   @tracked saving = false;

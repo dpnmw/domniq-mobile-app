@@ -6,7 +6,7 @@ import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { i18n } from "discourse-i18n";
 
-export default class FeaturesController extends Controller {
+export default class DmaFeaturesController extends Controller {
   @service toasts;
   @tracked flags = null;
   @tracked _videoThumbnails = null;

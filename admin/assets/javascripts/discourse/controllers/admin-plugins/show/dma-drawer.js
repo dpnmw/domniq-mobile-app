@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-export default class DrawerController extends Controller {
+export default class DmaDrawerController extends Controller {
   @tracked items = null;
   @tracked saving = false;
   @tracked saved = false;
