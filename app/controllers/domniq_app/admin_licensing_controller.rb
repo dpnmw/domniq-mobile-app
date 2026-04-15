@@ -25,7 +25,7 @@ module DomniqApp
     end
 
     def check
-      result = DomniqApp::LicenseChecker.check
+      result = DomniqApp::LicenseChecker.check(force: true)
       render json: result
     end
 

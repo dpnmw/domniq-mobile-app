@@ -43,7 +43,7 @@ module DomniqApp
       check
     end
 
-    def self.check
+    def self.check(force: false)
       domain = current_domain
       license_key = PluginStore.get("domniq_app", "license_key")
 
@@ -76,7 +76,7 @@ module DomniqApp
           cache_result(licensed: false)
         end
 
-        send_heartbeat(result[:licensed])
+        send_heartbeat(result[:licensed]) if force
         result
       rescue => e
         Rails.logger.error("DomniqApp::LicenseChecker: #{e.message}")
@@ -127,11 +127,10 @@ module DomniqApp
               site_url: Discourse.base_url,
               plugin: "domniq-mobile-app",
               plugin_version: plugin&.metadata&.version || "unknown",
-              discourse_version: Discourse::VERSION::STRING,
+              platform: "discourse",
+              platform_version: Discourse::VERSION::STRING,
               license_key: PluginStore.get("domniq_app", "license_key"),
               licensed: is_licensed,
-              total_users: User.real.count,
-              active_users_30d: User.real.where("last_seen_at > ?", 30.days.ago).count,
             }.to_json,
             headers: { "Content-Type" => "application/json" },
             connect_timeout: 5,
