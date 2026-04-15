@@ -115,7 +115,7 @@ export default class DomniqWelcome extends Component {
         <div class="dma-welcome__pricing-glow"></div>
         <div class="dma-welcome__pricing-content">
           <div class="dma-welcome__pricing-header">
-            <span class="dma-welcome__pricing-badge">Limited Time Offer</span>
+            <span class="dma-welcome__pricing-badge">Early Adopter Pricing</span>
             <h2 class="dma-welcome__pricing-title">Your Brand. Your App.</h2>
             <p class="dma-welcome__pricing-subtitle">Get a fully white-labeled native mobile app for your Discourse community — published under your name on both the App Store and Google Play.</p>
           </div>
@@ -139,14 +139,14 @@ export default class DomniqWelcome extends Component {
           </div>
 
           <div class="dma-welcome__pricing-price">
-            <span class="dma-welcome__pricing-original">$199</span>
+            <span class="dma-welcome__pricing-original">$299</span>
             <div class="dma-welcome__pricing-sale">
               <span class="dma-welcome__pricing-currency">$</span>
-              <span class="dma-welcome__pricing-amount">149</span>
+              <span class="dma-welcome__pricing-amount">199</span>
               <span class="dma-welcome__pricing-cents">.99</span>
               <span class="dma-welcome__pricing-period">/year</span>
             </div>
-            <span class="dma-welcome__pricing-save">Save $49</span>
+            <span class="dma-welcome__pricing-save">Save $100</span>
           </div>
 
           <ul class="dma-welcome__pricing-features">

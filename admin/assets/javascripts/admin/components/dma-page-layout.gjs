@@ -44,7 +44,7 @@ export default class DmaPageLayout extends Component {
         <div class="dma-page__licensing-glow"></div>
         <div class="dma-page__licensing-content">
           <div class="dma-page__licensing-header">
-            <span class="dma-page__licensing-badge">Limited Time Offer</span>
+            <span class="dma-page__licensing-badge">Early Adopter Pricing</span>
             <h2 class="dma-page__licensing-title">Your Brand. Your App.</h2>
             <p class="dma-page__licensing-subtitle">Get a fully white-labeled native mobile app for your Discourse community — published under your name on both the App Store and Google Play.</p>
           </div>
@@ -68,14 +68,14 @@ export default class DmaPageLayout extends Component {
           </div>
 
           <div class="dma-page__licensing-price">
-            <span class="dma-page__licensing-original">$199</span>
+            <span class="dma-page__licensing-original">$299</span>
             <div class="dma-page__licensing-sale">
               <span class="dma-page__licensing-currency">$</span>
-              <span class="dma-page__licensing-amount">149</span>
+              <span class="dma-page__licensing-amount">199</span>
               <span class="dma-page__licensing-cents">.99</span>
               <span class="dma-page__licensing-period">/year</span>
             </div>
-            <span class="dma-page__licensing-save">Save $49</span>
+            <span class="dma-page__licensing-save">Save $100</span>
           </div>
 
           <a href="{{this.buyUrl}}" target="_blank" rel="noopener noreferrer" class="dma-page__licensing-cta">
