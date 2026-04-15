@@ -19,7 +19,7 @@ Discourse::Application.routes.draw do
       get "/features" => "domniq_app/admin#index"
       get "/notifications" => "domniq_app/admin#index"
       get "/language" => "domniq_app/admin#index"
-      get "/licensing" => "domniq_app/admin#index"
+      get "/premium" => "domniq_app/admin#index"
       get "/language/export" => "domniq_app/admin_language#export_defaults"
     end
 

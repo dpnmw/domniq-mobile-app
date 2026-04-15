@@ -71,8 +71,8 @@ en:
           no_locales: "No translations uploaded yet."
           uploaded: "Translation uploaded successfully."
         licensing:
-          title: "Licensing"
-          description: "Manage your Domniq Mobile App license for advanced configuration features."
+          title: "Premium"
+          description: "Licence activation, status, and install telemetry"
           status: "License Status"
           active: "Active"
           inactive: "Inactive"

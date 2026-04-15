@@ -39,7 +39,7 @@ export default {
         },
         {
           label: "domniq_app.admin.licensing.title",
-          route: "adminPlugins.show.licensing",
+          route: "adminPlugins.show.premium",
         },
       ]);
     });

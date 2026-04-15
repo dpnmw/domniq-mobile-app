@@ -10,6 +10,6 @@ export default {
     this.route("features");
     this.route("notifications");
     this.route("language");
-    this.route("licensing");
+    this.route("premium");
   },
 };
