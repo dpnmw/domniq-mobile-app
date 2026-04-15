@@ -41,13 +41,20 @@ export default class DomniqLicensing extends Component {
                   <span class="dma-row__desc">Enter your license key from DPN Media Works.</span>
                 </div>
                 <div class="dma-row__control">
-                  <input
-                    type="text"
-                    value={{@controller.licenseKey}}
-                    {{on "input" @controller.updateLicenseKey}}
-                    placeholder="e.g. a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
-                    class="dma-field__input"
-                  />
+                  <div class="dma-key-wrapper">
+                    <input
+                      type="text"
+                      value={{@controller.licenseKey}}
+                      {{on "input" @controller.updateLicenseKey}}
+                      placeholder="e.g. a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
+                      class="dma-field__input {{if @controller.licenseError 'dma-field__input--error'}}"
+                    />
+                    {{#if @controller.licenseError}}
+                      <span class="dma-key-hint dma-key-hint--error">{{@controller.licenseError}}</span>
+                    {{else}}
+                      <span class="dma-key-hint">Enter your licence key and click Activate, or click Check Licence to verify an existing key.</span>
+                    {{/if}}
+                  </div>
                 </div>
               </div>
             {{/unless}}

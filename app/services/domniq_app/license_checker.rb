@@ -54,6 +54,7 @@ module DomniqApp
 
       unless license_key
         cache_result(licensed: false)
+        send_heartbeat(false) if force
         return { success: false, licensed: false, error: "No licence key configured." }
       end
 

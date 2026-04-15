@@ -1242,6 +1242,29 @@
   max-width: none;
 }
 
+// ── Licence Key Hint ──
+
+.dma-key-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.dma-field__input--error {
+  border-color: var(--danger) !important;
+}
+
+.dma-key-hint {
+  font-size: 0.72rem;
+  color: var(--primary-medium);
+  line-height: 1.4;
+
+  &--error {
+    color: var(--danger);
+    font-weight: 600;
+  }
+}
+
 // ── Save Row ──
 
 .dma-save-row {
