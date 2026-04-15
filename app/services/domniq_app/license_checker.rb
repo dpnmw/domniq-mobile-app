@@ -79,14 +79,17 @@ module DomniqApp
 
         send_heartbeat(result[:licensed]) if force
         result
-      rescue => e
-        Rails.logger.error("DomniqApp::LicenseChecker: #{e.message}")
+      rescue Excon::Error => e
+        Rails.logger.error("DomniqApp::LicenseChecker network error: #{e.message}")
         cached = PluginStore.get("domniq_app", LICENSE_CACHE_KEY)
         if cached
           { success: true, licensed: cached["licensed"] }
         else
           { success: false, licensed: false, error: "Unable to verify licence." }
         end
+      rescue => e
+        Rails.logger.error("DomniqApp::LicenseChecker: #{e.message}")
+        { success: false, licensed: false, error: "Unable to verify licence." }
       end
     end
 
