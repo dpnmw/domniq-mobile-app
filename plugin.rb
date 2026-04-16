@@ -74,6 +74,7 @@ after_initialize do
       topic_id:          topic&.id,
       topic_title:       topic&.title,
       post_url:          notification.url,
+      base_url:          Discourse.base_url,
       post_number:       notification.post_number,
       is_pm:             notification.notification_type == Notification.types[:private_message],
       is_chat:           [
