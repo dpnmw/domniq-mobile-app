@@ -8,15 +8,20 @@ import { i18n } from "discourse-i18n";
 
 export default class DmaNotificationsController extends Controller {
   @service toasts;
-  @tracked subscriptions = null;
-  @tracked _pushEnabled = null;
 
-  get computedSubscriptions() {
-    return this.subscriptions ?? this.model?.subscriptions ?? [];
-  }
+  @tracked _pushEnabled = null;
+  @tracked stats = null;
+  @tracked searchUsername = "";
+  @tracked searchResults = [];
+  @tracked isSearching = false;
+  @tracked hasSearched = false;
 
   get pushNotificationsEnabled() {
     return this._pushEnabled ?? this.model?.push_notifications_enabled ?? false;
+  }
+
+  get computedStats() {
+    return this.stats ?? this.model?.stats ?? { total: 0, ios: 0, android: 0 };
   }
 
   @action
@@ -38,15 +43,51 @@ export default class DmaNotificationsController extends Controller {
   }
 
   @action
+  updateSearchUsername(event) {
+    this.searchUsername = event.target.value;
+  }
+
+  @action
+  async searchDevices() {
+    if (!this.searchUsername.trim()) return;
+    this.isSearching = true;
+    this.hasSearched = false;
+    try {
+      const result = await ajax(
+        `/admin/plugins/domniq-mobile-app/notifications/search.json`,
+        { type: "GET", data: { username: this.searchUsername.trim() } }
+      );
+      this.searchResults = result.subscriptions;
+      this.hasSearched = true;
+    } catch (e) {
+      popupAjaxError(e);
+    } finally {
+      this.isSearching = false;
+    }
+  }
+
+  @action
   async removeSubscription(subscription) {
     try {
       await ajax(
         `/admin/plugins/domniq-mobile-app/notifications/subscriptions/${subscription.id}.json`,
         { type: "DELETE" }
       );
-      this.subscriptions = this.computedSubscriptions.filter(
+      this.searchResults = this.searchResults.filter(
         (s) => s.id !== subscription.id
       );
+      this.stats = {
+        ...this.computedStats,
+        total: Math.max(0, this.computedStats.total - 1),
+        [subscription.platform]: Math.max(
+          0,
+          this.computedStats[subscription.platform] - 1
+        ),
+      };
+      this.toasts.success({
+        data: { message: i18n("domniq_app.admin.notifications.removed") },
+        duration: 2000,
+      });
     } catch (e) {
       popupAjaxError(e);
     }
@@ -62,6 +103,30 @@ export default class DmaNotificationsController extends Controller {
       this.toasts.success({
         data: { message: i18n("domniq_app.admin.notifications.test_sent") },
         duration: 2000,
+      });
+    } catch (e) {
+      popupAjaxError(e);
+    }
+  }
+
+  @action
+  async runCleanup() {
+    try {
+      const result = await ajax(
+        `/admin/plugins/domniq-mobile-app/notifications/cleanup.json`,
+        { type: "POST" }
+      );
+      this.stats = {
+        ...this.computedStats,
+        total: Math.max(0, this.computedStats.total - result.deleted),
+      };
+      this.toasts.success({
+        data: {
+          message: i18n("domniq_app.admin.notifications.cleanup_complete", {
+            count: result.deleted,
+          }),
+        },
+        duration: 3000,
       });
     } catch (e) {
       popupAjaxError(e);

@@ -56,6 +56,12 @@ en:
           test_push: "Send Test"
           test_sent: "Test notification sent."
           setting_saved: "Notification settings updated."
+          search: "Search"
+          search_placeholder: "Enter username"
+          no_devices_for_user: "No registered devices found for this user."
+          run_cleanup: "Clean Up Stale Tokens"
+          cleanup_complete: "Cleanup complete. %{count} stale token(s) removed."
+          removed: "Device removed."
         language:
           title: "Language"
           description: "Manage app translations. Export English defaults as PO, import translated PO files."

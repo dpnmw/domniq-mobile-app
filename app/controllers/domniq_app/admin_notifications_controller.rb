@@ -5,35 +5,50 @@ module DomniqApp
     requires_plugin DomniqApp::PLUGIN_NAME
 
     def settings
-      subscriptions = ExpoSubscription
-        .joins(:user)
-        .select(
-          "domniq_app_expo_subscriptions.id",
-          "domniq_app_expo_subscriptions.expo_pn_token",
-          "domniq_app_expo_subscriptions.platform",
-          "domniq_app_expo_subscriptions.application_name",
-          "domniq_app_expo_subscriptions.created_at",
-          "users.id AS user_id",
-          "users.username",
-        )
-        .order(created_at: :desc)
-        .limit(100)
-
       render json: {
         push_notifications_enabled: SiteSetting.domniq_app_push_notifications_enabled,
+        stats: {
+          total:   ExpoSubscription.count,
+          ios:     ExpoSubscription.where(platform: "ios").count,
+          android: ExpoSubscription.where(platform: "android").count,
+        },
+      }
+    end
+
+    def search
+      username = params[:username].to_s.strip.downcase
+      return render json: { subscriptions: [] } if username.blank?
+
+      user = User.find_by("lower(username) = ?", username)
+      return render json: { subscriptions: [] } unless user
+
+      subscriptions = ExpoSubscription
+        .where(user_id: user.id)
+        .order(created_at: :desc)
+
+      render json: {
         subscriptions: subscriptions.map { |s|
           {
             id:               s.id,
-            user_id:          s.user_id,
-            username:         s.username,
+            username:         user.username,
+            user_id:          user.id,
             platform:         s.platform,
             token:            mask_token(s.expo_pn_token),
             application_name: s.application_name,
             created_at:       s.created_at,
           }
         },
-        total_subscriptions: ExpoSubscription.count,
       }
+    end
+
+    def cleanup
+      deleted = ExpoSubscription
+        .where(
+          "user_auth_token_id IS NULL OR user_auth_token_id NOT IN (SELECT id FROM user_auth_tokens)"
+        )
+        .delete_all
+
+      render json: { deleted: deleted }
     end
 
     def update_settings

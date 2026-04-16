@@ -52,6 +52,8 @@ Discourse::Application.routes.draw do
       put "/notifications/settings" => "domniq_app/admin_notifications#update_settings"
       delete "/notifications/subscriptions/:id" => "domniq_app/admin_notifications#remove_subscription"
       post   "/notifications/test"              => "domniq_app/admin_notifications#test_push"
+      get  "/notifications/search"  => "domniq_app/admin_notifications#search"
+      post "/notifications/cleanup" => "domniq_app/admin_notifications#cleanup"
 
       # Language
       get "/language/locales" => "domniq_app/admin_language#index"
