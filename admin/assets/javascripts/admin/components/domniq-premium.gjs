@@ -3,6 +3,7 @@ import { tracked } from "@glimmer/tracking";
 import { action } from "@ember/object";
 import { service } from "@ember/service";
 import { on } from "@ember/modifier";
+import APP_VERSION from "./dma-version";
 import { htmlSafe } from "@ember/template";
 import DmaPageLayout from "./dma-page-layout";
 
@@ -327,7 +328,7 @@ export default class DomniqPremium extends Component {
             <h3 class="dma-pcard__heading"><span class="dma-pcard__heading-icon">{{iconHtml "about"}}</span>Plugin Info</h3>
             <div class="dma-prow">
               <div class="dma-prow__label"><span class="dma-prow__title">Version</span></div>
-              <div class="dma-prow__control"><span>1.0.0</span></div>
+              <div class="dma-prow__control"><span>{{APP_VERSION}}</span></div>
             </div>
             <div class="dma-prow">
               <div class="dma-prow__label"><span class="dma-prow__title">Identifier</span></div>

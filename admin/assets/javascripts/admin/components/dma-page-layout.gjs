@@ -1,8 +1,7 @@
 import Component from "@glimmer/component";
 import DPageSubheader from "discourse/components/d-page-subheader";
 import { i18n } from "discourse-i18n";
-
-const APP_VERSION = "1.0.0";
+import APP_VERSION from "./dma-version";
 export default class DmaPageLayout extends Component {
   get currentYear() {
     return new Date().getFullYear();
