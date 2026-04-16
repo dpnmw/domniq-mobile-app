@@ -9,6 +9,7 @@ en:
       not_authorized: "You are not authorized to perform this action."
       not_licensed: "This feature requires a valid license."
       invalid_platform: "Platform must be ios or android."
+      push_disabled: "Push notifications are not enabled."
       invalid_locale: "Invalid locale identifier."
       locale_not_found: "Locale not found."
       config_not_found: "Configuration entry not found."

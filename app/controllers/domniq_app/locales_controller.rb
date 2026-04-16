@@ -4,8 +4,6 @@ module DomniqApp
   class LocalesController < ::ApplicationController
     requires_plugin ::DomniqApp::PLUGIN_NAME
 
-    skip_before_action :check_xhr
-    skip_before_action :verify_authenticity_token
 
     def index
       brand_key = params[:brand] || "domniq"
