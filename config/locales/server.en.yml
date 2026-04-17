@@ -13,3 +13,7 @@ en:
       invalid_locale: "Invalid locale identifier."
       locale_not_found: "Locale not found."
       config_not_found: "Configuration entry not found."
+      subscription_missing: "Subscription not found. The device may have re-registered after a logout. Refreshing the list."
+      user_missing: "User not found for this subscription."
+    push:
+      test_body: "This is a test push notification."

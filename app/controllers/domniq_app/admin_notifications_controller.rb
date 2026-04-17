@@ -61,21 +61,40 @@ module DomniqApp
 
     def remove_subscription
       sub = ExpoSubscription.find_by(id: params[:id])
-      sub&.destroy
+
+      unless sub
+        return render json: {
+          error: I18n.t("domniq_app.errors.subscription_missing"),
+          code:  "subscription_missing",
+        }, status: :not_found
+      end
+
+      sub.destroy
       render json: success_json
     end
 
     def test_push
       sub = ExpoSubscription.find_by(id: params[:subscription_id])
-      return render json: { error: "Subscription not found" }, status: :not_found unless sub
+
+      unless sub
+        return render json: {
+          error: I18n.t("domniq_app.errors.subscription_missing"),
+          code:  "subscription_missing",
+        }, status: :not_found
+      end
 
       user = User.find_by(id: sub.user_id)
-      return render json: { error: "User not found" }, status: :not_found unless user
+      unless user
+        return render json: {
+          error: I18n.t("domniq_app.errors.user_missing"),
+          code:  "user_missing",
+        }, status: :not_found
+      end
 
       DomniqApp::PushSender.notify_user(
         user,
-        title: "#{SiteSetting.title}",
-        body:  "This is a test push notification.",
+        title: SiteSetting.title,
+        body:  I18n.t("domniq_app.push.test_body"),
         data:  { notification_type: "test" },
       )
 

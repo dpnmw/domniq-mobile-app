@@ -89,7 +89,30 @@ export default class DmaNotificationsController extends Controller {
         duration: 2000,
       });
     } catch (e) {
-      popupAjaxError(e);
+      const code = e?.jqXHR?.responseJSON?.code;
+      const message = e?.jqXHR?.responseJSON?.error;
+
+      if (code === "subscription_missing") {
+        this.toasts.warning({
+          data: {
+            message:
+              message ||
+              i18n("domniq_app.admin.notifications.subscription_missing"),
+          },
+          duration: 3000,
+        });
+      } else {
+        popupAjaxError(e);
+      }
+    } finally {
+      // Always refresh the search so deleted subscriptions disappear from the UI.
+      if (this.searchUsername.trim()) {
+        try {
+          await this.searchDevices();
+        } catch {
+          // Non-fatal; the admin can manually re-search
+        }
+      }
     }
   }
 
@@ -105,7 +128,31 @@ export default class DmaNotificationsController extends Controller {
         duration: 2000,
       });
     } catch (e) {
-      popupAjaxError(e);
+      const code = e?.jqXHR?.responseJSON?.code;
+      const message = e?.jqXHR?.responseJSON?.error;
+
+      if (code === "subscription_missing") {
+        this.toasts.warning({
+          data: {
+            message:
+              message ||
+              i18n("domniq_app.admin.notifications.subscription_missing"),
+          },
+          duration: 3000,
+        });
+      } else {
+        popupAjaxError(e);
+      }
+    } finally {
+      // Always refresh the search so stale subscriptions (e.g. from a logout/
+      // login cycle) disappear from the UI automatically.
+      if (this.searchUsername.trim()) {
+        try {
+          await this.searchDevices();
+        } catch {
+          // Non-fatal; the admin can manually re-search
+        }
+      }
     }
   }
 

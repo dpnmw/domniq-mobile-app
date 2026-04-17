@@ -62,6 +62,7 @@ en:
           run_cleanup: "Clean Up Stale Tokens"
           cleanup_complete: "Cleanup complete. %{count} stale token(s) removed."
           removed: "Device removed."
+          subscription_missing: "That subscription no longer exists — the device may have re-registered. The list has been refreshed."
         language:
           title: "Language"
           description: "Manage app translations. Export English defaults as PO, import translated PO files."
