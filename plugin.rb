@@ -42,29 +42,69 @@ after_initialize do
     title = topic&.title.presence || SiteSetting.title
     username = notification.data_hash[:display_username].to_s
 
+    # Resolve the triggering post for excerpt extraction. notification.post
+    # walks topic_id + post_number to find the Post. Nil for notifications
+    # that don't have an associated post (badges, admin messages).
+    post =
+      begin
+        notification.post
+      rescue StandardError
+        nil
+      end
+
+    # Discourse's Post#excerpt strips markup, handles quoted text, truncates
+    # at word boundaries, preserves emoji shortcodes. 140 chars fits within
+    # Android/iOS notification body truncation limits while leaving room for
+    # the "username:" prefix.
+    post_excerpt =
+      if post
+        begin
+          post.excerpt(140, strip_links: true, text_entities: true)
+        rescue StandardError
+          nil
+        end
+      end
+
+    # Chat messages store their excerpt directly in data_hash. Fall back
+    # to loading ChatMessage if message_excerpt isn't present.
+    chat_excerpt =
+      if [Notification.types[:chat_mention], Notification.types[:chat_message]]
+           .include?(notification.notification_type)
+        notification.data_hash[:message_excerpt].to_s.presence ||
+          begin
+            if defined?(Chat::Message) && notification.data_hash[:chat_message_id]
+              Chat::Message
+                .find_by(id: notification.data_hash[:chat_message_id])
+                &.excerpt(140)
+            end
+          rescue StandardError
+            nil
+          end
+      end
+
     body =
       case notification.notification_type
       when Notification.types[:mentioned],
            Notification.types[:group_mentioned]
-        "#{username} mentioned you in #{title}"
+        post_excerpt.present? ? "#{username}: #{post_excerpt}" : "#{username} mentioned you in #{title}"
       when Notification.types[:replied]
-        "#{username} replied to your post in #{title}"
+        post_excerpt.present? ? "#{username}: #{post_excerpt}" : "#{username} replied to your post in #{title}"
       when Notification.types[:quoted]
-        "#{username} quoted your post in #{title}"
+        post_excerpt.present? ? "#{username} quoted you: #{post_excerpt}" : "#{username} quoted your post in #{title}"
       when Notification.types[:liked]
         "#{username} liked your post in #{title}"
       when Notification.types[:private_message]
         title = "New Message"
-        "#{username} sent you a message"
+        post_excerpt.present? ? "#{username}: #{post_excerpt}" : "#{username} sent you a message"
       when Notification.types[:posted]
-        "New post in #{title}"
+        post_excerpt.present? ? "#{username}: #{post_excerpt}" : "New post in #{title}"
       when Notification.types[:watching_first_post]
-        "New topic: #{title}"
+        post_excerpt.present? ? "#{username}: #{post_excerpt}" : "New topic: #{title}"
       when Notification.types[:chat_mention],
            Notification.types[:chat_message]
         channel = notification.data_hash[:chat_channel_title].to_s
         title = "Chat"
-        "#{username} in #{channel}"
+        chat_excerpt.present? ? "#{username} in #{channel}: #{chat_excerpt}" : "#{username} in #{channel}"
       else
         "#{username} — #{title}"
       end
@@ -83,6 +123,8 @@ after_initialize do
                          ].include?(notification.notification_type),
       chat_channel_id:    notification.data_hash[:chat_channel_id],
       chat_channel_title: notification.data_hash[:chat_channel_title],
+      chat_message_id:    notification.data_hash[:chat_message_id],
+      chat_thread_id:     notification.data_hash[:chat_thread_id],
     }.compact
 
     Jobs.enqueue(
