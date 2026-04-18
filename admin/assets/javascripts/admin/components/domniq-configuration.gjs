@@ -30,6 +30,18 @@ const ABOUT_LABELS = {
     desc: "When enabled, the app pulls the site name, description, and logo from your Discourse site instead of the app defaults.",
     type: "toggle",
   },
+  show_developer_branding: {
+    label: "Show Developer Branding",
+    desc: "When enabled, the \"App Developer\" pill appears on the sidebar and the AppInfo screen.",
+    type: "toggle",
+  },
+};
+
+const SUPPORT_LABELS = {
+  support_email: {
+    label: "Support Email",
+    desc: "The contact email displayed on the in-app Message Us screen.",
+  },
 };
 
 const LEGAL_LABELS = {
@@ -50,6 +62,7 @@ const ONBOARDING_LABELS = {
 // Only show fields we have labels for — filters out stale DB rows
 const KNOWN_BRANDING_KEYS = new Set(Object.keys(BRANDING_LABELS));
 const KNOWN_ABOUT_KEYS = new Set(Object.keys(ABOUT_LABELS));
+const KNOWN_SUPPORT_KEYS = new Set(Object.keys(SUPPORT_LABELS));
 const KNOWN_LEGAL_KEYS = new Set(Object.keys(LEGAL_LABELS));
 const KNOWN_ONBOARDING_KEYS = new Set(Object.keys(ONBOARDING_LABELS));
 
@@ -57,6 +70,7 @@ function getFieldMeta(config) {
   return (
     BRANDING_LABELS[config.config_key] ||
     ABOUT_LABELS[config.config_key] ||
+    SUPPORT_LABELS[config.config_key] ||
     LEGAL_LABELS[config.config_key] ||
     ONBOARDING_LABELS[config.config_key] ||
     { label: config.config_key, desc: "" }
@@ -104,6 +118,12 @@ function filterBranding(configs) {
 function filterAbout(configs) {
   return configs.filter(
     (c) => c.config_type === "branding" && KNOWN_ABOUT_KEYS.has(c.config_key)
+  );
+}
+
+function filterSupport(configs) {
+  return configs.filter(
+    (c) => c.config_type === "branding" && KNOWN_SUPPORT_KEYS.has(c.config_key)
   );
 }
 
@@ -188,6 +208,27 @@ export default class DomniqConfiguration extends Component {
                     />
                     <span class="dma-toggle__track"></span>
                   </label>
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+      {{! ── Support ── }}
+      <div class="dma-card dma-card--support">
+        <div class="dma-card__body">
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M478-240q21 0 35.5-14.5T528-290q0-21-14.5-35.5T478-340q-21 0-35.5 14.5T428-290q0 21 14.5 35.5T478-240Zm-36-154h74q0-33 7.5-52t42.5-52q26-26 41-49.5t15-56.5q0-56-41-86t-97-30q-57 0-92.5 30T342-618l66 26q5-18 22.5-39t53.5-21q32 0 48 17.5t16 38.5q0 20-12 37.5T506-526q-44 39-54 59t-10 73ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></span>Support</h3>
+          <p class="dma-card__description">Contact details shown in the Message Us screen.</p>
+          <div class="dma-fields">
+            {{#each (filterSupport @controller.computedConfigs) as |config|}}
+              <div class="dma-row">
+                <div class="dma-row__label">
+                  <span class="dma-row__title">{{getFieldLabel config}}</span>
+                  <span class="dma-row__desc">{{getFieldDesc config}}</span>
+                </div>
+                <div class="dma-row__control">
+                  <input type="text" value={{config.config_value}} class="dma-field__input" {{on "input" (fn @controller.updateValue config)}} />
                 </div>
               </div>
             {{/each}}
