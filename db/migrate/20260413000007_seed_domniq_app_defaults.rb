@@ -10,6 +10,8 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
       { config_key: "app_name", config_value: "DOMNiQ" },
       { config_key: "app_tagline", config_value: "Creative HQ" },
       { config_key: "color_default_style", config_value: "Royal" },
+      { config_key: "show_developer_branding", config_value: "true" },
+      { config_key: "support_email", config_value: "contact@dpnmediaworks.com" },
     ]
 
     branding.each_with_index do |item, i|
@@ -72,30 +74,31 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
     drawer_items = [
       # Playground
       { config_key: "leaderboard_stories", position: 0, config_value: '{"title":"Leaderboard Stories","description":"Top 10 This Week","icon":"Highlights","color":"#FF9500","route":"","category":"Playground","toggleKey":"storyModeTop10"}' },
-      { config_key: "live_events", position: 1, config_value: '{"title":"Live Events","description":"Coming Soon","icon":"LiveEvents","color":"#a29bfe","route":"","category":"Playground","comingSoon":true}' },
+      { config_key: "audio_bar", position: 1, config_value: '{"title":"Audio Bar","description":"Home screen audio player","icon":"AudioRooms","color":"#6C3AED","route":"","category":"Playground","comingSoon":true}' },
+      { config_key: "live_events", position: 2, config_value: '{"title":"Live Events","description":"Scheduled live sessions","icon":"LiveEvents","color":"#a29bfe","route":"","category":"Playground","comingSoon":true}' },
 
       # Community
-      { config_key: "leaderboard", position: 2, config_value: '{"title":"Leaderboard","description":"Top Contributors","icon":"Highlights","color":"#F5A623","route":"Leaderboard","category":"Community","featureKey":"gamification"}' },
-      { config_key: "groups", position: 3, config_value: '{"title":"Groups","description":"Community Hub","icon":"Groups","color":"#FF6B6B","route":"Groups","category":"Community","featureKey":"groups"}' },
-      { config_key: "overview", position: 4, config_value: '{"title":"Overview","description":"About this space","icon":"CommunityInfo","color":"#74b9ff","route":"AppInfo","category":"Community"}' },
+      { config_key: "leaderboard", position: 3, config_value: '{"title":"Leaderboard","description":"Top Contributors","icon":"Highlights","color":"#F5A623","route":"Leaderboard","category":"Community","featureKey":"gamification"}' },
+      { config_key: "groups", position: 4, config_value: '{"title":"Groups","description":"Community Hub","icon":"Groups","color":"#FF6B6B","route":"Groups","category":"Community","featureKey":"groups"}' },
+      { config_key: "overview", position: 5, config_value: '{"title":"Overview","description":"About this space","icon":"CommunityInfo","color":"#74b9ff","route":"AppInfo","category":"Community"}' },
 
       # Settings
-      { config_key: "dark_mode", position: 5, config_value: '{"title":"Dark Mode","description":"Toggle dark mode","icon":"Dark","color":"#a29bfe","route":"DarkMode","category":"Settings"}' },
-      { config_key: "dock_menu", position: 6, config_value: '{"title":"Dock Menu","description":"Bottom bar orientation","icon":"DockMenu","color":"#74b9ff","route":"DockMenu","category":"Settings"}' },
-      { config_key: "color_style", position: 7, config_value: '{"title":"Color Style","description":"Choose a color palette","icon":"Colors","color":"#4ECDC4","route":"ColorStyle","category":"Settings"}' },
-      { config_key: "icon_style", position: 8, config_value: '{"title":"Icon Style","description":"Change icon appearance","icon":"IconStyle","color":"#FF6B6B","route":"IconStyle","category":"Settings","requiresLogin":true}' },
-      { config_key: "feed_style", position: 9, config_value: '{"title":"Feed Style","description":"Control feed content display","icon":"ArticleShortcut","color":"#F5A623","route":"FeedStyle","category":"Settings","requiresLogin":true}' },
-      { config_key: "post_style", position: 10, config_value: '{"title":"Post Style","description":"Choose your reply experience","icon":"TopicEdit","color":"#E8590C","route":"PostStyle","category":"Settings","requiresLogin":true}' },
+      { config_key: "dark_mode", position: 6, config_value: '{"title":"Dark Mode","description":"Toggle dark mode","icon":"Dark","color":"#a29bfe","route":"DarkMode","category":"Settings"}' },
+      { config_key: "dock_menu", position: 7, config_value: '{"title":"Dock Menu","description":"Bottom bar orientation","icon":"DockMenu","color":"#74b9ff","route":"DockMenu","category":"Settings"}' },
+      { config_key: "color_style", position: 8, config_value: '{"title":"Color Style","description":"Choose a color palette","icon":"Colors","color":"#4ECDC4","route":"ColorStyle","category":"Settings"}' },
+      { config_key: "icon_style", position: 9, config_value: '{"title":"Icon Style","description":"Change icon appearance","icon":"IconStyle","color":"#FF6B6B","route":"IconStyle","category":"Settings","requiresLogin":true}' },
+      { config_key: "feed_style", position: 10, config_value: '{"title":"Feed Style","description":"Control feed content display","icon":"ArticleShortcut","color":"#F5A623","route":"FeedStyle","category":"Settings","requiresLogin":true}' },
+      { config_key: "post_style", position: 11, config_value: '{"title":"Post Style","description":"Choose your reply experience","icon":"TopicEdit","color":"#E8590C","route":"PostStyle","category":"Settings","requiresLogin":true}' },
 
       # Support
-      { config_key: "app_guide", position: 13, config_value: '{"title":"App Guide","description":"Learn how the app works","icon":"Highlights","color":"#4ECDC4","route":"AppGuide","category":"Support"}' },
-      { config_key: "app_permissions", position: 14, config_value: '{"title":"App Permissions","description":"Camera, microphone & media","icon":"Permissions","color":"#A29BFE","route":"AppPermissions","category":"Support"}' },
-      { config_key: "message_us", position: 15, config_value: '{"title":"Message Us","description":"Get in Touch","icon":"Mail","color":"#F5A623","route":"ContactUs","category":"Support"}' },
+      { config_key: "app_guide", position: 12, config_value: '{"title":"App Guide","description":"Learn how the app works","icon":"Highlights","color":"#4ECDC4","route":"AppGuide","category":"Support"}' },
+      { config_key: "app_permissions", position: 13, config_value: '{"title":"App Permissions","description":"Camera, microphone & media","icon":"Permissions","color":"#A29BFE","route":"AppPermissions","category":"Support"}' },
+      { config_key: "message_us", position: 14, config_value: '{"title":"Message Us","description":"Get in Touch","icon":"Mail","color":"#F5A623","route":"ContactUs","category":"Support"}' },
 
       # Admin Dashboard (staff only)
-      { config_key: "admin_stats", position: 16, config_value: '{"title":"Site Stats","description":"Analytics & metrics","icon":"Admin","color":"#EF5350","route":"AdminStats","category":"Admin Dashboard","requiresStaff":true}' },
-      { config_key: "admin_users", position: 17, config_value: '{"title":"Users","description":"Manage members","icon":"Groups","color":"#74b9ff","route":"AdminUsers","category":"Admin Dashboard","requiresStaff":true}' },
-      { config_key: "admin_moderation", position: 18, config_value: '{"title":"Moderation","description":"Flags & review queue","icon":"SecurityShield","color":"#FF6B6B","route":"AdminReviewQueue","category":"Admin Dashboard","requiresStaff":true}' },
+      { config_key: "admin_stats", position: 15, config_value: '{"title":"Site Stats","description":"Analytics & metrics","icon":"Admin","color":"#EF5350","route":"AdminStats","category":"Admin Dashboard","requiresStaff":true}' },
+      { config_key: "admin_users", position: 16, config_value: '{"title":"Users","description":"Manage members","icon":"Groups","color":"#74b9ff","route":"AdminUsers","category":"Admin Dashboard","requiresStaff":true}' },
+      { config_key: "admin_moderation", position: 17, config_value: '{"title":"Moderation","description":"Flags & review queue","icon":"SecurityShield","color":"#FF6B6B","route":"AdminReviewQueue","category":"Admin Dashboard","requiresStaff":true}' },
     ]
 
     drawer_items.each do |item|
