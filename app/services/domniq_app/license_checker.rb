@@ -118,8 +118,8 @@ module DomniqApp
         data = JSON.parse(response.body)
 
         if data["active"]
-          result = { success: true, licensed: true, expires_at: data["expires_at"] }
-          cache_result(licensed: true, expires_at: data["expires_at"])
+          result = { success: true, licensed: true, expires_at: data["expires_at"], tier: data["tier"] }
+          cache_result(licensed: true, expires_at: data["expires_at"], tier: data["tier"])
         else
           result = { success: false, licensed: false, error: data["error"] || "Invalid licence." }
           cache_result(licensed: false)
@@ -159,12 +159,18 @@ module DomniqApp
       end
     end
 
-    def self.cache_result(licensed:, expires_at: nil)
+    def self.cache_result(licensed:, expires_at: nil, tier: nil)
       PluginStore.set("domniq_app", LICENSE_CACHE_KEY, {
         "licensed" => licensed,
         "expires_at" => expires_at,
+        "tier" => tier,
         "checked_at" => Time.current.iso8601,
       })
+    end
+
+    def self.tier
+      cached = PluginStore.get("domniq_app", LICENSE_CACHE_KEY)
+      cached&.dig("tier")
     end
 
     def self.send_heartbeat(is_licensed)

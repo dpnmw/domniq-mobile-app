@@ -9,6 +9,7 @@ module DomniqApp
         licensed: DomniqApp::LicenseChecker.licensed?,
         license_key: DomniqApp::LicenseChecker.license_key_masked,
         expires_at: DomniqApp::LicenseChecker.expires_at,
+        tier: DomniqApp::LicenseChecker.tier,
         telemetry_enabled: SiteSetting.domniq_app_telemetry_enabled,
       }
     end
@@ -18,7 +19,7 @@ module DomniqApp
       result = DomniqApp::LicenseChecker.activate(license_key)
 
       if result[:success]
-        render json: { licensed: true, message: "License activated successfully." }
+        render json: { licensed: true, tier: result[:tier], message: "License activated successfully." }
       else
         render json: { licensed: false, error: result[:error] }, status: :unprocessable_entity
       end

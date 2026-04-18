@@ -101,6 +101,20 @@ export default class DomniqPremium extends Component {
     return this.license?.licensed === true;
   }
 
+  get isTrial() {
+    return this.isLicensed && this.license?.tier === "trial";
+  }
+
+  get tierLabel() {
+    if (!this.license?.tier) return null;
+    return this.license.tier === "trial" ? "Trial" : "Premium";
+  }
+
+  get tierClass() {
+    if (!this.license?.tier) return "";
+    return this.license.tier === "trial" ? "dma-premium__tier--trial" : "dma-premium__tier--premium";
+  }
+
   get statusLabel() {
     if (!this.license) return "Loading...";
     if (this.license.licensed) return "Active";
@@ -165,6 +179,17 @@ export default class DomniqPremium extends Component {
             </div>
 
             {{#if this.isLicensed}}
+              {{#if this.tierLabel}}
+                <div class="dma-prow">
+                  <div class="dma-prow__label">
+                    <span class="dma-prow__title">Tier</span>
+                    <span class="dma-prow__desc">Your licence plan</span>
+                  </div>
+                  <div class="dma-prow__control">
+                    <span class="dma-premium__tier {{this.tierClass}}">{{this.tierLabel}}</span>
+                  </div>
+                </div>
+              {{/if}}
               {{#if this.license.license_key}}
                 <div class="dma-prow">
                   <div class="dma-prow__label">
@@ -217,7 +242,11 @@ export default class DomniqPremium extends Component {
                 <button type="button" class="btn btn-primary btn-small" disabled={{this.activating}} {{on "click" this.activateLicense}}>
                   {{if this.activating "Activating..." "Activate Licence"}}
                 </button>
+                <a href="{{this.buyUrl}}" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-small">Order Licence</a>
               {{/unless}}
+              {{#if this.isTrial}}
+                <a href="{{this.buyUrl}}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-small">Upgrade Licence</a>
+              {{/if}}
               <button type="button" class="btn btn-default btn-small" disabled={{this.checking}} {{on "click" this.checkLicense}}>
                 {{if this.checking "Checking..." "Check Licence"}}
               </button>
