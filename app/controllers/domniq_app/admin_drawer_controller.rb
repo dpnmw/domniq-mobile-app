@@ -22,6 +22,9 @@ module DomniqApp
 
     def update
       config = AppConfig.find(params[:id])
+      if drawer_item_locked?(config)
+        return render json: { error: "Requires a valid licence" }, status: :forbidden
+      end
       config.update!(drawer_params)
       bump_config_version(config.brand_key)
 
@@ -49,6 +52,17 @@ module DomniqApp
     end
 
     private
+
+    def drawer_item_locked?(config)
+      return false unless defined?(DomniqApp::LicenseChecker)
+      category = begin
+        JSON.parse(config.config_value.to_s)["category"]
+      rescue StandardError
+        nil
+      end
+      return false unless category
+      DomniqApp::LicenseChecker.drawer_category_locked?(category)
+    end
 
     def drawer_params
       params.require(:item).permit(:brand_key, :config_key, :config_value, :position, :enabled)

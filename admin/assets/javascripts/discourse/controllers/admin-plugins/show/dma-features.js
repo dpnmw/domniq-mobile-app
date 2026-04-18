@@ -10,6 +10,21 @@ export default class DmaFeaturesController extends Controller {
   @service toasts;
   @tracked flags = null;
   @tracked _videoThumbnails = null;
+  @tracked isLocked = true;
+
+  constructor() {
+    super(...arguments);
+    this._fetchLicense();
+  }
+
+  async _fetchLicense() {
+    try {
+      const result = await ajax("/admin/plugins/domniq-mobile-app/licensing/status.json");
+      this.isLocked = !result.licensed;
+    } catch {
+      this.isLocked = true;
+    }
+  }
 
   get computedFlags() {
     return this.flags ?? this.model?.flags ?? [];

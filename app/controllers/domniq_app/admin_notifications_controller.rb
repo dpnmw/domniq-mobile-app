@@ -4,6 +4,8 @@ module DomniqApp
   class AdminNotificationsController < ::Admin::AdminController
     requires_plugin DomniqApp::PLUGIN_NAME
 
+    before_action :require_license, only: [:search, :cleanup, :test_push, :remove_subscription]
+
     def settings
       render json: {
         push_notifications_enabled: SiteSetting.domniq_app_push_notifications_enabled,
@@ -106,6 +108,12 @@ module DomniqApp
     def mask_token(token)
       return token if token.length <= 16
       "#{token[0..11]}...#{token[-4..]}"
+    end
+
+    def require_license
+      if defined?(DomniqApp::LicenseChecker) && DomniqApp::LicenseChecker.notifications_locked?
+        render json: { error: "Requires a valid licence" }, status: :forbidden
+      end
     end
   end
 end

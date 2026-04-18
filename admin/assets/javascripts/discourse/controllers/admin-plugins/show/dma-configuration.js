@@ -10,6 +10,21 @@ export default class DmaConfigurationController extends Controller {
   @service toasts;
   @tracked configs = null;
   @tracked saving = false;
+  @tracked isLocked = true;
+
+  constructor() {
+    super(...arguments);
+    this._fetchLicense();
+  }
+
+  async _fetchLicense() {
+    try {
+      const result = await ajax("/admin/plugins/domniq-mobile-app/licensing/status.json");
+      this.isLocked = !result.licensed;
+    } catch {
+      this.isLocked = true;
+    }
+  }
 
   get computedConfigs() {
     return this.configs ?? this.model?.configs ?? [];

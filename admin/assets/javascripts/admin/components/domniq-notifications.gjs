@@ -6,6 +6,7 @@ import avatar from "discourse/helpers/avatar";
 import formatDate from "discourse/helpers/format-date";
 import { i18n } from "discourse-i18n";
 import DmaPageLayout from "./dma-page-layout";
+import DmaLicenseLock from "./dma-license-lock";
 
 export default class DomniqNotifications extends Component {
   <template>
@@ -47,7 +48,7 @@ export default class DomniqNotifications extends Component {
         </div>
 
         {{! Stats }}
-        <div class="dma-card dma-card--community">
+        <div class="dma-card dma-card--community {{if @controller.isLocked 'dma-card--locked'}}">
           <div class="dma-card__body">
             <h3 class="dma-card__heading">Registered Devices</h3>
             <div class="dma-device-stats">
@@ -82,10 +83,11 @@ export default class DomniqNotifications extends Component {
               />
             </div>
           </div>
+          {{#if @controller.isLocked}}<DmaLicenseLock />{{/if}}
         </div>
 
         {{! Device search }}
-        <div class="dma-card dma-card--community">
+        <div class="dma-card dma-card--community {{if @controller.isLocked 'dma-card--locked'}}">
           <div class="dma-card__body">
             <h3 class="dma-card__heading">Find User Devices</h3>
             <p class="dma-card__description">Search by username to view and manage a user's registered devices.</p>
@@ -153,6 +155,7 @@ export default class DomniqNotifications extends Component {
               {{/if}}
             {{/if}}
           </div>
+          {{#if @controller.isLocked}}<DmaLicenseLock />{{/if}}
         </div>
 
       </:content>

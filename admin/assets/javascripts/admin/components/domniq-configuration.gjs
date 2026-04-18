@@ -4,6 +4,7 @@ import { on } from "@ember/modifier";
 import DButton from "discourse/components/d-button";
 import { i18n } from "discourse-i18n";
 import DmaPageLayout from "./dma-page-layout";
+import DmaLicenseLock from "./dma-license-lock";
 
 const BRANDING_LABELS = {
   app_name: { label: "App Name", desc: "The display name shown across the mobile app and app stores." },
@@ -188,7 +189,7 @@ export default class DomniqConfiguration extends Component {
       </div>
 
       {{! ── About Screen ── }}
-      <div class="dma-card dma-card--community">
+      <div class="dma-card dma-card--community {{if @controller.isLocked 'dma-card--locked'}}">
         <div class="dma-card__body">
           <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></span>About Screen</h3>
           <p class="dma-card__description">Controls what appears on the app's About page.</p>
@@ -213,6 +214,7 @@ export default class DomniqConfiguration extends Component {
             {{/each}}
           </div>
         </div>
+        {{#if @controller.isLocked}}<DmaLicenseLock />{{/if}}
       </div>
 
       {{! ── Support ── }}
@@ -237,7 +239,7 @@ export default class DomniqConfiguration extends Component {
       </div>
 
       {{! ── Onboarding ── }}
-      <div class="dma-card dma-card--playground">
+      <div class="dma-card dma-card--playground {{if @controller.isLocked 'dma-card--locked'}}">
         <div class="dma-card__body">
           <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Z"/></svg></span>Onboarding Slides</h3>
           <p class="dma-card__description">Welcome screen carousel shown to new users before they sign in.</p>
@@ -259,6 +261,7 @@ export default class DomniqConfiguration extends Component {
             {{/each}}
           </div>
         </div>
+        {{#if @controller.isLocked}}<DmaLicenseLock />{{/if}}
       </div>
 
       {{! ── Legal Links ── }}

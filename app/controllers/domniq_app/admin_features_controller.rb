@@ -24,6 +24,7 @@ module DomniqApp
 
     def update
       brand_key = params[:brand] || "domniq"
+      licensed = !(defined?(DomniqApp::LicenseChecker) && !DomniqApp::LicenseChecker.licensed?)
 
       if params[:flags].present?
         flags_data = params[:flags]
@@ -31,6 +32,9 @@ module DomniqApp
 
         flags_data.each do |flag|
           flag = flag.to_unsafe_h if flag.respond_to?(:to_unsafe_h)
+          # Silently skip all feature flags if locked
+          next if defined?(DomniqApp::LicenseChecker) &&
+                  DomniqApp::LicenseChecker.config_locked?("feature_flags", flag["config_key"])
           record = AppConfig.find_or_initialize_by(
             brand_key: brand_key,
             config_type: "feature_flags",
@@ -42,8 +46,12 @@ module DomniqApp
       end
 
       if params.key?(:video_thumbnails_enabled)
-        SiteSetting.domniq_app_video_thumbnails_enabled =
-          ActiveModel::Type::Boolean.new.cast(params[:video_thumbnails_enabled])
+        # Silently skip if locked
+        unless defined?(DomniqApp::LicenseChecker) &&
+               DomniqApp::LicenseChecker.site_setting_locked?("domniq_app_video_thumbnails_enabled")
+          SiteSetting.domniq_app_video_thumbnails_enabled =
+            ActiveModel::Type::Boolean.new.cast(params[:video_thumbnails_enabled])
+        end
       end
 
       bump_config_version(brand_key)

@@ -3,6 +3,7 @@ import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
 import ICONS from "./domniq-icons";
 import DmaPageLayout from "./dma-page-layout";
+import DmaLicenseLock from "./dma-license-lock";
 
 const CATEGORY_META = {
   Playground: {
@@ -86,7 +87,7 @@ export default class DomniqDrawerEditor extends Component {
       <:content>
 
       {{#each (sortedCategories @controller.groupedItems) as |group|}}
-        <div class="dma-card {{group.cardClass}}">
+        <div class="dma-card {{group.cardClass}} {{if (@controller.isCategoryLocked group.name) 'dma-card--locked'}}">
           <div class="dma-card__body">
             <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d={{group.iconPath}} /></svg></span>{{group.name}}</h3>
             <p class="dma-card__description">{{group.desc}}</p>
@@ -145,6 +146,7 @@ export default class DomniqDrawerEditor extends Component {
               {{/each}}
             </div>
           </div>
+          {{#if (@controller.isCategoryLocked group.name)}}<DmaLicenseLock />{{/if}}
         </div>
       {{/each}}
       </:content>

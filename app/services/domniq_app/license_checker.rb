@@ -16,6 +16,54 @@ module DomniqApp
       IPAddr.new("192.168.0.0/16"),
     ].freeze
 
+    # Locked config types — fully locked sections
+    LOCKED_SECTION_TYPES = %w[onboarding].freeze
+
+    # Locked config keys per config_type — partial locks
+    LOCKED_CONFIG_KEYS = {
+      "branding" => %w[use_site_branding show_developer_branding],
+      "feature_flags" => :all, # All feature flags are locked
+    }.freeze
+
+    # Locked drawer categories
+    LOCKED_DRAWER_CATEGORIES = ["Playground", "Admin Dashboard"].freeze
+
+    # Locked site settings
+    LOCKED_SITE_SETTINGS = %w[domniq_app_video_thumbnails_enabled].freeze
+
+    # Notifications endpoints locked (registered devices stats + find user devices)
+    NOTIFICATIONS_LOCKED = true
+
+    def self.section_fully_locked?(config_type)
+      return false if licensed?
+      LOCKED_SECTION_TYPES.include?(config_type.to_s)
+    end
+
+    def self.config_locked?(config_type, config_key = nil)
+      return false if licensed?
+      return true if LOCKED_SECTION_TYPES.include?(config_type.to_s)
+      return false unless LOCKED_CONFIG_KEYS.key?(config_type.to_s)
+      locked = LOCKED_CONFIG_KEYS[config_type.to_s]
+      return true if locked == :all
+      return true if config_key.nil?
+      locked.include?(config_key.to_s)
+    end
+
+    def self.drawer_category_locked?(category)
+      return false if licensed?
+      LOCKED_DRAWER_CATEGORIES.include?(category.to_s)
+    end
+
+    def self.site_setting_locked?(key)
+      return false if licensed?
+      LOCKED_SITE_SETTINGS.include?(key.to_s)
+    end
+
+    def self.notifications_locked?
+      return false if licensed?
+      NOTIFICATIONS_LOCKED
+    end
+
     def self.licensed?
       cached = PluginStore.get("domniq_app", LICENSE_CACHE_KEY)
       if cached && cached["checked_at"] && Time.parse(cached["checked_at"]) > LICENSE_CACHE_TTL.seconds.ago

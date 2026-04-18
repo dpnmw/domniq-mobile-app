@@ -2,6 +2,7 @@ import Component from "@glimmer/component";
 import { fn } from "@ember/helper";
 import { on } from "@ember/modifier";
 import DmaPageLayout from "./dma-page-layout";
+import DmaLicenseLock from "./dma-license-lock";
 
 const FLAG_META = {
   showPostParticipants: {
@@ -59,7 +60,7 @@ export default class DomniqFeatures extends Component {
       <:content>
 
       {{! ── Feature Flags Card ── }}
-      <div class="dma-card dma-card--features">
+      <div class="dma-card dma-card--features {{if @controller.isLocked 'dma-card--locked'}}">
         <div class="dma-card__body">
           <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M446.67-120v-280L249.33-202.33l-47-47L400-446.67H120v-66.66h280.67l-198.34-198 47-47 197.34 197.66V-840h66.66v280l198-198.33 47 47-198.33 198h280v66.66H560.67l197.66 197.34-47 47-198-198.34V-120h-66.66Z"/></svg></span>Feature Flags</h3>
           <p class="dma-card__description">Control app behavior and UI layout options. Changes take effect on the next app launch.</p>
@@ -103,10 +104,11 @@ export default class DomniqFeatures extends Component {
             </div>
           {{/each}}
         </div>
+        {{#if @controller.isLocked}}<DmaLicenseLock />{{/if}}
       </div>
 
       {{! ── Video Thumbnails Card ── }}
-      <div class="dma-card dma-card--branding">
+      <div class="dma-card dma-card--branding {{if @controller.isLocked 'dma-card--locked'}}">
         <div class="dma-card__body">
           <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h480q33 0 56.5 23.5T720-720v180l160-160v440L720-420v180q0 33-23.5 56.5T640-160H160Z"/></svg></span>Video Thumbnails</h3>
           <p class="dma-card__description">Automatically set video poster thumbnails as topic images for mobile app video uploads.</p>
@@ -130,6 +132,7 @@ export default class DomniqFeatures extends Component {
             </div>
           </div>
         </div>
+        {{#if @controller.isLocked}}<DmaLicenseLock />{{/if}}
       </div>
 
       </:content>

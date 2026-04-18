@@ -15,6 +15,21 @@ export default class DmaNotificationsController extends Controller {
   @tracked searchResults = [];
   @tracked isSearching = false;
   @tracked hasSearched = false;
+  @tracked isLocked = true;
+
+  constructor() {
+    super(...arguments);
+    this._fetchLicense();
+  }
+
+  async _fetchLicense() {
+    try {
+      const result = await ajax("/admin/plugins/domniq-mobile-app/licensing/status.json");
+      this.isLocked = !result.licensed;
+    } catch {
+      this.isLocked = true;
+    }
+  }
 
   get pushNotificationsEnabled() {
     return this._pushEnabled ?? this.model?.push_notifications_enabled ?? false;

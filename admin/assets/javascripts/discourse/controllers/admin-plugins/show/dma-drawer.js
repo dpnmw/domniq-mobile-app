@@ -8,6 +8,25 @@ export default class DmaDrawerController extends Controller {
   @tracked items = null;
   @tracked saving = false;
   @tracked saved = false;
+  @tracked isLocked = true;
+
+  constructor() {
+    super(...arguments);
+    this._fetchLicense();
+  }
+
+  async _fetchLicense() {
+    try {
+      const result = await ajax("/admin/plugins/domniq-mobile-app/licensing/status.json");
+      this.isLocked = !result.licensed;
+    } catch {
+      this.isLocked = true;
+    }
+  }
+
+  isCategoryLocked(category) {
+    return this.isLocked && (category === "Playground" || category === "Admin Dashboard");
+  }
 
   get computedItems() {
     return this.items ?? this.model?.items ?? [];

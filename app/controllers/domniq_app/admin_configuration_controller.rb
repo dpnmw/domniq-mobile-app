@@ -36,6 +36,10 @@ module DomniqApp
 
     def update
       config = AppConfig.find(params[:id])
+      if defined?(DomniqApp::LicenseChecker) &&
+         DomniqApp::LicenseChecker.config_locked?(config.config_type, config.config_key)
+        return render json: { error: "Requires a valid licence" }, status: :forbidden
+      end
       config.update!(config_params)
       bump_config_version(config.brand_key)
 
@@ -53,6 +57,9 @@ module DomniqApp
           cfg = cfg.to_unsafe_h if cfg.respond_to?(:to_unsafe_h)
           record = AppConfig.find_by(id: cfg["id"])
           next unless record
+          # Silently skip locked keys
+          next if defined?(DomniqApp::LicenseChecker) &&
+                  DomniqApp::LicenseChecker.config_locked?(record.config_type, record.config_key)
           record.update!(config_value: cfg["config_value"])
         end
       end
