@@ -86,12 +86,10 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
       { config_key: "icon_style", position: 8, config_value: '{"title":"Icon Style","description":"Change icon appearance","icon":"IconStyle","color":"#FF6B6B","route":"IconStyle","category":"Settings","requiresLogin":true}' },
       { config_key: "feed_style", position: 9, config_value: '{"title":"Feed Style","description":"Control feed content display","icon":"ArticleShortcut","color":"#F5A623","route":"FeedStyle","category":"Settings","requiresLogin":true}' },
       { config_key: "post_style", position: 10, config_value: '{"title":"Post Style","description":"Choose your reply experience","icon":"TopicEdit","color":"#E8590C","route":"PostStyle","category":"Settings","requiresLogin":true}' },
-      { config_key: "device_permissions", position: 11, config_value: '{"title":"Device Permissions","description":"Camera, microphone & media","icon":"Permissions","color":"#A29BFE","route":"AppPermissions","category":"Settings"}' },
-      { config_key: "push_notifications_prefs", position: 12, config_value: '{"title":"Push Notifications","description":"Alerts & notification sounds","icon":"NotificationSound","color":"#FF69B4","route":"PushNotificationsPreferences","category":"Settings","requiresLogin":true}' },
 
       # Support
       { config_key: "app_guide", position: 13, config_value: '{"title":"App Guide","description":"Learn how the app works","icon":"Highlights","color":"#4ECDC4","route":"AppGuide","category":"Support"}' },
-      { config_key: "app_developer", position: 14, config_value: '{"title":"App Developer","description":"DPN MEDIA WORKS","icon":"Developer","color":"#74b9ff","route":"DeveloperInfo","category":"Support"}' },
+      { config_key: "app_permissions", position: 14, config_value: '{"title":"App Permissions","description":"Camera, microphone & media","icon":"Permissions","color":"#A29BFE","route":"AppPermissions","category":"Support"}' },
       { config_key: "message_us", position: 15, config_value: '{"title":"Message Us","description":"Get in Touch","icon":"Mail","color":"#F5A623","route":"ContactUs","category":"Support"}' },
 
       # Admin Dashboard (staff only)
