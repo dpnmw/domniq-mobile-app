@@ -88,7 +88,7 @@ module DomniqApp
 
     def self.activate(license_key)
       PluginStore.set("domniq_app", "license_key", license_key)
-      check
+      check(force: true)
     end
 
     def self.check(force: false)

@@ -40,7 +40,9 @@ const CATEGORY_META = {
 
 const CATEGORY_ORDER = ["Playground", "Community", "Settings", "Support", "Admin Dashboard"];
 
-function sortedCategories(groupedItems) {
+const LOCKED_CATEGORIES = new Set(["Playground", "Admin Dashboard"]);
+
+function sortedCategories(groupedItems, isLocked) {
   return CATEGORY_ORDER.filter((cat) => groupedItems[cat]).map((cat) => ({
     name: cat,
     items: groupedItems[cat],
@@ -48,6 +50,7 @@ function sortedCategories(groupedItems) {
     cardClass: CATEGORY_META[cat]?.cardClass || "",
     desc: CATEGORY_META[cat]?.desc || "",
     iconPath: CATEGORY_META[cat]?.iconPath || "",
+    locked: !!isLocked && LOCKED_CATEGORIES.has(cat),
   }));
 }
 
@@ -86,8 +89,8 @@ export default class DomniqDrawerEditor extends Component {
       </:icon>
       <:content>
 
-      {{#each (sortedCategories @controller.groupedItems) as |group|}}
-        <div class="dma-card {{group.cardClass}} {{if (@controller.isCategoryLocked group.name) 'dma-card--locked'}}">
+      {{#each (sortedCategories @controller.groupedItems @controller.isLocked) as |group|}}
+        <div class="dma-card {{group.cardClass}} {{if group.locked 'dma-card--locked'}}">
           <div class="dma-card__body">
             <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d={{group.iconPath}} /></svg></span>{{group.name}}</h3>
             <p class="dma-card__description">{{group.desc}}</p>
@@ -146,7 +149,7 @@ export default class DomniqDrawerEditor extends Component {
               {{/each}}
             </div>
           </div>
-          {{#if (@controller.isCategoryLocked group.name)}}<DmaLicenseLock />{{/if}}
+          {{#if group.locked}}<DmaLicenseLock />{{/if}}
         </div>
       {{/each}}
       </:content>
