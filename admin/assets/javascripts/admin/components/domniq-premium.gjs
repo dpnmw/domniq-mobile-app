@@ -36,7 +36,7 @@ export default class DomniqPremium extends Component {
   async fetchLicense() {
     try {
       const { ajax } = await import("discourse/lib/ajax");
-      this.license = await ajax("/admin/plugins/domniq-mobile-app/licensing/status.json");
+      this.license = await ajax("/admin/plugins/domniq-mobile-app/license/status.json");
     } catch {
       this.license = { licensed: false };
     }
@@ -55,7 +55,7 @@ export default class DomniqPremium extends Component {
     this.licenseError = null;
     try {
       const { ajax } = await import("discourse/lib/ajax");
-      const result = await ajax("/admin/plugins/domniq-mobile-app/licensing/activate.json", {
+      const result = await ajax("/admin/plugins/domniq-mobile-app/license/activate.json", {
         type: "POST",
         data: { license_key: this.licenseKey.trim() },
       });
@@ -80,7 +80,7 @@ export default class DomniqPremium extends Component {
     this.licenseError = null;
     try {
       const { ajax } = await import("discourse/lib/ajax");
-      this.license = await ajax("/admin/plugins/domniq-mobile-app/licensing/check.json", { type: "POST" });
+      this.license = await ajax("/admin/plugins/domniq-mobile-app/license/check.json", { type: "POST" });
       if (this.license.licensed) {
         this.toasts.success({ data: { message: "Licence is valid and active" }, duration: 3000 });
       } else {
@@ -144,7 +144,7 @@ export default class DomniqPremium extends Component {
     const newValue = !this.telemetryEnabled;
     try {
       const { ajax } = await import("discourse/lib/ajax");
-      await ajax("/admin/plugins/domniq-mobile-app/licensing/telemetry.json", {
+      await ajax("/admin/plugins/domniq-mobile-app/license/telemetry.json", {
         type: "PUT",
         data: { telemetry_enabled: newValue },
       });

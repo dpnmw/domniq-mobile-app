@@ -19,7 +19,7 @@ export default class DmaFeaturesController extends Controller {
 
   async _fetchLicense() {
     try {
-      const result = await ajax("/admin/plugins/domniq-mobile-app/licensing/status.json");
+      const result = await ajax("/admin/plugins/domniq-mobile-app/license/status.json");
       this.isLocked = !result.licensed;
     } catch {
       this.isLocked = true;

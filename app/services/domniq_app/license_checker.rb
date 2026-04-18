@@ -4,12 +4,18 @@ require "ipaddr"
 
 module DomniqApp
   class LicenseChecker
-    LICENSE_CACHE_KEY = "domniq_app_license_status"
-    LICENSE_CACHE_TTL = 86_400 # 24 hours
+    CACHE_KEY = "dma_license_status"
+    CACHE_TTL = 86_400 # 24 hours
     REMOTE_URL = "https://api.dpnmediaworks.com/api/check"
     TELEMETRY_URL = "https://api.dpnmediaworks.com/api/telemetry/heartbeat"
 
-    BLOCKED_HOSTS = %w[localhost 127.0.0.1 0.0.0.0 ::1].freeze
+    BLOCKED_HOSTS = %w[
+      localhost
+      127.0.0.1
+      0.0.0.0
+      ::1
+    ].freeze
+
     PRIVATE_RANGES = [
       IPAddr.new("10.0.0.0/8"),
       IPAddr.new("172.16.0.0/12"),
@@ -65,80 +71,65 @@ module DomniqApp
     end
 
     def self.licensed?
-      cached = PluginStore.get("domniq_app", LICENSE_CACHE_KEY)
-      if cached && cached["checked_at"] && Time.parse(cached["checked_at"]) > LICENSE_CACHE_TTL.seconds.ago
-        return cached["licensed"]
-      end
-
       result = check
-      result[:licensed]
-    end
-
-    def self.license_key_masked
-      key = PluginStore.get("domniq_app", "license_key")
-      return nil unless key
-      return key if key.length <= 8
-      "#{key[0..3]}#{'*' * (key.length - 8)}#{key[-4..]}"
-    end
-
-    def self.expires_at
-      cached = PluginStore.get("domniq_app", LICENSE_CACHE_KEY)
-      cached&.dig("expires_at")
-    end
-
-    def self.activate(license_key)
-      PluginStore.set("domniq_app", "license_key", license_key)
-      check(force: true)
+      result && result["license_active"] == true
     end
 
     def self.check(force: false)
       domain = current_domain
-      license_key = PluginStore.get("domniq_app", "license_key")
 
-      if blocked_domain?(domain)
-        cache_result(licensed: false)
-        return { success: false, licensed: false, error: "Licence validation is not available for local or private domains." }
-      end
+      return blocked_result(domain) if blocked_domain?(domain)
 
-      unless license_key
-        cache_result(licensed: false)
-        send_heartbeat(false) if force
-        return { success: false, licensed: false, error: "No licence key configured." }
-      end
-
-      begin
-        response = Excon.post(
-          REMOTE_URL,
-          body: { license_key: license_key, domain: domain, product: "domniq-mobile-app" }.to_json,
-          headers: { "Content-Type" => "application/json" },
-          connect_timeout: 5,
-          read_timeout: 5,
-        )
-
-        data = JSON.parse(response.body)
-
-        if data["active"]
-          result = { success: true, licensed: true, expires_at: data["expires_at"], tier: data["tier"] }
-          cache_result(licensed: true, expires_at: data["expires_at"], tier: data["tier"])
-        else
-          result = { success: false, licensed: false, error: data["error"] || "Invalid licence." }
-          cache_result(licensed: false)
+      unless force
+        cached = read_cache
+        if cached && !cache_expired?(cached)
+          return cached
         end
-
-        send_heartbeat(result[:licensed]) if force
-        result
-      rescue Excon::Error => e
-        Rails.logger.error("DomniqApp::LicenseChecker network error: #{e.message}")
-        cached = PluginStore.get("domniq_app", LICENSE_CACHE_KEY)
-        if cached
-          { success: true, licensed: cached["licensed"] }
-        else
-          { success: false, licensed: false, error: "Unable to verify licence." }
-        end
-      rescue => e
-        Rails.logger.error("DomniqApp::LicenseChecker: #{e.message}")
-        { success: false, licensed: false, error: "Unable to verify licence." }
       end
+
+      key = license_key
+      if key.blank?
+        result = {
+          "license_active" => false,
+          "domain" => domain,
+          "error" => "No license key configured",
+          "checked_at" => Time.now.iso8601,
+        }
+        store_result(result)
+        send_heartbeat(result) if force && SiteSetting.respond_to?(:domniq_app_telemetry_enabled) && SiteSetting.domniq_app_telemetry_enabled
+        return result
+      end
+
+      result = remote_check(domain, key)
+      store_result(result)
+      send_heartbeat(result) if force && SiteSetting.respond_to?(:domniq_app_telemetry_enabled) && SiteSetting.domniq_app_telemetry_enabled
+      result
+    end
+
+    def self.license_key
+      PluginStore.get("domniq_app", "license_key")
+    end
+
+    def self.activate(key)
+      PluginStore.set("domniq_app", "license_key", key)
+      check(force: true)
+    end
+
+    def self.license_key_masked
+      key = license_key
+      return nil if key.blank?
+      return key if key.length <= 8
+      key[0..3] + ("*" * (key.length - 8)) + key[-4..]
+    end
+
+    def self.expires_at
+      cached = read_cache
+      cached&.dig("expires_at")
+    end
+
+    def self.tier
+      cached = read_cache
+      cached&.dig("tier")
     end
 
     def self.current_domain
@@ -159,23 +150,75 @@ module DomniqApp
       end
     end
 
-    def self.cache_result(licensed:, expires_at: nil, tier: nil)
-      PluginStore.set("domniq_app", LICENSE_CACHE_KEY, {
-        "licensed" => licensed,
-        "expires_at" => expires_at,
-        "tier" => tier,
-        "checked_at" => Time.current.iso8601,
-      })
+    def self.blocked_result(domain)
+      {
+        "license_active" => false,
+        "domain" => domain,
+        "error" => "License validation is not available for local or private domains",
+        "checked_at" => Time.now.iso8601,
+      }
     end
 
-    def self.tier
-      cached = PluginStore.get("domniq_app", LICENSE_CACHE_KEY)
-      cached&.dig("tier")
+    def self.remote_check(domain, key)
+      response = Excon.post(
+        REMOTE_URL,
+        body: { license_key: key, domain: domain, product: "domniq-mobile-app" }.to_json,
+        headers: { "Content-Type" => "application/json" },
+        connect_timeout: 5,
+        read_timeout: 5,
+      )
+
+      data = JSON.parse(response.body)
+      {
+        "license_active" => data["active"] == true,
+        "domain" => domain,
+        "email" => data["email"],
+        "paid_at" => data["paid_at"],
+        "expires_at" => data["expires_at"],
+        "tier" => data["tier"],
+        "error" => data["error"],
+        "checked_at" => Time.now.iso8601,
+      }
+    rescue Excon::Error => e
+      Rails.logger.warn("[DomniqApp] License check network error: #{e.message}")
+      fallback_result(domain)
+    rescue JSON::ParserError, StandardError => e
+      Rails.logger.warn("[DomniqApp] License check failed: #{e.message}")
+      inactive_result(domain, "Unable to verify licence")
     end
 
-    def self.send_heartbeat(is_licensed)
-      return unless SiteSetting.respond_to?(:domniq_app_telemetry_enabled) && SiteSetting.domniq_app_telemetry_enabled
+    def self.inactive_result(domain, error = nil)
+      {
+        "license_active" => false,
+        "domain" => domain,
+        "error" => error,
+        "checked_at" => Time.now.iso8601,
+      }
+    end
 
+    def self.fallback_result(domain)
+      cached = read_cache
+      if cached && cached["license_active"]
+        cached["domain"] = domain
+        cached
+      else
+        {
+          "license_active" => false,
+          "domain" => domain,
+          "checked_at" => Time.now.iso8601,
+        }
+      end
+    end
+
+    def self.read_cache
+      PluginStore.get("domniq_app", CACHE_KEY)
+    end
+
+    def self.store_result(result)
+      PluginStore.set("domniq_app", CACHE_KEY, result)
+    end
+
+    def self.send_heartbeat(result)
       Thread.new do
         begin
           plugin = Discourse.plugins.find { |p| p.metadata.name == "domniq-mobile-app" }
@@ -187,8 +230,8 @@ module DomniqApp
               plugin_version: plugin&.metadata&.version || "unknown",
               platform: "discourse",
               platform_version: Discourse::VERSION::STRING,
-              license_key: PluginStore.get("domniq_app", "license_key"),
-              licensed: is_licensed,
+              license_key: license_key,
+              licensed: result["license_active"] == true,
             }.to_json,
             headers: { "Content-Type" => "application/json" },
             connect_timeout: 5,
@@ -198,6 +241,14 @@ module DomniqApp
           Rails.logger.warn("[DomniqApp] Heartbeat failed: #{e.message}")
         end
       end
+    end
+
+    def self.cache_expired?(cached)
+      checked_at = cached["checked_at"]
+      return true unless checked_at
+      Time.parse(checked_at) < Time.now - CACHE_TTL
+    rescue StandardError
+      true
     end
   end
 end

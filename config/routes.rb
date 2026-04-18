@@ -61,10 +61,10 @@ Discourse::Application.routes.draw do
       delete "/language/locales/:id" => "domniq_app/admin_language#destroy"
 
       # Licensing
-      get "/licensing/status" => "domniq_app/admin_licensing#status"
-      post "/licensing/activate" => "domniq_app/admin_licensing#activate"
-      post "/licensing/check" => "domniq_app/admin_licensing#check"
-      put "/licensing/telemetry" => "domniq_app/admin_licensing#update_telemetry"
+      get  "/license/status"    => "domniq_app/admin_license#status"
+      post "/license/activate"  => "domniq_app/admin_license#activate"
+      post "/license/check"     => "domniq_app/admin_license#check"
+      put  "/license/telemetry" => "domniq_app/admin_license#update_telemetry"
     end
   end
 end
