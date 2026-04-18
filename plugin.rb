@@ -136,10 +136,10 @@ after_initialize do
     )
   end
 
-  # Video thumbnails
-  if SiteSetting.domniq_app_video_thumbnails_enabled
-    require_relative "lib/domniq_app/video_thumbnail_patch"
-  end
+  # Video thumbnails — always load the patch; the SiteSetting is checked
+  # at call-time inside update_post_image so admins can toggle it live
+  # without a server restart.
+  require_relative "lib/domniq_app/video_thumbnail_patch"
 
   # Telemetry heartbeat
   require_relative "app/jobs/scheduled/domniq_heartbeat"

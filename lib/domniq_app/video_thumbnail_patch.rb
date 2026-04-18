@@ -11,6 +11,8 @@ module ::DomniqApp
     def update_post_image
       super
 
+      return unless SiteSetting.domniq_app_video_thumbnails_enabled
+
       poster_match = @post.raw&.match(/poster:(\S+?)(?:\s|\|)/)
       return unless poster_match
 
