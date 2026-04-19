@@ -1,6 +1,6 @@
 plugins:
   domniq_app_enabled:
-    default: false
+    default: true
     client: true
   domniq_app_push_notifications_enabled:
     default: false

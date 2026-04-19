@@ -17,6 +17,22 @@ require_relative "lib/domniq_app"
 after_initialize do
   Discourse::Application.routes.append { mount ::DomniqApp::Engine, at: "/domniq-app" }
 
+  # Auto-register this site's auth redirect URL so mobile app users can log in
+  # without the admin having to add <base_url>/auth_redirect by hand.
+  # Idempotent — no-op if already present. Only fires when plugin is enabled.
+  ensure_auth_redirect = -> {
+    next unless SiteSetting.domniq_app_enabled
+    required = "#{Discourse.base_url}/auth_redirect"
+    current = SiteSetting.allowed_user_api_auth_redirects.to_s.split("|").reject(&:blank?)
+    next if current.include?(required)
+    SiteSetting.allowed_user_api_auth_redirects = (current + [required]).join("|")
+    Rails.logger.info("[DomniqApp] Registered auth redirect: #{required}")
+  }
+  ensure_auth_redirect.call
+  DiscourseEvent.on(:site_setting_changed) do |name, _old, new_val|
+    ensure_auth_redirect.call if name == :domniq_app_enabled && new_val
+  end
+
   # Force-load push models and controller so they are available
   # regardless of whether push is currently enabled.
   load File.expand_path("app/models/domniq_app/expo_subscription.rb", __dir__)
