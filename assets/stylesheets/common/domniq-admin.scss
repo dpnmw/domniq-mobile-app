@@ -1649,12 +1649,29 @@
 }
 
 // Disabled toggle — the forum doesn't support this feature, so admin can't
-// turn it on. Visually muted + not interactive.
+// turn it on. Visually muted + not interactive + forced to the "off" visual
+// state even if the DB row still has enabled=true (we don't auto-flip the DB
+// column; it just shouldn't read as "on" when the admin can't toggle it).
 .dma-toggle--disabled {
   opacity: 0.4;
 
   .dma-toggle__track {
     cursor: not-allowed;
+    background: var(--primary-low);
+
+    &::after {
+      transform: translateX(0);
+    }
+  }
+
+  // Override the :checked selector in the base styles so a checked disabled
+  // toggle still reads as "off".
+  input:checked + .dma-toggle__track {
+    background: var(--primary-low);
+
+    &::after {
+      transform: translateX(0);
+    }
   }
 }
 
