@@ -105,6 +105,25 @@ export default class DomniqPremium extends Component {
     return this.isLicensed && this.license?.tier === "trial";
   }
 
+  // True when the plugin has any licence key stored, regardless of status.
+  // Used to decide whether to show the licence display rows vs. the activation input.
+  get hasLicenseKey() {
+    return !!this.license?.license_key;
+  }
+
+  // Only show the activation input (and promo block) when there is truly no
+  // licence on file — not just because it's expired/inactive/suspended.
+  get needsKeyInput() {
+    return this.license && !this.hasLicenseKey;
+  }
+
+  // "Past due" = renewal payment failed on an existing paid licence.
+  // "Pending" (never paid) case is theoretical — we don't create licence rows
+  // on first-time payment failure — but we still support the label for safety.
+  get pendingIsPastDue() {
+    return this.license?.status === "pending" && !!this.license?.paid_at;
+  }
+
   get tierLabel() {
     if (!this.license?.tier) return null;
     return this.license.tier === "trial" ? "Trial" : "Premium";
@@ -117,6 +136,7 @@ export default class DomniqPremium extends Component {
 
   get statusLabel() {
     if (!this.license) return "Loading...";
+    if (this.pendingIsPastDue) return "Past Due";
     const labels = {
       active: "Active",
       inactive: "Inactive",
@@ -133,6 +153,73 @@ export default class DomniqPremium extends Component {
     return `dma-premium__status--${s}`;
   }
 
+  // Context-aware message shown under the status badge for non-active states.
+  // Null when no message is needed (e.g. active, or no key on file).
+  get stateMessage() {
+    if (!this.license || !this.hasLicenseKey) return null;
+    const tier = this.license.tier;
+    switch (this.license.status) {
+      case "inactive":
+        return "Your licence has been deactivated. Contact support if you believe this is an error.";
+      case "suspended":
+        return "Your licence has been suspended. Please contact DPN Media Works to resolve.";
+      case "pending":
+        return this.pendingIsPastDue
+          ? "Renewal payment failed. Update your payment method to restore access."
+          : "Payment required to activate your licence.";
+      case "expired":
+        return tier === "trial"
+          ? "Your trial has expired. Upgrade to Premium to continue using premium features."
+          : "Your licence has expired. Renew to restore access.";
+      default:
+        return null;
+    }
+  }
+
+  // Action-button visibility for each state.
+  get showRenewButton() {
+    return this.license?.status === "expired" && this.license?.tier !== "trial";
+  }
+
+  get showUpgradeButton() {
+    // Shown for active trials AND expired trials.
+    return (
+      (this.license?.tier === "trial") &&
+      (this.license?.status === "active" || this.license?.status === "expired")
+    );
+  }
+
+  get showUpdatePaymentButton() {
+    return this.license?.status === "pending";
+  }
+
+  get showContactSupportLink() {
+    return (
+      this.license?.status === "inactive" || this.license?.status === "suspended"
+    );
+  }
+
+  // Only show "Check Licence" when there's a key to check. No point otherwise.
+  get showCheckButton() {
+    return this.hasLicenseKey && this.license?.status !== "suspended";
+  }
+
+  get showPromoBlock() {
+    return this.needsKeyInput;
+  }
+
+  get isExpired() {
+    return this.license?.status === "expired";
+  }
+
+  get expiresLabel() {
+    return this.isExpired ? "Expired" : "Expires";
+  }
+
+  get expiresDesc() {
+    return this.isExpired ? "When your licence expired" : "When your licence expires";
+  }
+
   get safeModeUrl() {
     const base = window.location.origin;
     return `${base}/?safe_mode=no_plugins`;
@@ -144,6 +231,12 @@ export default class DomniqPremium extends Component {
 
   get buyUrl() {
     return `${API_BASE}/pay/discourse/domniq-mobile-app`;
+  }
+
+  // Where the customer manages their existing licence (renew, update card,
+  // see invoices, contact support). Used for every "manage existing" action.
+  get accountUrl() {
+    return `${API_BASE}/account`;
   }
 
   get trialDeeplink() {
@@ -193,21 +286,26 @@ export default class DomniqPremium extends Component {
             <h3 class="dma-pcard__heading"><span class="dma-pcard__heading-icon">{{iconHtml "lock"}}</span>Licence Status</h3>
             <p class="dma-pcard__desc">Your current Domniq Mobile App licence status and activation.</p>
 
-            {{#if this.license}}
-            <div class="dma-premium__fade-in">
-              <div class="dma-prow">
-                <div class="dma-prow__label">
-                  <span class="dma-prow__title">Status</span>
-                  <span class="dma-prow__desc">Whether your licence is currently active</span>
-                </div>
-                <div class="dma-prow__control">
-                  <span class="dma-premium__status {{this.statusClass}}">{{this.statusLabel}}</span>
+            {{#if this.hasLicenseKey}}
+              {{! ── Existing licence: show status + details for any state ── }}
+              <div class="dma-premium__fade-in">
+                <div class="dma-prow">
+                  <div class="dma-prow__label">
+                    <span class="dma-prow__title">Status</span>
+                    <span class="dma-prow__desc">Whether your licence is currently active</span>
+                  </div>
+                  <div class="dma-prow__control">
+                    <span class="dma-premium__status {{this.statusClass}}">{{this.statusLabel}}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            {{/if}}
 
-            {{#if this.isLicensed}}
+              {{#if this.stateMessage}}
+                <div class="dma-premium__state-message dma-premium__state-message--{{this.license.status}}">
+                  {{this.stateMessage}}
+                </div>
+              {{/if}}
+
               {{#if this.tierLabel}}
                 <div class="dma-prow">
                   <div class="dma-prow__label">
@@ -219,22 +317,22 @@ export default class DomniqPremium extends Component {
                   </div>
                 </div>
               {{/if}}
-              {{#if this.license.license_key}}
-                <div class="dma-prow">
-                  <div class="dma-prow__label">
-                    <span class="dma-prow__title">Licence Key</span>
-                    <span class="dma-prow__desc">Your activated licence key</span>
-                  </div>
-                  <div class="dma-prow__control">
-                    <span class="dma-premium__key-display">{{this.license.license_key}}</span>
-                  </div>
+
+              <div class="dma-prow">
+                <div class="dma-prow__label">
+                  <span class="dma-prow__title">Licence Key</span>
+                  <span class="dma-prow__desc">Your activated licence key</span>
                 </div>
-              {{/if}}
+                <div class="dma-prow__control">
+                  <span class="dma-premium__key-display">{{this.license.license_key}}</span>
+                </div>
+              </div>
+
               {{#if this.license.expires_at}}
                 <div class="dma-prow">
                   <div class="dma-prow__label">
-                    <span class="dma-prow__title">Expires</span>
-                    <span class="dma-prow__desc">When your licence expires</span>
+                    <span class="dma-prow__title">{{this.expiresLabel}}</span>
+                    <span class="dma-prow__desc">{{this.expiresDesc}}</span>
                   </div>
                   <div class="dma-prow__control">
                     <span class="dma-premium__expiry">{{this.license.expires_at}}</span>
@@ -242,6 +340,7 @@ export default class DomniqPremium extends Component {
                 </div>
               {{/if}}
             {{else if this.license}}
+              {{! ── No licence on file: show activation input ── }}
               <div class="dma-premium__fade-in">
                 <div class="dma-prow">
                   <div class="dma-prow__label">
@@ -270,18 +369,37 @@ export default class DomniqPremium extends Component {
 
             {{#if this.license}}
             <div class="dma-premium__actions dma-premium__fade-in">
-              {{#unless this.isLicensed}}
+              {{#if this.needsKeyInput}}
+                {{! Fresh install: activate an existing key OR buy a new one }}
                 <button type="button" class="btn btn-primary btn-small" disabled={{this.activating}} {{on "click" this.activateLicense}}>
                   {{if this.activating "Activating..." "Activate Licence"}}
                 </button>
                 <a href="{{this.buyUrl}}" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-small">Order Licence</a>
-              {{/unless}}
-              {{#if this.isTrial}}
-                <a href="{{this.buyUrl}}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-small">Upgrade Licence</a>
               {{/if}}
-              <button type="button" class="btn btn-default btn-small" disabled={{this.checking}} {{on "click" this.checkLicense}}>
-                {{if this.checking "Checking..." "Check Licence"}}
-              </button>
+
+              {{#if this.showRenewButton}}
+                <a href="{{this.accountUrl}}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-small">Renew Licence</a>
+              {{/if}}
+
+              {{#if this.showUpgradeButton}}
+                <a href="{{this.buyUrl}}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-small">Upgrade to Premium</a>
+              {{/if}}
+
+              {{#if this.showUpdatePaymentButton}}
+                <a href="{{this.accountUrl}}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-small">
+                  {{if this.pendingIsPastDue "Update Payment" "Complete Payment"}}
+                </a>
+              {{/if}}
+
+              {{#if this.showContactSupportLink}}
+                <a href="{{this.accountUrl}}" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-small">Contact Support</a>
+              {{/if}}
+
+              {{#if this.showCheckButton}}
+                <button type="button" class="btn btn-default btn-small" disabled={{this.checking}} {{on "click" this.checkLicense}}>
+                  {{if this.checking "Checking..." "Check Licence"}}
+                </button>
+              {{/if}}
             </div>
             {{/if}}
           </div>
@@ -318,8 +436,8 @@ export default class DomniqPremium extends Component {
         </div>
         {{/if}}
 
-        {{! ── Early Adopter Pricing ── }}
-        {{#unless this.isLicensed}}
+        {{! ── Early Adopter Pricing — only shown when no licence on file ── }}
+        {{#if this.showPromoBlock}}
         <div class="dma-page__licensing">
           <div class="dma-page__licensing-glow"></div>
           <div class="dma-page__licensing-content">
@@ -374,7 +492,7 @@ export default class DomniqPremium extends Component {
             <p class="dma-page__licensing-note">Annual subscription. Billed yearly via PayPal. Cancel anytime.</p>
           </div>
         </div>
-        {{/unless}}
+        {{/if}}
 
         <div class="dma-pcard dma-pcard--community">
           <div class="dma-pcard__body">
