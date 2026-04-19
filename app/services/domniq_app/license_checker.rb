@@ -30,11 +30,9 @@ module DomniqApp
       "feature_flags" => :all, # All feature flags are locked
     }.freeze
 
-    # Locked drawer categories
-    # "Playground" is the legacy category name retained so mid-migration servers
-    # (before 20260418000004 runs) still have the correct gating. Once every
-    # server is past that migration it can be dropped.
-    LOCKED_DRAWER_CATEGORIES = ["Premium", "Playground", "Admin Dashboard"].freeze
+    # Locked drawer categories. The `Playground` legacy name was dropped — every
+    # live server has run 20260418000004 (Playground→Premium rename) by now.
+    LOCKED_DRAWER_CATEGORIES = ["Widgets", "Premium", "Admin Dashboard"].freeze
 
     # Locked site settings
     LOCKED_SITE_SETTINGS = %w[domniq_app_video_thumbnails_enabled].freeze

@@ -6,6 +6,12 @@ import DmaPageLayout from "./dma-page-layout";
 import DmaLicenseLock from "./dma-license-lock";
 
 const CATEGORY_META = {
+  Widgets: {
+    color: "#3B82F6",
+    cardClass: "dma-card--widgets",
+    desc: "Home-screen trending widgets. License-gated; not individually toggleable.",
+    iconPath: "M120-520v-320h320v320H120Zm0 400v-320h320v320H120Zm400-400v-320h320v320H520Zm0 400v-320h320v320H520Z",
+  },
   Premium: {
     color: "#A358DF",
     cardClass: "dma-card--premium",
@@ -38,9 +44,9 @@ const CATEGORY_META = {
   },
 };
 
-const CATEGORY_ORDER = ["Premium", "Community", "Settings", "Support", "Admin Dashboard"];
+const CATEGORY_ORDER = ["Widgets", "Premium", "Community", "Settings", "Support", "Admin Dashboard"];
 
-const LOCKED_CATEGORIES = new Set(["Premium", "Admin Dashboard"]);
+const LOCKED_CATEGORIES = new Set(["Widgets", "Premium", "Admin Dashboard"]);
 
 // Categories whose items are infrastructure / license-controlled — admins don't
 // toggle them on/off in the drawer editor. Only Community items are toggleable:
@@ -51,7 +57,7 @@ const LOCKED_CATEGORIES = new Set(["Premium", "Admin Dashboard"]);
 // - Admin Dashboard: license + staff gated in the app.
 // - Settings: user-owned preferences; surfaced as a visual map only.
 // - Support: infrastructure; always shown.
-const NON_TOGGLEABLE_CATEGORIES = new Set(["Premium", "Support", "Admin Dashboard", "Settings"]);
+const NON_TOGGLEABLE_CATEGORIES = new Set(["Widgets", "Premium", "Support", "Admin Dashboard", "Settings"]);
 
 // Specific item keys that should never be toggleable, regardless of category.
 // - `overview` is the required About Us shortcut in Community.

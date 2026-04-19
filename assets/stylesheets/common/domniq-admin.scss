@@ -1477,6 +1477,21 @@
   }
 }
 
+// Widgets card — 4 tiles across on desktop (one row), 2 on tablet, 1 on mobile.
+// Overrides the default 3-up grid because there are exactly 4 widget tiles
+// and an admin sees them as a single trending-widgets group.
+.dma-card--widgets .dma-tile-grid {
+  grid-template-columns: repeat(4, 1fr);
+
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
 .dma-tile {
   position: relative;
   border: 1px solid var(--primary-very-low);
