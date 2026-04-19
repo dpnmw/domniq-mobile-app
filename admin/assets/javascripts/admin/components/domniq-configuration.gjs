@@ -45,6 +45,20 @@ const SUPPORT_LABELS = {
   },
 };
 
+const DEVELOPER_LABELS = {
+  developer_name: { label: "Name", desc: "Shown in the \"App Developer\" pill on the sidebar and About screen." },
+  developer_slogan: { label: "Slogan", desc: "Short line displayed under the developer name on the Developer Info screen." },
+  developer_sub_slogan: { label: "Sub-Slogan", desc: "Secondary line shown beneath the slogan on the Developer Info screen." },
+  developer_about: {
+    label: "About Paragraph",
+    desc: "Longer description shown on the Developer Info screen under the ABOUT heading.",
+    type: "textarea",
+  },
+  developer_website: { label: "Website", desc: "Full URL — opens when users tap the website contact card." },
+  developer_email: { label: "Email", desc: "Email address — opens the user's mail client when tapped." },
+  developer_facebook: { label: "Facebook", desc: "Full Facebook page URL (optional)." },
+};
+
 const LEGAL_LABELS = {
   tos_topic_id: { label: "Terms of Service", desc: "The Discourse topic ID that contains your Terms of Service content." },
   privacy_topic_id: { label: "Privacy Policy", desc: "The Discourse topic ID that contains your Privacy Policy content." },
@@ -64,6 +78,7 @@ const ONBOARDING_LABELS = {
 const KNOWN_BRANDING_KEYS = new Set(Object.keys(BRANDING_LABELS));
 const KNOWN_ABOUT_KEYS = new Set(Object.keys(ABOUT_LABELS));
 const KNOWN_SUPPORT_KEYS = new Set(Object.keys(SUPPORT_LABELS));
+const KNOWN_DEVELOPER_KEYS = new Set(Object.keys(DEVELOPER_LABELS));
 const KNOWN_LEGAL_KEYS = new Set(Object.keys(LEGAL_LABELS));
 const KNOWN_ONBOARDING_KEYS = new Set(Object.keys(ONBOARDING_LABELS));
 
@@ -72,6 +87,7 @@ function getFieldMeta(config) {
     BRANDING_LABELS[config.config_key] ||
     ABOUT_LABELS[config.config_key] ||
     SUPPORT_LABELS[config.config_key] ||
+    DEVELOPER_LABELS[config.config_key] ||
     LEGAL_LABELS[config.config_key] ||
     ONBOARDING_LABELS[config.config_key] ||
     { label: config.config_key, desc: "" }
@@ -84,6 +100,10 @@ function isSelectField(config) {
 
 function isToggleField(config) {
   return getFieldMeta(config).type === "toggle";
+}
+
+function isTextareaField(config) {
+  return getFieldMeta(config).type === "textarea";
 }
 
 function isToggleOn(config) {
@@ -125,6 +145,12 @@ function filterAbout(configs) {
 function filterSupport(configs) {
   return configs.filter(
     (c) => c.config_type === "branding" && KNOWN_SUPPORT_KEYS.has(c.config_key)
+  );
+}
+
+function filterDeveloper(configs) {
+  return configs.filter(
+    (c) => c.config_type === "branding" && KNOWN_DEVELOPER_KEYS.has(c.config_key)
   );
 }
 
@@ -230,6 +256,31 @@ export default class DomniqConfiguration extends Component {
                 </div>
                 <div class="dma-row__control">
                   <input type="text" value={{config.config_value}} class="dma-field__input" {{on "input" (fn @controller.updateValue config)}} />
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+      {{! ── Developer Info ── }}
+      <div class="dma-card dma-card--branding">
+        <div class="dma-card__body">
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M320-240 80-480l240-240 57 57-184 184 183 183-56 56Zm320 0-57-57 184-184-183-183 56-56 240 240-240 240Z"/></svg></span>Developer Info</h3>
+          <p class="dma-card__description">Attribution shown on the sidebar pill, the About screen, and the Developer Info screen.</p>
+          <div class="dma-fields">
+            {{#each (filterDeveloper @controller.computedConfigs) as |config|}}
+              <div class="dma-row">
+                <div class="dma-row__label">
+                  <span class="dma-row__title">{{getFieldLabel config}}</span>
+                  <span class="dma-row__desc">{{getFieldDesc config}}</span>
+                </div>
+                <div class="dma-row__control">
+                  {{#if (isTextareaField config)}}
+                    <textarea class="dma-field__textarea" rows="4" {{on "input" (fn @controller.updateValue config)}}>{{config.config_value}}</textarea>
+                  {{else}}
+                    <input type="text" value={{config.config_value}} class="dma-field__input" {{on "input" (fn @controller.updateValue config)}} />
+                  {{/if}}
                 </div>
               </div>
             {{/each}}
