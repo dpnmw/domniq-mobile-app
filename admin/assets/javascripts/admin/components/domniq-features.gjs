@@ -16,12 +16,6 @@ const FLAG_META = {
     type: "select",
     options: ["card", "avatar"],
   },
-  replyMode: {
-    label: "Reply Mode",
-    desc: "Reply experience: 'sheet' for inline bottom sheet, 'fullscreen' for full-screen reply",
-    type: "select",
-    options: ["sheet", "fullscreen"],
-  },
 };
 
 function getMeta(flag) {

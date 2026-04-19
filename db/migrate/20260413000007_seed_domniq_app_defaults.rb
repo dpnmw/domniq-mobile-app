@@ -48,7 +48,6 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
     flags = [
       { config_key: "showPostParticipants", config_value: "false" },
       { config_key: "storyLayout", config_value: "card" },
-      { config_key: "replyMode", config_value: "sheet" },
     ]
 
     flags.each_with_index do |item, i|

@@ -68,7 +68,7 @@ export default class DomniqWelcome extends Component {
             </svg>
           </div>
           <h3 class="dma-welcome__feature-title">Features</h3>
-          <p class="dma-welcome__feature-desc">Toggle feature flags like post participants, story layout, reply mode, and video thumbnails.</p>
+          <p class="dma-welcome__feature-desc">Toggle feature flags like post participants, story layout, and video thumbnails.</p>
         </div>
 
         <div class="dma-welcome__feature">
