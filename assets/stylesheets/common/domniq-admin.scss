@@ -1561,6 +1561,28 @@
     background: rgba(239, 83, 80, 0.1);
     color: #ef5350;
   }
+
+  // Forum feature badges (e.g. "Gamification Enabled/Disabled") — icon-in-text
+  // style next to items whose behavior depends on a forum plugin being active.
+  &--feature-on {
+    background: rgba(34, 197, 94, 0.12);
+    color: #16a34a;
+
+    &::before {
+      content: "\2713 ";
+      margin-right: 0.15rem;
+    }
+  }
+
+  &--feature-off {
+    background: rgba(239, 68, 68, 0.12);
+    color: #dc2626;
+
+    &::before {
+      content: "\2715 ";
+      margin-right: 0.15rem;
+    }
+  }
 }
 
 // ── Toggle switch ──
@@ -1623,6 +1645,16 @@
 
   input:checked + .dma-toggle__track::after {
     transform: translateX(14px);
+  }
+}
+
+// Disabled toggle — the forum doesn't support this feature, so admin can't
+// turn it on. Visually muted + not interactive.
+.dma-toggle--disabled {
+  opacity: 0.4;
+
+  .dma-toggle__track {
+    cursor: not-allowed;
   }
 }
 

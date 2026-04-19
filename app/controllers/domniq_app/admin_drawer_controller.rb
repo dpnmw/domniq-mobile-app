@@ -10,6 +10,7 @@ module DomniqApp
 
       render json: {
         items: items.map { |c| serialize_config(c) },
+        forum_features: DomniqApp::ForumFeatures.snapshot,
       }
     end
 

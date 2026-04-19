@@ -9,6 +9,7 @@ export default class DmaDrawerController extends Controller {
   @tracked saving = false;
   @tracked saved = false;
   @tracked isLocked = true;
+  @tracked forumFeatures = {};
 
   constructor() {
     super(...arguments);
@@ -30,6 +31,20 @@ export default class DmaDrawerController extends Controller {
 
   get computedItems() {
     return this.items ?? this.model?.items ?? [];
+  }
+
+  get computedForumFeatures() {
+    return this.forumFeatures ?? this.model?.forum_features ?? {};
+  }
+
+  // True when a drawer item's featureKey requires a forum feature that is
+  // currently disabled. Used by the editor to render locked tiles that admins
+  // can't toggle on (since the forum doesn't support it).
+  forumFeatureDisabled(featureKey) {
+    if (!featureKey) return false;
+    const features = this.model?.forum_features ?? {};
+    // Undefined keys (features we don't gate on) default to available.
+    return features[featureKey] === false;
   }
 
   get groupedItems() {

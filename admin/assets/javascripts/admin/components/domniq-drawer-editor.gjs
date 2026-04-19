@@ -42,6 +42,51 @@ const CATEGORY_ORDER = ["Premium", "Community", "Settings", "Support", "Admin Da
 
 const LOCKED_CATEGORIES = new Set(["Premium", "Admin Dashboard"]);
 
+// Categories whose items are infrastructure — admins don't toggle them on/off.
+const NON_TOGGLEABLE_CATEGORIES = new Set(["Support", "Admin Dashboard"]);
+
+// Specific item keys that should never be toggleable, regardless of category.
+// - `overview` is the required About Us shortcut in Community.
+// - coming-soon items are not toggleable since they don't do anything yet.
+const NON_TOGGLEABLE_ITEM_KEYS = new Set(["overview"]);
+
+function isItemToggleable(item) {
+  if (!item) return false;
+  if (item.parsed?.comingSoon) return false;
+  if (NON_TOGGLEABLE_ITEM_KEYS.has(item.config_key)) return false;
+  if (item.parsed?.category && NON_TOGGLEABLE_CATEGORIES.has(item.parsed.category)) return false;
+  return true;
+}
+
+function featureKeyOf(item) {
+  return item?.parsed?.featureKey || null;
+}
+
+function isFeatureUnavailable(item, forumFeatures) {
+  const key = featureKeyOf(item);
+  if (!key) return false;
+  return forumFeatures?.[key] === false;
+}
+
+function featureBadgeText(item, forumFeatures) {
+  const key = featureKeyOf(item);
+  if (!key) return null;
+  const labelMap = {
+    gamification: "Gamification",
+    groups: "Groups",
+  };
+  const label = labelMap[key] || key;
+  const enabled = forumFeatures?.[key] !== false;
+  return `${label} ${enabled ? "Enabled" : "Disabled"}`;
+}
+
+function featureBadgeClass(item, forumFeatures) {
+  const key = featureKeyOf(item);
+  if (!key) return "";
+  const enabled = forumFeatures?.[key] !== false;
+  return enabled ? "dma-tile__badge--feature-on" : "dma-tile__badge--feature-off";
+}
+
 function sortedCategories(groupedItems, isLocked) {
   return CATEGORY_ORDER.filter((cat) => groupedItems[cat]).map((cat) => ({
     name: cat,
@@ -126,24 +171,25 @@ export default class DomniqDrawerEditor extends Component {
 
                     <span class="dma-tile__title">{{item.parsed.title}}</span>
 
-                    <label class="dma-toggle dma-toggle--sm">
-                      <input
-                        type="checkbox"
-                        checked={{item.enabled}}
-                        {{on "change" (fn @controller.toggleItem item)}}
-                      />
-                      <span class="dma-toggle__track"></span>
-                    </label>
+                    {{#if (isItemToggleable item)}}
+                      <label class="dma-toggle dma-toggle--sm {{if (isFeatureUnavailable item @controller.computedForumFeatures) 'dma-toggle--disabled'}}">
+                        <input
+                          type="checkbox"
+                          checked={{item.enabled}}
+                          disabled={{isFeatureUnavailable item @controller.computedForumFeatures}}
+                          {{on "change" (fn @controller.toggleItem item)}}
+                        />
+                        <span class="dma-toggle__track"></span>
+                      </label>
+                    {{/if}}
                   </div>
 
                   <span class="dma-tile__desc">{{item.parsed.description}}</span>
 
                   {{#if item.parsed.comingSoon}}
-                    <span class="dma-tile__badge dma-tile__badge--coming-soon">Soon</span>
+                    <span class="dma-tile__badge dma-tile__badge--coming-soon">Coming Soon</span>
                   {{else if item.parsed.featureKey}}
-                    <span class="dma-tile__badge dma-tile__badge--gated">{{item.parsed.featureKey}}</span>
-                  {{else if item.parsed.requiresStaff}}
-                    <span class="dma-tile__badge dma-tile__badge--staff">Staff</span>
+                    <span class="dma-tile__badge {{featureBadgeClass item @controller.computedForumFeatures}}">{{featureBadgeText item @controller.computedForumFeatures}}</span>
                   {{/if}}
                 </div>
               {{/each}}
