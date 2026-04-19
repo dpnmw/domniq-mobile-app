@@ -116,13 +116,20 @@ export default class DomniqPremium extends Component {
 
   get statusLabel() {
     if (!this.license) return "Loading...";
-    if (this.license.licensed) return "Active";
-    return "Inactive";
+    const labels = {
+      active: "Active",
+      inactive: "Inactive",
+      suspended: "Suspended",
+      pending: "Pending",
+      expired: "Expired",
+    };
+    return labels[this.license.status] || (this.license.licensed ? "Active" : "Inactive");
   }
 
   get statusClass() {
     if (!this.license) return "";
-    return this.license.licensed ? "dma-premium__status--active" : "dma-premium__status--inactive";
+    const s = this.license.status || (this.license.licensed ? "active" : "inactive");
+    return `dma-premium__status--${s}`;
   }
 
   get safeModeUrl() {

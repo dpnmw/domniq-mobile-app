@@ -93,6 +93,7 @@ module DomniqApp
       if key.blank?
         result = {
           "license_active" => false,
+          "status" => "inactive",
           "domain" => domain,
           "error" => "No license key configured",
           "checked_at" => Time.now.iso8601,
@@ -134,6 +135,11 @@ module DomniqApp
       cached&.dig("tier")
     end
 
+    def self.status
+      cached = read_cache
+      cached&.dig("status")
+    end
+
     def self.current_domain
       URI.parse(Discourse.base_url).host
     rescue StandardError
@@ -155,6 +161,7 @@ module DomniqApp
     def self.blocked_result(domain)
       {
         "license_active" => false,
+        "status" => "inactive",
         "domain" => domain,
         "error" => "License validation is not available for local or private domains",
         "checked_at" => Time.now.iso8601,
@@ -173,6 +180,7 @@ module DomniqApp
       data = JSON.parse(response.body)
       {
         "license_active" => data["active"] == true,
+        "status" => data["status"] || (data["active"] ? "active" : "inactive"),
         "domain" => domain,
         "email" => data["email"],
         "paid_at" => data["paid_at"],
@@ -192,6 +200,7 @@ module DomniqApp
     def self.inactive_result(domain, error = nil)
       {
         "license_active" => false,
+        "status" => "inactive",
         "domain" => domain,
         "error" => error,
         "checked_at" => Time.now.iso8601,
@@ -206,6 +215,7 @@ module DomniqApp
       else
         {
           "license_active" => false,
+          "status" => "inactive",
           "domain" => domain,
           "checked_at" => Time.now.iso8601,
         }

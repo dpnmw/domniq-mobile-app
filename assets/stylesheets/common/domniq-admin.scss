@@ -1319,6 +1319,21 @@
     background: rgba(156, 163, 175, 0.1);
     color: #9ca3af;
   }
+
+  &--suspended {
+    background: rgba(249, 115, 22, 0.12);
+    color: #fb923c;
+  }
+
+  &--pending {
+    background: rgba(59, 130, 246, 0.12);
+    color: #60a5fa;
+  }
+
+  &--expired {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+  }
 }
 
 .dma-premium__tier {

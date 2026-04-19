@@ -39,6 +39,7 @@ module DomniqApp
     def license_json(result)
       json = {
         licensed: result["license_active"] == true,
+        status: result["status"] || (result["license_active"] ? "active" : "inactive"),
         domain: result["domain"],
         email: result["email"],
         paid_at: result["paid_at"],
