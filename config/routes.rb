@@ -4,6 +4,10 @@ DomniqApp::Engine.routes.draw do
   # Public config API
   get "config" => "config#show"
 
+  # Public license status — mobile app polls this to gate premium features.
+  # Returns only { active, tier?, days_remaining? }.
+  get "license/status" => "license#status"
+
   # Locales API
   get "locales" => "locales#index"
   get "locales/:locale" => "locales#show"
