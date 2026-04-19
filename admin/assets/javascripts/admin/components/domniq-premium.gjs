@@ -3,8 +3,10 @@ import { tracked } from "@glimmer/tracking";
 import { action } from "@ember/object";
 import { service } from "@ember/service";
 import { on } from "@ember/modifier";
-import APP_VERSION from "./dma-version";
 import { htmlSafe } from "@ember/template";
+import { ajax } from "discourse/lib/ajax";
+import { popupAjaxError } from "discourse/lib/ajax-error";
+import APP_VERSION from "./dma-version";
 import DmaPageLayout from "./dma-page-layout";
 
 const API_BASE = "https://api.dpnmediaworks.com";
@@ -35,7 +37,6 @@ export default class DomniqPremium extends Component {
 
   async fetchLicense() {
     try {
-      const { ajax } = await import("discourse/lib/ajax");
       this.license = await ajax("/admin/plugins/domniq-mobile-app/license/status.json");
     } catch {
       this.license = { licensed: false };
@@ -54,7 +55,6 @@ export default class DomniqPremium extends Component {
     this.activating = true;
     this.licenseError = null;
     try {
-      const { ajax } = await import("discourse/lib/ajax");
       const result = await ajax("/admin/plugins/domniq-mobile-app/license/activate.json", {
         type: "POST",
         data: { license_key: this.licenseKey.trim() },
@@ -79,7 +79,6 @@ export default class DomniqPremium extends Component {
     this.checking = true;
     this.licenseError = null;
     try {
-      const { ajax } = await import("discourse/lib/ajax");
       this.license = await ajax("/admin/plugins/domniq-mobile-app/license/check.json", { type: "POST" });
       if (this.license.licensed) {
         this.toasts.success({ data: { message: "Licence is valid and active" }, duration: 3000 });
@@ -143,14 +142,12 @@ export default class DomniqPremium extends Component {
   async toggleTelemetry() {
     const newValue = !this.telemetryEnabled;
     try {
-      const { ajax } = await import("discourse/lib/ajax");
       await ajax("/admin/plugins/domniq-mobile-app/license/telemetry.json", {
         type: "PUT",
         data: { telemetry_enabled: newValue },
       });
       this.license = { ...this.license, telemetry_enabled: newValue };
     } catch (e) {
-      const { popupAjaxError } = await import("discourse/lib/ajax-error");
       popupAjaxError(e);
     }
   }
