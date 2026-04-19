@@ -9,7 +9,11 @@ export default class DmaDrawerController extends Controller {
   @tracked saving = false;
   @tracked saved = false;
   @tracked isLocked = true;
-  @tracked forumFeatures = {};
+  // Null until an admin action overrides it — `computedForumFeatures` must be
+  // able to fall through to `this.model?.forum_features`. An `{}` default
+  // would short-circuit the `??` and leave the UI thinking every feature is
+  // "enabled" (because `{}.gamification !== false`).
+  @tracked forumFeatures = null;
 
   constructor() {
     super(...arguments);
