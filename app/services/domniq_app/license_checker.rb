@@ -23,7 +23,7 @@ module DomniqApp
     ].freeze
 
     # Locked config types — fully locked sections
-    LOCKED_SECTION_TYPES = %w[onboarding].freeze
+    LOCKED_SECTION_TYPES = %w[].freeze
 
     # Locked config keys per config_type — partial locks
     LOCKED_CONFIG_KEYS = {
