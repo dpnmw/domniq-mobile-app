@@ -165,15 +165,19 @@ export default class DomniqPremium extends Component {
             <h3 class="dma-pcard__heading"><span class="dma-pcard__heading-icon">{{iconHtml "lock"}}</span>Licence Status</h3>
             <p class="dma-pcard__desc">Your current Domniq Mobile App licence status and activation.</p>
 
-            <div class="dma-prow">
-              <div class="dma-prow__label">
-                <span class="dma-prow__title">Status</span>
-                <span class="dma-prow__desc">Whether your licence is currently active</span>
-              </div>
-              <div class="dma-prow__control">
-                <span class="dma-premium__status {{this.statusClass}}">{{this.statusLabel}}</span>
+            {{#if this.license}}
+            <div class="dma-premium__fade-in">
+              <div class="dma-prow">
+                <div class="dma-prow__label">
+                  <span class="dma-prow__title">Status</span>
+                  <span class="dma-prow__desc">Whether your licence is currently active</span>
+                </div>
+                <div class="dma-prow__control">
+                  <span class="dma-premium__status {{this.statusClass}}">{{this.statusLabel}}</span>
+                </div>
               </div>
             </div>
+            {{/if}}
 
             {{#if this.isLicensed}}
               {{#if this.tierLabel}}
@@ -209,32 +213,35 @@ export default class DomniqPremium extends Component {
                   </div>
                 </div>
               {{/if}}
-            {{else}}
-              <div class="dma-prow">
-                <div class="dma-prow__label">
-                  <span class="dma-prow__title">Licence Key</span>
-                  <span class="dma-prow__desc">Enter your licence key from DPN Media Works</span>
-                </div>
-                <div class="dma-prow__control">
-                  <div class="dma-premium__key-wrapper">
-                    <input
-                      type="text"
-                      value={{this.licenseKey}}
-                      {{on "input" this.updateLicenseKey}}
-                      placeholder="e.g. a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
-                      class="dma-pfield__input dma-premium__key-input {{if this.licenseError 'dma-premium__key-input--error'}}"
-                    />
-                    {{#if this.licenseError}}
-                      <span class="dma-premium__hint dma-premium__hint--error">{{this.licenseError}}</span>
-                    {{else}}
-                      <span class="dma-premium__hint">Enter your licence key and click Activate, or click Check Licence to verify an existing key.</span>
-                    {{/if}}
+            {{else if this.license}}
+              <div class="dma-premium__fade-in">
+                <div class="dma-prow">
+                  <div class="dma-prow__label">
+                    <span class="dma-prow__title">Licence Key</span>
+                    <span class="dma-prow__desc">Enter your licence key from DPN Media Works</span>
+                  </div>
+                  <div class="dma-prow__control">
+                    <div class="dma-premium__key-wrapper">
+                      <input
+                        type="text"
+                        value={{this.licenseKey}}
+                        {{on "input" this.updateLicenseKey}}
+                        placeholder="e.g. a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
+                        class="dma-pfield__input dma-premium__key-input {{if this.licenseError 'dma-premium__key-input--error'}}"
+                      />
+                      {{#if this.licenseError}}
+                        <span class="dma-premium__hint dma-premium__hint--error">{{this.licenseError}}</span>
+                      {{else}}
+                        <span class="dma-premium__hint">Enter your licence key and click Activate, or click Check Licence to verify an existing key.</span>
+                      {{/if}}
+                    </div>
                   </div>
                 </div>
               </div>
             {{/if}}
 
-            <div class="dma-premium__actions">
+            {{#if this.license}}
+            <div class="dma-premium__actions dma-premium__fade-in">
               {{#unless this.isLicensed}}
                 <button type="button" class="btn btn-primary btn-small" disabled={{this.activating}} {{on "click" this.activateLicense}}>
                   {{if this.activating "Activating..." "Activate Licence"}}
@@ -248,6 +255,7 @@ export default class DomniqPremium extends Component {
                 {{if this.checking "Checking..." "Check Licence"}}
               </button>
             </div>
+            {{/if}}
           </div>
         </div>
 

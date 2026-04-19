@@ -1828,9 +1828,17 @@
   overflow: hidden;
 
   .dma-card__body {
-    filter: blur(4px);
     opacity: 0.5;
     pointer-events: none;
     user-select: none;
   }
+}
+
+.dma-premium__fade-in {
+  animation: dma-premium-fade 200ms ease-out;
+}
+
+@keyframes dma-premium-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
