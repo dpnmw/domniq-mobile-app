@@ -12,6 +12,7 @@ export default {
     }
 
     withPluginApi((api) => {
+      api.setAdminPluginIcon(PLUGIN_ID, "mobile-screen");
       api.addAdminPluginConfigurationNav(PLUGIN_ID, [
         {
           label: "domniq_app.admin.overview.title",
