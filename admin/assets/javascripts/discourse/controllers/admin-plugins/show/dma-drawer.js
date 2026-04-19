@@ -25,7 +25,7 @@ export default class DmaDrawerController extends Controller {
   }
 
   isCategoryLocked(category) {
-    return this.isLocked && (category === "Playground" || category === "Admin Dashboard");
+    return this.isLocked && (category === "Premium" || category === "Admin Dashboard");
   }
 
   get computedItems() {

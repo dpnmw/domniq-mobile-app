@@ -6,10 +6,10 @@ import DmaPageLayout from "./dma-page-layout";
 import DmaLicenseLock from "./dma-license-lock";
 
 const CATEGORY_META = {
-  Playground: {
+  Premium: {
     color: "#A358DF",
-    cardClass: "dma-card--playground",
-    desc: "Featured content and upcoming experiences shown at the top of the app drawer.",
+    cardClass: "dma-card--premium",
+    desc: "Premium features and exclusive content for licensed users.",
     iconPath: "M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Z",
   },
   Community: {
@@ -38,9 +38,9 @@ const CATEGORY_META = {
   },
 };
 
-const CATEGORY_ORDER = ["Playground", "Community", "Settings", "Support", "Admin Dashboard"];
+const CATEGORY_ORDER = ["Premium", "Community", "Settings", "Support", "Admin Dashboard"];
 
-const LOCKED_CATEGORIES = new Set(["Playground", "Admin Dashboard"]);
+const LOCKED_CATEGORIES = new Set(["Premium", "Admin Dashboard"]);
 
 function sortedCategories(groupedItems, isLocked) {
   return CATEGORY_ORDER.filter((cat) => groupedItems[cat]).map((cat) => ({

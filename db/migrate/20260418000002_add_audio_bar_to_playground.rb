@@ -4,9 +4,14 @@ class AddAudioBarToPlayground < ActiveRecord::Migration[7.0]
   # Brings live servers up to the current seed file state:
   #
   # 1. Inserts missing rows (e.g. admin_* entries on servers seeded before
-  #    2026-04-14, plus audio_bar as the new Coming Soon Playground item).
+  #    2026-04-14, plus audio_bar as the new Coming Soon Premium item).
   # 2. Renumbers all drawer positions sequentially so the ordering is clean
   #    across all five categories.
+  #
+  # Note on category name: the Premium card was renamed from "Playground" in
+  # a follow-up migration (20260418000004). This file's canonical rows use
+  # the new "Premium" name so fresh installs skip the rename round-trip.
+  # Already-migrated servers are corrected by 20260418000004.
   #
   # Safe to re-run: uses INSERT ... ON CONFLICT and UPDATE-by-key.
   def up
@@ -15,10 +20,10 @@ class AddAudioBarToPlayground < ActiveRecord::Migration[7.0]
 
     # Canonical target state — order is the display order, position is the index.
     drawer_items = [
-      # Playground
-      { config_key: "leaderboard_stories", config_value: '{"title":"Leaderboard Stories","description":"Top 10 This Week","icon":"Highlights","color":"#FF9500","route":"","category":"Playground","toggleKey":"storyModeTop10"}' },
-      { config_key: "audio_bar",            config_value: '{"title":"Audio Bar","description":"Home screen audio player","icon":"AudioRooms","color":"#6C3AED","route":"","category":"Playground","comingSoon":true}' },
-      { config_key: "live_events",          config_value: '{"title":"Live Events","description":"Scheduled live sessions","icon":"LiveEvents","color":"#a29bfe","route":"","category":"Playground","comingSoon":true}' },
+      # Premium
+      { config_key: "leaderboard_stories", config_value: '{"title":"Leaderboard Stories","description":"Top 10 This Week","icon":"Highlights","color":"#FF9500","route":"","category":"Premium","toggleKey":"storyModeTop10"}' },
+      { config_key: "audio_bar",            config_value: '{"title":"Audio Bar","description":"Home screen audio player","icon":"AudioRooms","color":"#6C3AED","route":"","category":"Premium","comingSoon":true}' },
+      { config_key: "live_events",          config_value: '{"title":"Live Events","description":"Scheduled live sessions","icon":"LiveEvents","color":"#a29bfe","route":"","category":"Premium","comingSoon":true}' },
 
       # Community
       { config_key: "leaderboard",          config_value: '{"title":"Leaderboard","description":"Top Contributors","icon":"Highlights","color":"#F5A623","route":"Leaderboard","category":"Community","featureKey":"gamification"}' },

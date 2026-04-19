@@ -37,7 +37,7 @@ module DomniqApp
         when "drawer"
           merged = { key: config.config_key, position: config.position }
             .merge(value.is_a?(Hash) ? value : { value: value })
-          # Drop drawer items whose category is locked (Playground, Admin Dashboard).
+          # Drop drawer items whose category is locked (Premium, Admin Dashboard).
           next if !licensed && merged[:category] && LicenseChecker.drawer_category_locked?(merged[:category])
           result[:drawer] << merged
         when "welcome"
