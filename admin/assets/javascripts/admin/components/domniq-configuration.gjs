@@ -56,7 +56,7 @@ const DEVELOPER_LABELS = {
   },
   developer_website: { label: "Website", desc: "Full URL — opens when users tap the website contact card." },
   developer_email: { label: "Email", desc: "Email address — opens the user's mail client when tapped." },
-  developer_facebook: { label: "Facebook", desc: "Full Facebook page URL (optional)." },
+  developer_app_policy: { label: "App Policy", desc: "Full URL to the app's privacy/policy page (shown on the Developer Info screen)." },
 };
 
 const LEGAL_LABELS = {
@@ -242,27 +242,6 @@ export default class DomniqConfiguration extends Component {
         </div>
       </div>
 
-      {{! ── Support ── }}
-      <div class="dma-card dma-card--support">
-        <div class="dma-card__body">
-          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M478-240q21 0 35.5-14.5T528-290q0-21-14.5-35.5T478-340q-21 0-35.5 14.5T428-290q0 21 14.5 35.5T478-240Zm-36-154h74q0-33 7.5-52t42.5-52q26-26 41-49.5t15-56.5q0-56-41-86t-97-30q-57 0-92.5 30T342-618l66 26q5-18 22.5-39t53.5-21q32 0 48 17.5t16 38.5q0 20-12 37.5T506-526q-44 39-54 59t-10 73ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></span>Support</h3>
-          <p class="dma-card__description">Contact details shown in the Message Us screen.</p>
-          <div class="dma-fields">
-            {{#each (filterSupport @controller.computedConfigs) as |config|}}
-              <div class="dma-row">
-                <div class="dma-row__label">
-                  <span class="dma-row__title">{{getFieldLabel config}}</span>
-                  <span class="dma-row__desc">{{getFieldDesc config}}</span>
-                </div>
-                <div class="dma-row__control">
-                  <input type="text" value={{config.config_value}} class="dma-field__input" {{on "input" (fn @controller.updateValue config)}} />
-                </div>
-              </div>
-            {{/each}}
-          </div>
-        </div>
-      </div>
-
       {{! ── Developer Info ── }}
       <div class="dma-card dma-card--branding">
         <div class="dma-card__body">
@@ -281,6 +260,27 @@ export default class DomniqConfiguration extends Component {
                   {{else}}
                     <input type="text" value={{config.config_value}} class="dma-field__input" {{on "input" (fn @controller.updateValue config)}} />
                   {{/if}}
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+      {{! ── Support ── }}
+      <div class="dma-card dma-card--support">
+        <div class="dma-card__body">
+          <h3 class="dma-card__heading"><span class="dma-card__heading-icon"><svg viewBox="0 -960 960 960"><path d="M478-240q21 0 35.5-14.5T528-290q0-21-14.5-35.5T478-340q-21 0-35.5 14.5T428-290q0 21 14.5 35.5T478-240Zm-36-154h74q0-33 7.5-52t42.5-52q26-26 41-49.5t15-56.5q0-56-41-86t-97-30q-57 0-92.5 30T342-618l66 26q5-18 22.5-39t53.5-21q32 0 48 17.5t16 38.5q0 20-12 37.5T506-526q-44 39-54 59t-10 73ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></span>Support</h3>
+          <p class="dma-card__description">Contact details shown in the Message Us screen.</p>
+          <div class="dma-fields">
+            {{#each (filterSupport @controller.computedConfigs) as |config|}}
+              <div class="dma-row">
+                <div class="dma-row__label">
+                  <span class="dma-row__title">{{getFieldLabel config}}</span>
+                  <span class="dma-row__desc">{{getFieldDesc config}}</span>
+                </div>
+                <div class="dma-row__control">
+                  <input type="text" value={{config.config_value}} class="dma-field__input" {{on "input" (fn @controller.updateValue config)}} />
                 </div>
               </div>
             {{/each}}

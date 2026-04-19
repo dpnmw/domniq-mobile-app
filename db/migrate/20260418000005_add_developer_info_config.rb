@@ -9,7 +9,7 @@ class AddDeveloperInfoConfig < ActiveRecord::Migration[7.0]
   # - developer_sub_slogan
   # - developer_website
   # - developer_email
-  # - developer_facebook
+  # - developer_app_policy
   #
   # These drive the "App Developer · X" pill on the sidebar and AppInfo
   # screen, plus the DeveloperInfo screen hero and contact cards. Admins can
@@ -27,7 +27,7 @@ class AddDeveloperInfoConfig < ActiveRecord::Migration[7.0]
       { config_key: "developer_sub_slogan", config_value: "Empowering Clients With Services That Works", position: 7 },
       { config_key: "developer_website",    config_value: "https://dpnmediaworks.com",                   position: 8 },
       { config_key: "developer_email",      config_value: "contact@dpnmediaworks.com",                   position: 9 },
-      { config_key: "developer_facebook",   config_value: "https://fb.com/dpnmediaworks",                position: 10 },
+      { config_key: "developer_app_policy", config_value: "https://apps.dpnmediaworks.com",               position: 10 },
     ]
 
     new_rows.each do |row|
@@ -51,7 +51,7 @@ class AddDeveloperInfoConfig < ActiveRecord::Migration[7.0]
           'developer_sub_slogan',
           'developer_website',
           'developer_email',
-          'developer_facebook'
+          'developer_app_policy'
         )
     SQL
   end

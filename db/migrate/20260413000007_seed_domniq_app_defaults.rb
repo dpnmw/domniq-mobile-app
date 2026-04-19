@@ -17,7 +17,7 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
       { config_key: "developer_sub_slogan", config_value: "Empowering Clients With Services That Works" },
       { config_key: "developer_website", config_value: "https://dpnmediaworks.com" },
       { config_key: "developer_email", config_value: "contact@dpnmediaworks.com" },
-      { config_key: "developer_facebook", config_value: "https://fb.com/dpnmediaworks" },
+      { config_key: "developer_app_policy", config_value: "https://apps.dpnmediaworks.com" },
       { config_key: "developer_about", config_value: "We're a digital studio building custom web platforms, mobile apps, and media experiences. From product design and UI/UX to video production and brand strategy — we help clients ship work that lives well on every screen." },
     ]
 
