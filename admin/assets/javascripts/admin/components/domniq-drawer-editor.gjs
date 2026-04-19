@@ -43,7 +43,9 @@ const CATEGORY_ORDER = ["Premium", "Community", "Settings", "Support", "Admin Da
 const LOCKED_CATEGORIES = new Set(["Premium", "Admin Dashboard"]);
 
 // Categories whose items are infrastructure — admins don't toggle them on/off.
-const NON_TOGGLEABLE_CATEGORIES = new Set(["Support", "Admin Dashboard"]);
+// Settings items are user-owned preferences; they're surfaced as a visual map
+// in the editor but not gatekept by the admin.
+const NON_TOGGLEABLE_CATEGORIES = new Set(["Support", "Admin Dashboard", "Settings"]);
 
 // Specific item keys that should never be toggleable, regardless of category.
 // - `overview` is the required About Us shortcut in Community.
