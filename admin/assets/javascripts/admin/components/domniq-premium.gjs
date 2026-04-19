@@ -199,9 +199,10 @@ export default class DomniqPremium extends Component {
     );
   }
 
-  // Only show "Check Licence" when there's a key to check. No point otherwise.
+  // Only show "Check Licence" when there's a key to check. Shown for every
+  // state (including suspended) so users can re-poll after admin changes.
   get showCheckButton() {
-    return this.hasLicenseKey && this.license?.status !== "suspended";
+    return this.hasLicenseKey;
   }
 
   get showPromoBlock() {
