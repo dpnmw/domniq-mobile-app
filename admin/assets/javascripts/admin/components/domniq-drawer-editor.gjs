@@ -42,10 +42,16 @@ const CATEGORY_ORDER = ["Premium", "Community", "Settings", "Support", "Admin Da
 
 const LOCKED_CATEGORIES = new Set(["Premium", "Admin Dashboard"]);
 
-// Categories whose items are infrastructure — admins don't toggle them on/off.
-// Settings items are user-owned preferences; they're surfaced as a visual map
-// in the editor but not gatekept by the admin.
-const NON_TOGGLEABLE_CATEGORIES = new Set(["Support", "Admin Dashboard", "Settings"]);
+// Categories whose items are infrastructure / license-controlled — admins don't
+// toggle them on/off in the drawer editor. Only Community items are toggleable:
+// those gate the app's rendering when a native forum feature (gamification,
+// groups) is either unavailable on the forum or disabled by the admin.
+//
+// - Premium: rendering is license-driven in the app, not admin-toggled.
+// - Admin Dashboard: license + staff gated in the app.
+// - Settings: user-owned preferences; surfaced as a visual map only.
+// - Support: infrastructure; always shown.
+const NON_TOGGLEABLE_CATEGORIES = new Set(["Premium", "Support", "Admin Dashboard", "Settings"]);
 
 // Specific item keys that should never be toggleable, regardless of category.
 // - `overview` is the required About Us shortcut in Community.
