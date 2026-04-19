@@ -3,7 +3,15 @@
 module DomniqApp
   class ConfigBuilder
     def self.build(brand_key)
-      configs = AppConfig.where(brand_key: brand_key, enabled: true)
+      # The `enabled` column is only meaningful for drawer rows (where it drives
+      # the admin "Disabled by Forum" locked-tile state). For every other config
+      # type (branding, feature_flags, welcome, legal), `enabled` is ignored:
+      # those rows are either present (and shown) or deleted. Admin UIs for
+      # those types don't expose an enabled toggle, so every row has
+      # `enabled: true` in practice. If a future admin UI ever surfaces an
+      # enabled toggle for non-drawer rows, revisit this — it will silently
+      # re-surface rows they expected to hide.
+      configs = AppConfig.where(brand_key: brand_key)
 
       version = PluginStore.get("domniq_app", "config_version:#{brand_key}") || 0
       licensed = LicenseChecker.licensed?
