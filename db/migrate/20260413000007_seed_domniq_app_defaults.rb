@@ -12,6 +12,13 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
       { config_key: "color_default_style", config_value: "Royal" },
       { config_key: "show_developer_branding", config_value: "true" },
       { config_key: "support_email", config_value: "contact@dpnmediaworks.com" },
+      { config_key: "developer_name", config_value: "DPN MEDIA WORKS" },
+      { config_key: "developer_slogan", config_value: "We Design, We Produce, We Network" },
+      { config_key: "developer_sub_slogan", config_value: "Empowering Clients With Services That Works" },
+      { config_key: "developer_website", config_value: "https://dpnmediaworks.com" },
+      { config_key: "developer_email", config_value: "contact@dpnmediaworks.com" },
+      { config_key: "developer_facebook", config_value: "https://fb.com/dpnmediaworks" },
+      { config_key: "developer_about", config_value: "We're a digital studio building custom web platforms, mobile apps, and media experiences. From product design and UI/UX to video production and brand strategy — we help clients ship work that lives well on every screen." },
     ]
 
     branding.each_with_index do |item, i|

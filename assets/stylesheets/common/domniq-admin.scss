@@ -1118,6 +1118,7 @@
   .dma-pcard--settings & { background: linear-gradient(135deg, #f5a623, #d97706); }
   .dma-pcard--community & { background: linear-gradient(135deg, #4ecdc4, #06b6d4); }
   .dma-pcard--support & { background: linear-gradient(135deg, #74b9ff, #3b82f6); }
+  .dma-pcard--trial-connect & { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
 }
 
 .dma-pcard__desc {
@@ -1856,4 +1857,71 @@
 @keyframes dma-premium-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+// ── Trial Connect Card (shown to trial tier only) ──
+
+.dma-trial-connect {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.dma-trial-connect__link-row {
+  display: flex;
+}
+
+.dma-trial-connect__link {
+  flex: 1;
+  padding: 0.55rem 0.75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  color: var(--primary);
+  background: var(--primary-very-low);
+  border: 1px solid var(--primary-low);
+  border-radius: 6px;
+  word-break: break-all;
+  user-select: all;
+}
+
+.dma-trial-connect__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.dma-trial-connect__hint {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--primary-medium);
+  line-height: 1.5;
+}
+
+.dma-trial-connect__install {
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--primary-very-low);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.dma-trial-connect__install-label {
+  font-size: 0.8rem;
+  color: var(--primary-medium);
+}
+
+.dma-trial-connect__install-buttons {
+  display: flex;
+  gap: 0.5rem;
+
+  // Placeholder state — real hrefs drop this aria-disabled and the style below
+  // stops applying.
+  .btn[aria-disabled="true"] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
