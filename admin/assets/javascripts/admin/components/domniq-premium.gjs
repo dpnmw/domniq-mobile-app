@@ -29,6 +29,7 @@ export default class DomniqPremium extends Component {
   @tracked checking = false;
   @tracked activating = false;
   @tracked licenseError = null;
+  @tracked trialLinkCopied = false;
 
   constructor() {
     super(...arguments);
@@ -136,6 +137,26 @@ export default class DomniqPremium extends Component {
 
   get buyUrl() {
     return `${API_BASE}/pay/discourse/domniq-mobile-app`;
+  }
+
+  get trialDeeplink() {
+    // DOMNiQ reads this URL from `?url=`, pings `/domniq-app/license/status`,
+    // saves it as the trial base URL, and reloads.
+    return `domniq://trial?url=${encodeURIComponent(window.location.origin)}`;
+  }
+
+  @action
+  async copyTrialLink() {
+    try {
+      await navigator.clipboard.writeText(this.trialDeeplink);
+      this.trialLinkCopied = true;
+      this.toasts.success({ data: { message: "Link copied" }, duration: 2000 });
+      setTimeout(() => {
+        this.trialLinkCopied = false;
+      }, 2000);
+    } catch {
+      this.toasts.error({ data: { message: "Unable to copy. Select and copy manually." }, duration: 3000 });
+    }
   }
 
   @action
@@ -258,6 +279,37 @@ export default class DomniqPremium extends Component {
             {{/if}}
           </div>
         </div>
+
+        {{! ── Connect Your Phone (trial only) ── }}
+        {{#if this.isTrial}}
+        <div class="dma-pcard dma-pcard--trial-connect">
+          <div class="dma-pcard__body">
+            <h3 class="dma-pcard__heading"><span class="dma-pcard__heading-icon">{{iconHtml "about"}}</span>Connect Your Phone</h3>
+            <p class="dma-pcard__desc">Your trial licence is active. Open DOMNiQ on your phone to preview this forum in the app.</p>
+
+            <div class="dma-trial-connect">
+              <div class="dma-trial-connect__link-row">
+                <code class="dma-trial-connect__link">{{this.trialDeeplink}}</code>
+              </div>
+              <div class="dma-trial-connect__actions">
+                <a href="{{this.trialDeeplink}}" class="btn btn-primary btn-small">Open on this device</a>
+                <button type="button" class="btn btn-default btn-small" {{on "click" this.copyTrialLink}}>
+                  {{if this.trialLinkCopied "Copied!" "Copy link"}}
+                </button>
+              </div>
+              <p class="dma-trial-connect__hint">On this desktop? Copy the link and open it on the phone where DOMNiQ is installed.</p>
+
+              <div class="dma-trial-connect__install">
+                <span class="dma-trial-connect__install-label">Don't have DOMNiQ yet?</span>
+                <div class="dma-trial-connect__install-buttons">
+                  <a href="#" class="btn btn-default btn-small" aria-disabled="true">App Store</a>
+                  <a href="#" class="btn btn-default btn-small" aria-disabled="true">Google Play</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/if}}
 
         {{! ── Early Adopter Pricing ── }}
         {{#unless this.isLicensed}}
