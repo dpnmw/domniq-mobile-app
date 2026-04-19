@@ -79,7 +79,7 @@ class SeedDomniqAppDefaults < ActiveRecord::Migration[7.0]
     # --- Drawer: Premium ---
     drawer_items = [
       # Premium (license-gated — requires active license to render in the app)
-      { config_key: "leaderboard_stories", position: 0, config_value: '{"title":"Leaderboard Stories","description":"Top 10 This Week","icon":"Highlights","color":"#FF9500","route":"","category":"Premium","toggleKey":"storyModeTop10"}' },
+      { config_key: "leaderboard_stories", position: 0, config_value: '{"title":"Leaderboard Stories","description":"Top 10 This Week","icon":"Highlights","color":"#FF9500","route":"","category":"Premium","toggleKey":"storyModeTop10","featureKey":"gamification"}' },
       { config_key: "audio_bar", position: 1, config_value: '{"title":"Audio Bar","description":"Home screen audio player","icon":"AudioRooms","color":"#6C3AED","route":"","category":"Premium","comingSoon":true}' },
       { config_key: "live_events", position: 2, config_value: '{"title":"Live Events","description":"Scheduled live sessions","icon":"LiveEvents","color":"#a29bfe","route":"","category":"Premium","comingSoon":true}' },
 

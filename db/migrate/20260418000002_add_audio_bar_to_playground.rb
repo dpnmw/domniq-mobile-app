@@ -21,7 +21,7 @@ class AddAudioBarToPlayground < ActiveRecord::Migration[7.0]
     # Canonical target state — order is the display order, position is the index.
     drawer_items = [
       # Premium
-      { config_key: "leaderboard_stories", config_value: '{"title":"Leaderboard Stories","description":"Top 10 This Week","icon":"Highlights","color":"#FF9500","route":"","category":"Premium","toggleKey":"storyModeTop10"}' },
+      { config_key: "leaderboard_stories", config_value: '{"title":"Leaderboard Stories","description":"Top 10 This Week","icon":"Highlights","color":"#FF9500","route":"","category":"Premium","toggleKey":"storyModeTop10","featureKey":"gamification"}' },
       { config_key: "audio_bar",            config_value: '{"title":"Audio Bar","description":"Home screen audio player","icon":"AudioRooms","color":"#6C3AED","route":"","category":"Premium","comingSoon":true}' },
       { config_key: "live_events",          config_value: '{"title":"Live Events","description":"Scheduled live sessions","icon":"LiveEvents","color":"#a29bfe","route":"","category":"Premium","comingSoon":true}' },
 
