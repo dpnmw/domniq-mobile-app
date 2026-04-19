@@ -12,7 +12,10 @@ register_asset "stylesheets/common/domniq-admin.scss", :admin
 
 register_svg_icon "mobile-screen"
 
-add_admin_route "domniq_app.admin.title", "domniq-mobile-app", use_new_show_route: true
+add_admin_route "domniq_app.admin.title",
+                "domniq-mobile-app",
+                use_new_show_route: true,
+                icon: "mobile-screen"
 
 require_relative "lib/domniq_app"
 
