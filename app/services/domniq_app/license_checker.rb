@@ -27,7 +27,6 @@ module DomniqApp
 
     # Locked config keys per config_type — partial locks
     LOCKED_CONFIG_KEYS = {
-      "branding" => %w[use_site_branding show_developer_branding],
       "feature_flags" => :all, # All feature flags are locked
     }.freeze
 
