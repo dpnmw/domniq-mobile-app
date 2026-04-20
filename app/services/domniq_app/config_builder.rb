@@ -26,6 +26,7 @@ module DomniqApp
         drawer: [],
         welcome: {},
         legal: {},
+        onboarding: {},
       }
 
       configs.order(:config_type, :position).each do |config|
@@ -72,6 +73,8 @@ module DomniqApp
           result[:welcome][config.config_key] = value
         when "legal"
           result[:legal][config.config_key] = value
+        when "onboarding"
+          result[:onboarding][config.config_key] = value
         end
       end
 
